@@ -68,5 +68,3 @@ Claude Code 聊天 → /保存进度 → memory/*.md 文件 → Obsidian 可视�
 - 会话恢复：终端输入 `claude continue`
 - 保存进度：聊天框输入 `/保存进度`
 - Git 同步：`cd memory && git add . && git commit -m "更新" && git push`
-
-<!-- 测试 git 白名单 -->
