@@ -3,7 +3,7 @@ name: session-2026-08-05-progress
 description: 2026-08-05 会话 — CLAUDE.md 审计 + 第二大脑 + cc-web/Huppy 调研
 metadata:
   type: project
-  modified: 2026-08-05T11:00:11.808Z
+  modified: 2026-08-05T11:42:38.691Z
   originSessionId: c000a00f-a6cc-4681-89f9-a1c39a80f8df
 ---
 
@@ -75,12 +75,38 @@ Claude Code 聊天 → /保存进度 → memory/*.md 文件 → Obsidian 可视�
 | cc-web | `C:\cc-web\` | 已放弃（被 Huppy 替代） |
 | Huppy | `/tmp/huppy-app/` | 待手动 npm install 后测试 |
 
+### 3. 手机远程访问（ZeroTier 方案）✅ 完成
+
+**最终方案：ZeroTier + claude-remote**
+- PC：ZeroTier 已安装，节点 ID `0b3678d1a8`，网络 ID `154a350c866d74d3`
+- 手机：已安装 ZeroTier One APK（绕过 Google Play，APKPure 下载）
+- 两设备均已授权，通过 ZeroTier 中继节点连通
+- PC ZeroTier IP：`10.67.185.45`（固定不变）
+- 延迟：13-648ms（走中继），0% 丢包
+
+**踩过的坑：**
+- Cloudflare Tunnel：国内被墙 1003 错误
+- Tailscale APK：跳转 Google Play，手机无谷歌框架无法安装
+- Tailscale XAPK：APKPure 的 xapk 格式无法直接安装
+- ZeroTier 初次不畅：Windows 防火墙 Public 归类 + 网卡权限问题
+- claude-remote E193 错误：CLAUDE_PATH 指向 shell 脚本而非 .cmd
+
+**一键启动脚本：**
+- `C:\Users\Administrator\Desktop\启动远程Claude.bat` — 双击即用
+- 启动后手机访问 `http://10.67.185.45:3456` + 屏幕显示的 token
+
+**已修改的文件：**
+- `C:\Users\Administrator\.claude\settings.json`：CLAUDE_PATH 改为指向 claude.cmd
+- `C:\Users\Administrator\Desktop\启动远程Claude.bat`：一键启动脚本
+- `C:\Users\Administrator\AppData\Roaming\npm\node_modules\claude-code-remote\dist\pty-session.js`：Windows 兼容修复
+- `C:\Users\Administrator\AppData\Roaming\npm\node_modules\claude-code-remote\dist\tunnel\cloudflare.js`：Windows spawn 修复
+
 ## 下次继续
 
 - 会话恢复：终端输入 `claude continue`
+- 手机远程：双击桌面 `启动远程Claude.bat`，手机访问 `http://10.67.185.45:3456`
 - 不用手动保存：我每完成一个任务自动存档
 - Git 不再被拦截：白名单已配置
-- Huppy 测试：`cd /tmp/huppy-app && npm install --production && node bin/huppy.mjs --help`
 
 ### 附：cc-web 项目说明
 
