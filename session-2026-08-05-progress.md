@@ -1,43 +1,57 @@
 ---
 name: session-2026-08-05-progress
-description: 2026-08-05 会话——解决会话恢复问题 + CLAUDE.md 全面审计精简
-metadata: 
-  node_type: memory
+description: 2026-08-05 会话 — CLAUDE.md 审计 + 第二大脑记忆系统搭建
+metadata:
   type: project
-  modified: 2026-08-05T06:56:06.839Z
+  modified: 2026-08-05T10:19:21.663Z
   originSessionId: c000a00f-a6cc-4681-89f9-a1c39a80f8df
 ---
 
 ## 本次完成
 
-### 1. 会话恢复问题（核心卡点已解决）
-- 搞清 `claude --resume` 失效原因（会话随终端进程死亡）
-- 建立了标准流程：关前说"保存进度" → 开后 `claude continue`
-- 配置了 SessionEnd hook 作为兜底
-- 已写入 [[session-resume-workflow]]
-
-### 2. CLAUDE.md 审计与精简
-- 原始：29 条规则，7 个板块，存在重叠、空洞、不可执行项
-- 现版：16 条规则，7 个板块，每条可验证
+### 1. CLAUDE.md 审计与精简（前半段）
+- 原始：29 条规则 → 精简为 16 条，7 个板块
 - 新增：测试五维度轮换、用户审批规则、自查三问+复杂度警戒线
-- 备份：`CLAUDE-backup-v1.md`（原始 56 行）
-- 已推送到 GitHub
+- 新增：小白友好规则（所有新概念必须用通俗语言解释）
+- 备份：`CLAUDE-backup-v1.md`
+- 参考 [[session-resume-workflow]]
 
-### 3. CLAUDE.md 三级结构纠正
-- 全局级 → 项目级 → 子文件夹级
-- 将"不确定事实先查文档再回答"写入全局指令
+### 2. 第二大脑记忆系统搭建（后半段）
 
-## 当前全局 CLAUDE.md 结构（16 条）
+**自动总结系统**
+- 创建了 `/保存进度` 自定义命令：`C:\Users\Administrator\.claude\commands\保存进度.md`
+- SessionEnd hook v1.1：`C:\Users\Administrator\.claude\hooks\session-end.js`
+  - 不再生成空模板，改为检查是否已存档
+  - 未存档时提醒用户下次运行 `/保存进度`
 
-| 板块 | 条数 | 要点 |
-|------|------|------|
-| 语言 | 3 | 中文回复、变量名可用英文、简洁完整 |
-| 调研 | 2 | 调研先行、调研后选最简方案 |
-| 任务执行 | 2 | 并行优先、简单任务直接做 |
-| 自测 | 4 | 主动验证、五维度轮换、扫全项目、不做表面功夫 |
-| 版本标示 | 3 | 必更版本号、格式 v主.次、放在醒目位置 |
-| 沟通 | 3 | 给文件路径、审批后执行、不确定先核实 |
-| 编码原则 | 3 | 简单至上、自查三问、复杂度警戒线 |
+**可视化浏览**
+- 安装了 Obsidian，打开 `C:\Users\Administrator\.claude\projects\C--\memory` 作为仓库
+- 现在可以可视化浏览所有记忆文件，包括关系图谱和反链面板
+
+**手机远程访问**
+- 安装了 claude-code-remote@0.1.9（端口 3456）
+- 手机连同一 WiFi，浏览器访问 `http://<电脑IP>:3456` 即可与 Claude Code 对话
+- Subrosa 调研后跳过（不支持 Windows）
+
+**Git 备份**
+- 记忆库已初始化为 git 仓库并推送到 GitHub
+- 仓库：`github.com/z15314102792-arch/second-brain`（私有）
+- 路径：`C:\Users\Administrator\.claude\projects\C--\memory`
+
+## 关键决策
+
+- **不做第二大脑平台**：Obsidian 已是最佳可视化方案，无需自建
+- **不做 Web 服务套壳**：claude-code-remote 已满足需求
+- **不装 Subrosa**：不支持 Windows，功能与现有系统重叠
+- **SessionEnd 从"生成模板"改为"提醒存档"**：真正的内容由 `/保存进度` 完成，避免空白 TODO
+
+## 记忆系统架构
+
+```
+Claude Code 聊天 → /保存进度 → memory/*.md 文件 → Obsidian 可视化
+                    ↓                              ↓
+              SessionEnd hook 提醒            Git → GitHub 备份
+```
 
 ## 所有活跃项目
 
@@ -47,8 +61,10 @@ metadata:
 | 你画我猜 | Railway 部署 | 单人创作完备 |
 | 双人闯关 | Railway 部署 | 关卡待修 |
 | CCE 模型 | `~/.cce/` | 多模型已配 |
+| 第二大脑 | `C:\Users\Administrator\.claude\projects\C--\memory` | 刚搭建完成 |
 
 ## 下次继续
 
-- 终端输入 `claude continue`
-- 参考 [[session-resume-workflow]]
+- 会话恢复：终端输入 `claude continue`
+- 保存进度：聊天框输入 `/保存进度`
+- Git 同步：`cd memory && git add . && git commit -m "更新" && git push`
