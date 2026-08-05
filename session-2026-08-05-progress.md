@@ -3,7 +3,7 @@ name: session-2026-08-05-progress
 description: 2026-08-05 会话 — CLAUDE.md 审计 + 第二大脑 + cc-web/Huppy 调研
 metadata:
   type: project
-  modified: 2026-08-05T11:42:38.691Z
+  modified: 2026-08-05T12:03:19.092Z
   originSessionId: c000a00f-a6cc-4681-89f9-a1c39a80f8df
 ---
 
@@ -100,6 +100,15 @@ Claude Code 聊天 → /保存进度 → memory/*.md 文件 → Obsidian 可视�
 - `C:\Users\Administrator\Desktop\启动远程Claude.bat`：一键启动脚本
 - `C:\Users\Administrator\AppData\Roaming\npm\node_modules\claude-code-remote\dist\pty-session.js`：Windows 兼容修复
 - `C:\Users\Administrator\AppData\Roaming\npm\node_modules\claude-code-remote\dist\tunnel\cloudflare.js`：Windows spawn 修复
+
+### 4. 中国象棋/五子棋 404 修复 ✅ 完成
+
+**根因**：GitHub 免费计划不再支持私有仓库的 GitHub Pages，`has_pages` 被自动关闭
+
+**修复**：
+- `z15314102792-arch/chinese-chess` → 改为 public → 开启 Pages → 已部署
+- `z15314102792-arch/gomoku` → 改为 public → 开启 Pages → 已部署
+- URL：`https://z15314102792-arch.github.io/chinese-chess/` 和 `gomoku/`
 
 ## 下次继续
 
