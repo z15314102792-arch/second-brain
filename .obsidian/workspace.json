@@ -11,10 +11,14 @@
             "id": "a566d182e5e6cde8",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "关系图谱"
+              "type": "markdown",
+              "state": {
+                "file": "session-resume-workflow.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "session-resume-workflow"
             }
           }
         ]
@@ -95,6 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "session-resume-workflow.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,6 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "session-resume-workflow.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -155,6 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "session-resume-workflow.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -183,13 +190,13 @@
   },
   "active": "a566d182e5e6cde8",
   "lastOpenFiles": [
-    "chinese-chess-stable-baseline.md",
-    "未命名.base",
-    "session-resume-workflow.md",
     "session-2026-08-05-progress.md",
     "research-before-implement.md",
-    "MEMORY.md",
     "CLAUDE-backup-v1.md",
+    "chinese-chess-stable-baseline.md",
+    "MEMORY.md",
+    "未命名.base",
+    "session-resume-workflow.md",
     "未命名 1.base",
     "未命名 2.base"
   ]
