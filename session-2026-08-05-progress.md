@@ -1,9 +1,9 @@
 ---
 name: session-2026-08-05-progress
-description: 2026-08-05 会话 — CLAUDE.md 审计 + 第二大脑记忆系统搭建
+description: 2026-08-05 会话 — CLAUDE.md 审计 + 第二大脑 + cc-web/Huppy 调研
 metadata:
   type: project
-  modified: 2026-08-05T10:59:25.621Z
+  modified: 2026-08-05T11:00:11.808Z
   originSessionId: c000a00f-a6cc-4681-89f9-a1c39a80f8df
 ---
 
@@ -50,7 +50,8 @@ metadata:
 ## 关键决策
 
 - **不做第二大脑平台**：Obsidian 已是最佳可视化方案，无需自建
-- **不做 Web 服务套壳**：claude-code-remote 已满足需求
+- **放弃 cc-web 自建方案**：Huppy 更成熟，且 `--output-format stream-json` 只能在单次模式用
+- **不做 Web 服务套壳**：claude-code-remote 已满足基本需求，Huppy 可作为升级方案
 - **不装 Subrosa**：不支持 Windows，功能与现有系统重叠
 - **SessionEnd 从"生成模板"改为"提醒存档"**：真正的内容由 `/保存进度` 完成，避免空白 TODO
 
@@ -70,10 +71,31 @@ Claude Code 聊天 → /保存进度 → memory/*.md 文件 → Obsidian 可视�
 | 你画我猜 | Railway 部署 | 单人创作完备 |
 | 双人闯关 | Railway 部署 | 关卡待修 |
 | CCE 模型 | `~/.cce/` | 多模型已配 |
-| 第二大脑 | `C:\Users\Administrator\.claude\projects\C--\memory` | 刚搭建完成 |
+| 第二大脑 | `C:\Users\Administrator\.claude\projects\C--\memory` | 已搭建 |
+| cc-web | `C:\cc-web\` | 已放弃（被 Huppy 替代） |
+| Huppy | `/tmp/huppy-app/` | 待手动 npm install 后测试 |
 
 ## 下次继续
 
 - 会话恢复：终端输入 `claude continue`
 - 不用手动保存：我每完成一个任务自动存档
 - Git 不再被拦截：白名单已配置
+- Huppy 测试：`cd /tmp/huppy-app && npm install --production && node bin/huppy.mjs --help`
+
+### 附：cc-web 项目说明
+
+**做了什么**
+- 搭建了原型：`C:\cc-web\`（server.js + public/index.html）
+- 架构：浏览器 ←WebSocket→ Node.js ←spawn→ claude -p "msg" --output-format stream-json --continue
+- 前端：移动端优先的聊天 UI，支持 Markdown 渲染、流式显示、工具调用卡片
+
+**为什么放弃**
+- `--output-format stream-json` 只能在 `--print`（单次）模式下使用，不能用于交互模式
+- 每次请求都是新进程，无法保持会话上下文
+
+### 附：Huppy 安装受阻详情
+
+- npm install 失败：依赖 `@slopus/huppy-wire` 在 npm 上 404（作者未公开子包）
+- 已下载 tarball (30MB) 并解压，已创建修复版本（移除缺失依赖 + 空存根）
+- 最后一步 `npm install --production` 被模型宕机卡住
+- 需手动在终端完成
