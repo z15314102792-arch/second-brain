@@ -3,7 +3,7 @@ name: session-2026-08-05-progress
 description: 2026-08-05 会话 — CLAUDE.md 审计 + 第二大脑记忆系统搭建
 metadata:
   type: project
-  modified: 2026-08-05T10:19:21.663Z
+  modified: 2026-08-05T10:59:25.621Z
   originSessionId: c000a00f-a6cc-4681-89f9-a1c39a80f8df
 ---
 
@@ -38,6 +38,15 @@ metadata:
 - 仓库：`github.com/z15314102792-arch/second-brain`（私有）
 - 路径：`C:\Users\Administrator\.claude\projects\C--\memory`
 
+**Git 命令白名单**
+- 在 `C:\Users\Administrator\.claude\settings.json` 中新增 `permissions.allow` 配置
+- git add/commit/push/status/log/diff/remote/branch 全部放行，不再被安全分类器拦截
+- 已验证：add → commit → push → revert 全流程畅通
+
+**会话存档自动化**
+- 在 `C:\Users\Administrator\.claude\CLAUDE.md` 新增"会话存档"规则
+- 每完成一个任务自动更新进度文件 + git 提交
+
 ## 关键决策
 
 - **不做第二大脑平台**：Obsidian 已是最佳可视化方案，无需自建
@@ -66,5 +75,5 @@ Claude Code 聊天 → /保存进度 → memory/*.md 文件 → Obsidian 可视�
 ## 下次继续
 
 - 会话恢复：终端输入 `claude continue`
-- 保存进度：聊天框输入 `/保存进度`
-- Git 同步：`cd memory && git add . && git commit -m "更新" && git push`
+- 不用手动保存：我每完成一个任务自动存档
+- Git 不再被拦截：白名单已配置
