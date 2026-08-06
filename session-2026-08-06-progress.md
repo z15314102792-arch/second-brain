@@ -4,7 +4,7 @@ description: 2026-08-06 会话 — Huppy 安装修复 + 全局配置 + 工具降
 metadata: 
   node_type: memory
   type: project
-  modified: 2026-08-06T03:24:11.506Z
+  modified: 2026-08-06T03:29:44.135Z
   originSessionId: b3d4bd3f-b788-458e-a79b-93ab711db443
 ---
 
@@ -76,12 +76,27 @@ metadata:
 - 更新 `session-resume-workflow.md` — 添加"continue 无效时"的引用
 - 更新 `CLAUDE.md` — 添加自动触发规则
 
+### 5. 会话恢复 + 手机远程验证 ✅
+
+**会话恢复（本次 continue）**：
+- 三个并行 agent 调研 Huppy、远程访问、Git 状态
+- Huppy：安装正常，`--help` 和 `doctor` 通过，未认证
+- claude-code-remote：运行中，端口 3456
+- ZeroTier：在线，IP `10.67.185.45`
+- Git：2 个未推送提交 → 已推送
+- Obsidian：未安装（上次装了但已不在）
+
+**手机远程验证**：
+- 用户打开手机 ZeroTier One → PC 端确认连上（延迟 24ms）
+- 手机浏览器访问 `http://10.67.185.45:3456` → 成功
+- 手机端 Claude Code 可用
+
+**CLAUDE.md 更新**（由之前会话写入）：
+- 新增"当 `claude continue` 找不到项目时"自动触发规则
+- 关联 [[find-lost-project]]
+
 ## 下次继续
 
-- 在终端运行 `huppy auth login` 完成认证（扫码连接手机 App 或浏览器）
-- 认证后运行 `huppy` 启动会话 → 显示 QR 码供手机扫描
-- 可选：`huppy daemon start` 启动后台服务（机器在线上就能随时手机连接）
-- Huppy vs claude-code-remote 对比：
-  - Huppy 优势：E2E 加密、推送通知、daemon 后台、多 AI 支持
-  - claude-code-remote 优势：已配置好、ZeroTier 直连、简单可靠
-- 手机远程：双击桌面 `启动远程Claude.bat`，访问 `http://10.67.185.45:3456`
+- 手机远程：打开 ZeroTier One → 浏览器访问 `http://10.67.185.45:3456`
+- Huppy 认证（可选）：终端 `huppy auth login`
+- Obsidian 重装（可选）：`winget install Obsidian.Obsidian`
