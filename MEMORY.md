@@ -18,6 +18,7 @@
 - [[项目/Huppy]] — v1.1.3，已放弃
 - [[项目/Agnes代理]] — 本地代理服务
 - [[项目/免费Claude]] — NVIDIA NIM，国内不可用
+- [[项目/手机Claude]] — 红米K70独立运行，Termux+Ubuntu，DeepSeek
 
 ## 存档
 
