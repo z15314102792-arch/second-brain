@@ -4,7 +4,7 @@ description: 2026-08-06 会话 — Huppy 安装修复 + 全局配置 + 工具降
 metadata: 
   node_type: memory
   type: project
-  modified: 2026-08-06T03:42:39.760Z
+  modified: 2026-08-06T05:53:38.183Z
   originSessionId: b3d4bd3f-b788-458e-a79b-93ab711db443
 ---
 
@@ -104,8 +104,28 @@ metadata:
 - CLAUDE.md 中的路径错误（`memory/*.jsonl`）随删除自动修复
 - 建立了筛选原则：每次会话都用到的 → CLAUDE.md；偶尔参考的 → memory
 
+### 7. 手机离机方案深度调研 ✅
+
+**背景**：用户想关 PC 后也能在手机上用 Claude Code。
+
+**调研了三个方向**：
+- **Railway 部署**：有官方模板，但免费额度不够 24/7，付费 ¥60-90/月，性价比不如云服务器
+- **Termux 原生**：需社区补丁，固定老版本，claude-code-remote 功能不全
+- **proot-distro Ubuntu**：在 Termux 里跑完整 Ubuntu，可装官方 Claude Code
+
+**用户设备**：红米 K70 至尊版（天玑 9300+ / 12-24GB RAM / Android 14 + HyperOS），硬件完全够用，ARM64 兼容。
+
+**核心问题澄清**：
+- ARM64 版本崩溃：Claude Code v1.0.51+ 在 ARM64 上必崩，只能固定旧版
+- 自愈脚本：自动化回滚但不解决根本问题（所有新版都崩，永远停旧版）
+- HyperOS 杀后台：用户使用习惯是前台用、用完就关，不影响
+
+**用户决策过程的规律总结**（写入 CLAUDE.md）：
+- "编码前自查四问"新增第④条：我判定的问题，放在用户的实际使用场景下还是问题吗？
+- 新增"改 CLAUDE.md 前自查三问"：能落地吗 / 有更省的吗 / 有副作用吗
+
 ## 下次继续
 
 - 手机远程：打开 ZeroTier One → 浏览器访问 `http://10.67.185.45:3456`
+- Termux 方案待定：技术可行但不急用
 - Huppy 认证（可选）：终端 `huppy auth login`
-- Obsidian 重装（可选）：`winget install Obsidian.Obsidian`
