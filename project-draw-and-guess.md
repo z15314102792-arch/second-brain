@@ -1,0 +1,36 @@
+---
+name: project-draw-and-guess
+description: 你画我猜 — Railway 部署，单人创作完备
+metadata: 
+  node_type: memory
+  type: project
+  path: C:\draw-and-guess
+  deploy: Railway
+  modified: 2026-08-06T06:11:53.910Z
+  originSessionId: 6dd31fbb-2c41-49f3-808f-f0380c8b1198
+---
+
+# 你画我猜
+
+**版本**: package v1.0.0 / server v6.0
+**状态**: 单人创作模式完备
+**部署**: Railway
+
+## 项目结构
+
+- `server.js` — 后端服务（38KB）
+- `public/` — 前端
+- `solo-v3.js` — 单人模式（20KB）
+- `words.json` — 词库
+- `RESEARCH_*.md` — 调研文档（创意模式、跨类型机制、娱乐模式）
+
+## 已调研过的方向
+
+- `RESEARCH_CREATIVE_MODES.md` — 创意模式
+- `RESEARCH_CROSS_GENRE_MECHANICS.md` — 跨类型机制
+- `RESEARCH_ENTERTAINMENT_MODES.md` — 娱乐模式
+- `RESEARCH_FINAL_SUMMARY.md` — 总结
+
+## 待办
+
+- 无紧急待办
