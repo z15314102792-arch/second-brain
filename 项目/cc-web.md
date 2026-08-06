@@ -1,5 +1,5 @@
 ---
-name: project-cc-web
+name: cc-web
 description: cc-web — 已放弃，Web 远程 Claude 原型
 metadata: 
   node_type: memory

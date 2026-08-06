@@ -1,5 +1,5 @@
 ---
-name: project-agnes-proxy
+name: Agnes代理
 description: agnes-proxy — 代理服务
 metadata: 
   node_type: memory

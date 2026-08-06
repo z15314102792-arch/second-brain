@@ -1,5 +1,5 @@
 ---
-name: project-cce
+name: CCE模型
 description: CCE 模型 — 多模型配置（DeepSeek 等）
 metadata: 
   node_type: memory

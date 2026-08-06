@@ -1,5 +1,5 @@
 ---
-name: project-free-claude-code
+name: 免费Claude
 description: free-claude-code — Claude Code 免费方案
 metadata: 
   node_type: memory

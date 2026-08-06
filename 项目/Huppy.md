@@ -1,5 +1,5 @@
 ---
-name: project-huppy
+name: Huppy
 description: Huppy — 远程 AI 编程助手，已安装但放弃使用
 metadata: 
   node_type: memory
