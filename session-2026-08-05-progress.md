@@ -3,7 +3,7 @@ name: session-2026-08-05-progress
 description: 2026-08-05 会话 — CLAUDE.md 审计 + 第二大脑 + cc-web/Huppy 调研
 metadata:
   type: project
-  modified: 2026-08-05T12:03:19.092Z
+  modified: 2026-08-06T02:43:33.042Z
   originSessionId: c000a00f-a6cc-4681-89f9-a1c39a80f8df
 ---
 
@@ -52,6 +52,7 @@ metadata:
 - **不做第二大脑平台**：Obsidian 已是最佳可视化方案，无需自建
 - **放弃 cc-web 自建方案**：Huppy 更成熟，且 `--output-format stream-json` 只能在单次模式用
 - **不做 Web 服务套壳**：claude-code-remote 已满足基本需求，Huppy 可作为升级方案
+- **huppy-wire 存根方案**：不修改 dist 代码，用 CJS+ESM 双格式存根替代缺失的私有依赖
 - **不装 Subrosa**：不支持 Windows，功能与现有系统重叠
 - **SessionEnd 从"生成模板"改为"提醒存档"**：真正的内容由 `/保存进度` 完成，避免空白 TODO
 
@@ -73,7 +74,7 @@ Claude Code 聊天 → /保存进度 → memory/*.md 文件 → Obsidian 可视�
 | CCE 模型 | `~/.cce/` | 多模型已配 |
 | 第二大脑 | `C:\Users\Administrator\.claude\projects\C--\memory` | 已搭建 |
 | cc-web | `C:\cc-web\` | 已放弃（被 Huppy 替代） |
-| Huppy | `/tmp/huppy-app/` | 待手动 npm install 后测试 |
+| Huppy | `/tmp/huppy-app/` | ✅ 已安装修复，可用 |
 
 ### 3. 手机远程访问（ZeroTier 方案）✅ 完成
 
@@ -134,3 +135,25 @@ Claude Code 聊天 → /保存进度 → memory/*.md 文件 → Obsidian 可视�
 - 已下载 tarball (30MB) 并解压，已创建修复版本（移除缺失依赖 + 空存根）
 - 最后一步 `npm install --production` 被模型宕机卡住
 - 需手动在终端完成
+
+### 5. Huppy 安装修复完成 ✅（2026-08-06）
+
+**修复步骤：**
+1. 分析 `@slopus/huppy-wire` 在 dist 中的使用：仅需 `createEnvelope(role, content, options)` 函数
+2. 创建正确存根（含 CJS + ESM 双格式导出）
+3. 从 `package.json` 移除 `@slopus/huppy-wire` 依赖（npm 上 404）
+4. `npm install --production` 成功安装 298 个包
+5. npm install 会清除存根 → 创建恢复脚本 `scripts/restore-huppy-wire-stub.sh`
+
+**关键文件：**
+- `/tmp/huppy-app/node_modules/@slopus/huppy-wire/index.js` — CJS 存根
+- `/tmp/huppy-app/node_modules/@slopus/huppy-wire/index.mjs` — ESM 存根
+- `/tmp/huppy-app/scripts/restore-huppy-wire-stub.sh` — 恢复脚本
+- `/tmp/huppy-app/package.json` — 已移除 huppy-wire 依赖
+
+**注意：** 每次 `npm install` 后需运行恢复脚本（或手动重建存根）
+
+**验证结果：**
+- `huppy --help` ✅ 正常工作
+- `huppy` 启动 ✅ 无崩溃（5秒测试）
+- createEnvelope 函数测试 ✅ 正确组装 envelope 对象

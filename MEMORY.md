@@ -2,3 +2,4 @@
 - [chinese-chess-stable-baseline](chinese-chess-stable-baseline.md) — 中国象棋 v2.1 稳定基线，联机已验证（ntfy.sh:443）
 - [session-resume-workflow](session-resume-workflow.md) — 会话恢复标准流程：关前存档、开后 claude continue
 - [session-2026-08-05-progress](session-2026-08-05-progress.md) — 2026-08-05 会话进度，含所有活跃项目状态
+- [session-2026-08-06-progress](session-2026-08-06-progress.md) — 2026-08-06 会话进度，Huppy 修复完成
