@@ -5,8 +5,30 @@
   "showAttachments": false,
   "hideUnresolved": false,
   "showOrphans": true,
-  "collapse-color-groups": true,
-  "colorGroups": [],
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "path:项目/",
+      "color": {
+        "a": 1,
+        "rgb": 4886745
+      }
+    },
+    {
+      "query": "path:参考/",
+      "color": {
+        "a": 1,
+        "rgb": 6076508
+      }
+    },
+    {
+      "query": "path:存档/",
+      "color": {
+        "a": 1,
+        "rgb": 15769680
+      }
+    }
+  ],
   "collapse-display": true,
   "showArrow": false,
   "textFadeMultiplier": 0,
@@ -18,5 +40,5 @@
   "linkStrength": 1,
   "linkDistance": 250,
   "scale": 0.7132754626224388,
-  "close": true
+  "close": false
 }
