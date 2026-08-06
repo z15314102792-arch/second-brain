@@ -11,10 +11,14 @@
             "id": "419f8c5b4d3d98a1",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "关系图谱"
+              "type": "markdown",
+              "state": {
+                "file": "项目/project-agnes-proxy.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "project-agnes-proxy"
             }
           }
         ]
@@ -168,7 +172,9 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {},
+              "state": {
+                "file": "项目/project-agnes-proxy.md"
+              },
               "icon": "lucide-info",
               "title": "笔记属性"
             }
@@ -193,8 +199,12 @@
   },
   "active": "1124d9a87b2c1806",
   "lastOpenFiles": [
-    "_入口.md.tmp.22744.85ef4d98370c",
+    "MEMORY.md",
+    "MEMORY.md.tmp.22744.ff31485d53eb",
+    "!入口.md",
     "_入口.md",
+    "未命名.canvas",
+    "_入口.md.tmp.22744.85ef4d98370c",
     "存档/CLAUDE-backup-v1.md",
     "存档/chinese-chess-stable-baseline.md",
     "存档/session-2026-08-06-progress.md",
@@ -218,16 +228,12 @@
     "参考",
     "项目",
     "CLAUDE-backup-v1.md",
-    "MEMORY.md",
     "session-2026-08-05-progress.md.tmp.2304.51e44cdb19c8",
     "installed-tools.md.tmp.2304.d7f607ce02f8",
     "installed-tools.md",
     "installed-tools.md.tmp.2304.c8fb31a3a4df",
     "session-2026-08-05-progress.md.tmp.2304.e45099fc459e",
     "session-2026-08-05-progress.md",
-    "research-before-implement.md",
-    "session-2026-08-05-progress.md.tmp.22736.7d102e6b5988",
-    "session-2026-08-05-progress.md.tmp.22736.32e0ec016ff9",
-    "session-2026-08-05-progress.md.tmp.22736.3c2a99013610"
+    "session-2026-08-05-progress.md.tmp.22736.7d102e6b5988"
   ]
 }
