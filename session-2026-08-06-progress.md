@@ -4,7 +4,7 @@ description: 2026-08-06 会话 — Huppy 安装修复 + 全局配置 + 工具降
 metadata: 
   node_type: memory
   type: project
-  modified: 2026-08-06T03:29:44.135Z
+  modified: 2026-08-06T03:42:39.760Z
   originSessionId: b3d4bd3f-b788-458e-a79b-93ab711db443
 ---
 
@@ -91,9 +91,18 @@ metadata:
 - 手机浏览器访问 `http://10.67.185.45:3456` → 成功
 - 手机端 Claude Code 可用
 
-**CLAUDE.md 更新**（由之前会话写入）：
-- 新增"当 `claude continue` 找不到项目时"自动触发规则
-- 关联 [[find-lost-project]]
+**CLAUDE.md 更新**（由之前会话写入 → 本次分析后删除）：
+- 原新增"当 `claude continue` 找不到项目时"自动触发规则
+- 经分析：此规则使用频率极低（一年两三次），不应占据全局上下文
+- 已删除。改为只依赖 MEMORY.md 中的一行指针
+- 原则：应急流程放 memory，行为准则放 CLAUDE.md
+
+### 6. 全局指令写入原则分析 ✅
+
+- 分析了 `find-lost-project` 是否应写入 CLAUDE.md
+- 结论：不需要。MEMORY.md 一行指针足够
+- CLAUDE.md 中的路径错误（`memory/*.jsonl`）随删除自动修复
+- 建立了筛选原则：每次会话都用到的 → CLAUDE.md；偶尔参考的 → memory
 
 ## 下次继续
 
