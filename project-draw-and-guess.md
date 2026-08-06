@@ -6,15 +6,16 @@ metadata:
   type: project
   path: C:\draw-and-guess
   deploy: Railway
-  modified: 2026-08-06T06:11:53.910Z
+  modified: 2026-08-06T06:18:31.765Z
   originSessionId: 6dd31fbb-2c41-49f3-808f-f0380c8b1198
 ---
 
 # 你画我猜
 
-**版本**: package v1.0.0 / server v6.0
+**版本**: package v1.0.0 / server v6.0 / 前端 v8.13
 **状态**: 单人创作模式完备
 **部署**: Railway
+**注意**: 前后端版本号不一致（前端 v8.13 vs 后端 v6.0），需确认是否有未同步的改动
 
 ## 项目结构
 
