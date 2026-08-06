@@ -10,7 +10,7 @@
 - [project-chinese-chess](project-chinese-chess.md) — 中国象棋 v3.11，GitHub Pages 部署，联机可用
 - [project-gomoku](project-gomoku.md) — 五子棋，GitHub Pages 部署
 - [project-draw-and-guess](project-draw-and-guess.md) — 你画我猜，Railway 部署，单人模式完备
-- [project-two-player-levels](project-two-player-levels.md) — 双人闯关，Railway 部署，关卡待修
+- [project-star-moon-temple](project-star-moon-temple.md) — 星月神殿（双人闯关）v2.3，GitHub Pages 部署，关卡待修
 - [project-second-brain](project-second-brain.md) — 第二大脑，Obsidian 可视化，Git 备份
 - [project-cc-web](project-cc-web.md) — cc-web，已放弃（claude-code-remote 替代）
 - [project-cce](project-cce.md) — CCE 多模型配置
