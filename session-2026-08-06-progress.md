@@ -4,7 +4,7 @@ description: 2026-08-06 会话 — 全项目状态扫描 + Huppy 安装修复 + 
 metadata: 
   node_type: memory
   type: project
-  modified: 2026-08-06T06:17:51.920Z
+  modified: 2026-08-06T06:26:40.273Z
   originSessionId: b3d4bd3f-b788-458e-a79b-93ab711db443
 ---
 
@@ -126,15 +126,15 @@ metadata:
 
 ### 8. 全项目状态扫描 ✅
 
-**背景**：用户要求搜索所有 .jsonl 会话记录文件，找出 9 个项目的最新状态。
+**背景**：用户要求搜索所有 .jsonl 会话记录文件，找出所有项目的最新状态。
 
-**方法**：三个并行 Agent 搜索全部 121 个 .jsonl 文件（重点 9 个大文件，总计约 47MB），同时交叉验证 memory 目录下的 project-*.md 文件和 session 进度文件。
+**方法**：三个并行 Agent 搜索全部 121 个 .jsonl 文件（重点 9 个大文件，总计约 47MB）+ 磁盘实际检查，交叉验证 memory 目录和 session 进度文件。
 
 **发现**：
 - 双人闯关项目名实际是 **星月神殿 (star-moon-temple)**，部署在 GitHub Pages 而非之前记录的 Railway，路径 `C:\star-moon-temple`
 - free-claude-code 因 NVIDIA NIM 国内被墙，实际不可用，已被 modelscope+zhipu 替代
-- agnes-proxy 模型已升级到 agnes-2.5-flash，使用国内节点 apihub.agnes-ai.cn
-- cc-web 和 free-claude-code 的状态从"已放弃"细化为具体失败原因
+- 你画我猜前后端版本不一致（前端 v8.13 / 后端 v6.0）
+- cc-web server.log 不断重启，claude 命令找不到，彻底废弃
 
 **9 个项目快速状态**：
 | 项目 | 版本 | 状态 |
@@ -145,9 +145,72 @@ metadata:
 | 星月神殿 | v2.3 | 关卡待修 |
 | cc-web | - | 已废弃 |
 | 第二大脑 | - | 活跃运行 |
-| CCE | v0.1.4 | 8模型稳定 |
+| CCE | - | 8模型稳定 |
 | agnes-proxy | - | 需手动启动 |
-| free-claude-code | - | 实际不可用 |
+| free-claude-code | - | 国内不可用 |
+
+### 9. 多终端记忆混淆：完整方案 ✅
+
+**问题**：多个终端 `claude continue` 后看到相同内容，无法区分各自进度。
+
+**分析过程**：
+1. 分析了"项目目录隔离"方案（cd 到项目目录启动 Claude）→ 用户记不住路径，与使用习惯冲突
+2. 分析了"单 memory + 分文件"方案 → 隔离是假的，身份问题没解决
+3. 最终用户自己提出最优方案：打开终端直接说项目名，我来搜索匹配
+
+**落地**：
+- 创建 10 个 `project-*.md` 项目专属文件
+- MEMORY.md 重构为三区：流程与参考 / 项目 / 存档
+- 搜索验证：grep "象棋\|画画\|五子棋" 等关键词匹配到正确文件 ✅
+- 存档规则更新：自动判断所属项目（文件路径 → 对话关键词 → 询问用户）
+
+### 10. CLAUDE.md 全局指令审计 + 存档判断增强 ✅
+
+**审计发现问题**：
+- 自测五维度只适合游戏/Web 项目，纯文档项目不适用
+- 版本标示假设所有项目是 Web 应用
+- 存档判断缺少"纯分析讨论"场景（无文件改动时无法判断项目）
+
+**修复**：三条微调，加豁免条款和适用场景说明，不改结构。
+
+**存档判断增强**：新增第三条判断逻辑——纯分析讨论无文件改动时，用对话主题关键词匹配所属项目。
+
+### 11. 新建/修改的文件清单
+
+| 文件 | 操作 | 说明 |
+|------|------|------|
+| `memory/project-chinese-chess.md` | 新建 | 象棋 v3.11 |
+| `memory/project-gomoku.md` | 新建 | 五子棋 v1.2 |
+| `memory/project-draw-and-guess.md` | 新建 | 你画我猜 v8.13/6.0 |
+| `memory/project-star-moon-temple.md` | 新建 | 星月神殿 v2.3 |
+| `memory/project-second-brain.md` | 新建 | 第二大脑 |
+| `memory/project-cc-web.md` | 新建 | cc-web（废弃） |
+| `memory/project-cce.md` | 新建 | CCE 配置 |
+| `memory/project-huppy.md` | 新建 | Huppy（放弃） |
+| `memory/project-agnes-proxy.md` | 新建 | Agnes 代理 |
+| `memory/project-free-claude-code.md` | 新建 | NVIDIA 代理（不可用） |
+| `memory/project-two-player-levels.md` | 删除 | 信息有误，替换为 star-moon-temple |
+| `memory/MEMORY.md` | 重写 | 三区结构 |
+| `memory/find-lost-project.md` | 新建 | 丢失项目找回路径 |
+| `memory/session-resume-workflow.md` | 更新 | 添加 find-lost-project 引用 |
+| `CLAUDE.md`（全局+项目） | 更新 | 存档规则+三条修复 |
+| `session-2026-08-06-progress.md` | 持续更新 | 本文件 |
+
+---
+
+## 本次会话总结
+
+**核心成就**：把分散在 121 个会话文件、2 个进度文件里的项目信息，整理成了 10 个结构化的 `project-*.md` 文件，解决了"claude continue 不知道恢复到哪个项目"的问题。
+
+**建立的新能力**：
+- 你说"继续象棋" → 我搜到 `project-chinese-chess.md` → 恢复 v3.11 完整上下文
+- 自动存档时，我能根据文件路径+对话关键词判断属于哪个项目
+- 丢了项目可以通过 `find-lost-project.md` 记录的路径找回
+
+**建立的决策原则**：
+- 行为准则 → CLAUDE.md（每次用到）；应急流程 → memory（偶尔参考）
+- 方案设计必须模拟用户实际操作，不能假设用户会改变习惯
+- 改 CLAUDE.md 前自查三问：能落地吗 / 有更省的吗 / 有副作用吗
 
 ## 下次继续
 

@@ -6,13 +6,23 @@ metadata:
   type: project
   path: C:\Users\Administrator\.claude\projects\C--\memory
   github: z15314102792-arch/second-brain
-  modified: 2026-08-06T06:10:21.051Z
+  modified: 2026-08-06T06:26:45.987Z
   originSessionId: 6dd31fbb-2c41-49f3-808f-f0380c8b1198
 ---
 
 # 第二大脑（记忆系统）
 
-**状态**: 已搭建，正常运行
+**状态**: 活跃运行
+
+## 本次会话成果（2026-08-06）
+
+- 从 121 个会话文件中提取全部项目信息，创建 10 个 `project-*.md` 文件
+- MEMORY.md 重构为三区结构（流程与参考 / 项目 / 存档）
+- 建立 `find-lost-project.md` 丢失项目找回路径
+- 建立全局指令写入原则：CLAUDE.md 放行为准则，memory 放参考知识
+- CLAUDE.md 审计 + 三条修复（自测豁免、版本标示灵活化、存档判断增强）
+- 自动存档现在能区分项目（文件路径 → 关键词 → 询问用户）
+- 用户现在说"继续象棋/画画/五子棋"即可恢复对应项目
 
 ## 架构
 
