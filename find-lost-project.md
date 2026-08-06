@@ -1,0 +1,106 @@
+---
+name: find-lost-project
+description: "当用户说\"找不到项目了\"或\"continue\"后无响应时，用此方法找回丢失的会话/项目"
+metadata: 
+  node_type: memory
+  type: reference
+  modified: 2026-08-06T03:23:22.649Z
+  originSessionId: 6dd31fbb-2c41-49f3-808f-f0380c8b1198
+---
+
+# 找回丢失项目/会话的标准路径
+
+## 触发场景
+
+- 用户说 `continue` 但你不知道上次在做什么
+- 用户说"项目找不到了"、"那个指令是什么来着"
+- 会话被强制关闭后重启，进度丢失
+
+## 找回路径（按优先级执行）
+
+### 第1步：读进度文件（30秒）
+
+直接读取当天的会话进度文件：
+
+```
+C:\Users\Administrator\.claude\projects\C--\memory\session-{今天日期}-progress.md
+```
+
+如果今天日期没有，读最近的。同时读 `MEMORY.md` 获取全局索引。
+
+**为什么优先**：这是用户手动 `/保存进度` 生成的，记录最完整。如果这里有，直接恢复。
+
+### 第2步：搜会话记录中的用户消息（2分钟）
+
+当进度文件只有 Huppy 等非目标内容时，说明目标项目在另一个会话中。搜所有 `.jsonl` 文件：
+
+```bash
+# 列出今天的所有会话文件（按时间排序）
+ls -lt C:\Users\Administrator\.claude\projects\C--\*.jsonl | head -15
+
+# 搜用户原始消息（非工具返回），找非"continue"的真实指令
+grep '"type":"user"' <会话文件.jsonl> | grep -o '"content":"[^"]*"' | head -30
+```
+
+**关键技巧**：
+- 跳过 `"content":"continue"` 和工具返回（`tool_result`）
+- 找用户真实的原始输入，通常包含自然语言指令
+- 从最新的会话开始往前搜
+
+### 第3步：用关键词搜所有会话（5分钟）
+
+如果第2步找不到，用用户提供的线索搜全文：
+
+```bash
+grep -l "关键词" C:\Users\Administrator\.claude\projects\C--\*.jsonl
+```
+
+关键词来源：
+- 用户记得的部分指令文字
+- 项目名、技术栈名
+- "分析"、"缺点"、"模拟" 等高频词
+
+### 第4步：搜磁盘上的项目文件
+
+```bash
+# 搜 C 盘根目录的项目
+ls -la /c/ | grep -v "^\."
+
+# 搜 /tmp 下的项目
+ls -lt /tmp/ | head -20
+
+# 搜最近修改过的代码文件
+find /c -maxdepth 3 -type f \( -name "*.js" -o -name "*.html" -o -name "*.py" \) -mmin -480
+```
+
+### 第5步：查 .claude.json 中的 session 历史
+
+```bash
+cat C:\Users\Administrator\.claude.json  # 找 lastSessionId
+```
+
+然后对应去找 `{sessionId}.jsonl` 文件。
+
+## 关键文件路径速查
+
+| 内容 | 路径 |
+|------|------|
+| 会话记录 | `C:\Users\Administrator\.claude\projects\C--\{sessionId}.jsonl` |
+| 记忆文件 | `C:\Users\Administrator\.claude\projects\C--\memory\*.md` |
+| 记忆索引 | `C:\Users\Administrator\.claude\projects\C--\memory\MEMORY.md` |
+| 主配置 | `C:\Users\Administrator\.claude.json` |
+| 用户级 CLAUDE.md | `C:\Users\Administrator\.claude\CLAUDE.md` |
+| 项目级 CLAUDE.md | `C:\CLAUDE.md` |
+
+## 为什么这个路径有效
+
+1. **`.jsonl` 文件是永久的**：只要用户在这台机器上用过 Claude Code，所有对话都会被记录
+2. **用户消息可以被 grep**：即使用户忘了项目名，记住的一句话也能搜到
+3. **层层递进**：从最快（读进度文件）到最慢（搜磁盘），30秒→2分钟→5分钟，不会浪费时间
+
+## 今天的案例
+
+- 用户说 `continue`，进度文件只提到 Huppy，但用户说不是 Huppy
+- 第2步搜 `d8961790` 会话，找到用户消息："你先分析模拟一下这种方式能不能达到需要的效果，然后分析一下有什么缺点"
+- 结合上下文（2640a207 会话中的"三的第一个，第二大脑"等），确定是**会话恢复流程项目**
+- 找回耗时：约3分钟

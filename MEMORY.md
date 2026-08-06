@@ -3,3 +3,4 @@
 - [session-resume-workflow](session-resume-workflow.md) — 会话恢复标准流程：关前存档、开后 claude continue
 - [session-2026-08-05-progress](session-2026-08-05-progress.md) — 2026-08-05 会话进度，含所有活跃项目状态
 - [session-2026-08-06-progress](session-2026-08-06-progress.md) — 2026-08-06 会话进度，Huppy 修复完成
+- [find-lost-project](find-lost-project.md) — 找回丢失项目/会话的标准搜索路径，`continue` 无效时优先执行

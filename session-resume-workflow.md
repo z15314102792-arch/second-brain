@@ -4,7 +4,7 @@ description: 会话恢复的标准流程：关前存档、开后 claude continue
 metadata: 
   node_type: memory
   type: reference
-  modified: 2026-08-05T05:57:06.986Z
+  modified: 2026-08-06T03:23:36.865Z
   originSessionId: c000a00f-a6cc-4681-89f9-a1c39a80f8df
 ---
 
@@ -34,3 +34,7 @@ metadata:
 - SessionEnd hook 在 VS Code 强制关闭时可能不触发，不能完全依赖
 - 手动说"保存进度"是最可靠的方式
 - memory 文件持久化在硬盘，不受会话生命周期影响
+
+## 当 `claude continue` 无效时
+
+如果进度文件里没有目标项目（或所有终端恢复出来的内容都一样），使用 [[find-lost-project]] 中记录的搜索路径找回。核心思路：搜 `.jsonl` 会话记录中的用户原始消息。

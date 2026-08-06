@@ -4,7 +4,7 @@ description: 2026-08-06 会话 — Huppy 安装修复 + 全局配置 + 工具降
 metadata: 
   node_type: memory
   type: project
-  modified: 2026-08-06T02:47:23.720Z
+  modified: 2026-08-06T03:24:11.506Z
   originSessionId: b3d4bd3f-b788-458e-a79b-93ab711db443
 ---
 
@@ -55,6 +55,26 @@ metadata:
 | `/tmp/huppy-app/node_modules/@slopus/huppy-wire/package.json` | 新建 | 含 exports 字段 |
 | `/tmp/huppy-app/tools/unpacked/` | 新建 | 空目录，等待工具安装 |
 | `C:\Users\Administrator\.claude\projects\C--\memory\session-2026-08-06-progress.md` | 更新 | 本文件 |
+
+### 4. 找回丢失项目方法 + 会话恢复方案分析 ✅
+
+**背景**：用户早上开的会话（d8961790）中，要求分析 `claude continue` + memory 方案的效果和缺点。执行时第一步卡了 12 分钟，重启后找不到项目了。
+
+**找回路径**（已记录到 [[find-lost-project]]）：
+1. 读 `session-{日期}-progress.md` → 只有 Huppy，不匹配
+2. 搜 `.jsonl` 会话记录中的用户消息 → 在 `d8961790` 找到原指令
+3. 结合上下文还原：用户在 2640a207 会话中做多项目并行，发现所有终端 `continue` 后内容一样
+
+**分析结论**：
+- 当前 `claude continue` + memory 方案**无法满足多终端并行工作**
+- 根因：memory 是全局共享的，没有"终端身份"概念
+- 多终端同时保存会互相覆盖，恢复时全部读到相同内容
+
+**新增记忆文件**：
+- `find-lost-project.md` — 找回丢失项目的标准搜索路径
+- 更新 `MEMORY.md` — 添加索引
+- 更新 `session-resume-workflow.md` — 添加"continue 无效时"的引用
+- 更新 `CLAUDE.md` — 添加自动触发规则
 
 ## 下次继续
 
