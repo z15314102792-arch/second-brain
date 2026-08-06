@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "c14317203b745d35",
+        "id": "23ec5b0b702e1fe3",
         "type": "tabs",
         "children": [
           {
-            "id": "a566d182e5e6cde8",
+            "id": "419f8c5b4d3d98a1",
             "type": "leaf",
             "state": {
               "type": "graph",
@@ -191,25 +191,43 @@
       "bases:新建数据库": false
     }
   },
-  "active": "a566d182e5e6cde8",
+  "active": "1124d9a87b2c1806",
   "lastOpenFiles": [
+    "_入口.md.tmp.22744.85ef4d98370c",
+    "_入口.md",
+    "存档/CLAUDE-backup-v1.md",
+    "存档/chinese-chess-stable-baseline.md",
+    "存档/session-2026-08-06-progress.md",
+    "存档/session-2026-08-05-progress.md",
+    "参考/installed-tools.md",
+    "参考/research-before-implement.md",
+    "参考/session-resume-workflow.md",
+    "参考/find-lost-project.md",
+    "项目/project-memory-system.md",
+    "项目/project-free-claude-code.md",
+    "项目/project-agnes-proxy.md",
+    "项目/project-huppy.md",
+    "项目/project-cce.md",
+    "项目/project-cc-web.md",
+    "项目/project-second-brain.md",
+    "项目/project-star-moon-temple.md",
+    "项目/project-draw-and-guess.md",
+    "项目/project-gomoku.md",
+    "项目/project-chinese-chess.md",
+    "存档",
+    "参考",
+    "项目",
+    "CLAUDE-backup-v1.md",
+    "MEMORY.md",
     "session-2026-08-05-progress.md.tmp.2304.51e44cdb19c8",
     "installed-tools.md.tmp.2304.d7f607ce02f8",
     "installed-tools.md",
     "installed-tools.md.tmp.2304.c8fb31a3a4df",
     "session-2026-08-05-progress.md.tmp.2304.e45099fc459e",
     "session-2026-08-05-progress.md",
-    "CLAUDE-backup-v1.md",
     "research-before-implement.md",
-    "chinese-chess-stable-baseline.md",
-    "session-resume-workflow.md",
     "session-2026-08-05-progress.md.tmp.22736.7d102e6b5988",
     "session-2026-08-05-progress.md.tmp.22736.32e0ec016ff9",
-    "session-2026-08-05-progress.md.tmp.22736.3c2a99013610",
-    "session-2026-08-05-progress.md.tmp.28160.1ff8696a7fe7",
-    "session-2026-08-05-progress.md.tmp.28160.e29d2dd3d1db",
-    "session-2026-08-05-progress.md.tmp.28160.f661e2d546c8",
-    "MEMORY.md",
-    "未命名.base"
+    "session-2026-08-05-progress.md.tmp.22736.3c2a99013610"
   ]
 }

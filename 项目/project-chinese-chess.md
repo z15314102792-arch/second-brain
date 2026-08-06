@@ -7,7 +7,7 @@ metadata:
   path: C:\chinese-chess
   github: z15314102792-arch/chinese-chess
   url: https://z15314102792-arch.github.io/chinese-chess/
-  modified: 2026-08-06T06:10:08.525Z
+  modified: 2026-08-06T06:42:34.128Z
   originSessionId: 6dd31fbb-2c41-49f3-808f-f0380c8b1198
 ---
 
@@ -60,4 +60,4 @@ metadata:
 
 ## 参考
 
-- [[chinese-chess-stable-baseline]] — v2.1 基线（部分信息过时）
+- [[存档/chinese-chess-stable-baseline]] — v2.1 基线（部分信息过时）
