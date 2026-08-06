@@ -7,6 +7,7 @@
 
 ## 项目
 
+- [project-memory-system](project-memory-system.md) — 项目记忆系统重建，结构化多项目记忆体系
 - [project-chinese-chess](project-chinese-chess.md) — 中国象棋 v3.11，GitHub Pages 部署，联机可用
 - [project-gomoku](project-gomoku.md) — 五子棋，GitHub Pages 部署
 - [project-draw-and-guess](project-draw-and-guess.md) — 你画我猜，Railway 部署，单人模式完备
