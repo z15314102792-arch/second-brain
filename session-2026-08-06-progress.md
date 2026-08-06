@@ -1,10 +1,10 @@
 ---
 name: session-2026-08-06-progress
-description: 2026-08-06 会话 — Huppy 安装修复 + 全局配置 + 工具降级处理
+description: 2026-08-06 会话 — 全项目状态扫描 + Huppy 安装修复 + 全局配置
 metadata: 
   node_type: memory
   type: project
-  modified: 2026-08-06T05:53:38.183Z
+  modified: 2026-08-06T06:17:51.920Z
   originSessionId: b3d4bd3f-b788-458e-a79b-93ab711db443
 ---
 
@@ -124,8 +124,34 @@ metadata:
 - "编码前自查四问"新增第④条：我判定的问题，放在用户的实际使用场景下还是问题吗？
 - 新增"改 CLAUDE.md 前自查三问"：能落地吗 / 有更省的吗 / 有副作用吗
 
+### 8. 全项目状态扫描 ✅
+
+**背景**：用户要求搜索所有 .jsonl 会话记录文件，找出 9 个项目的最新状态。
+
+**方法**：三个并行 Agent 搜索全部 121 个 .jsonl 文件（重点 9 个大文件，总计约 47MB），同时交叉验证 memory 目录下的 project-*.md 文件和 session 进度文件。
+
+**发现**：
+- 双人闯关项目名实际是 **星月神殿 (star-moon-temple)**，部署在 GitHub Pages 而非之前记录的 Railway，路径 `C:\star-moon-temple`
+- free-claude-code 因 NVIDIA NIM 国内被墙，实际不可用，已被 modelscope+zhipu 替代
+- agnes-proxy 模型已升级到 agnes-2.5-flash，使用国内节点 apihub.agnes-ai.cn
+- cc-web 和 free-claude-code 的状态从"已放弃"细化为具体失败原因
+
+**9 个项目快速状态**：
+| 项目 | 版本 | 状态 |
+|------|------|------|
+| 中国象棋 | v3.11 | 稳定运行 |
+| 五子棋 | v1.2 | 正常运行 |
+| 你画我猜 | v8.13/6.0 | 单人模式完备 |
+| 星月神殿 | v2.3 | 关卡待修 |
+| cc-web | - | 已废弃 |
+| 第二大脑 | - | 活跃运行 |
+| CCE | v0.1.4 | 8模型稳定 |
+| agnes-proxy | - | 需手动启动 |
+| free-claude-code | - | 实际不可用 |
+
 ## 下次继续
 
 - 手机远程：打开 ZeroTier One → 浏览器访问 `http://10.67.185.45:3456`
 - Termux 方案待定：技术可行但不急用
 - Huppy 认证（可选）：终端 `huppy auth login`
+- 星月神殿：手机真机通关测试 6 个关卡
