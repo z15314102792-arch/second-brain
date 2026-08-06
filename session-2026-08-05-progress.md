@@ -3,7 +3,7 @@ name: session-2026-08-05-progress
 description: 2026-08-05 会话 — CLAUDE.md 审计 + 第二大脑 + cc-web/Huppy 调研
 metadata:
   type: project
-  modified: 2026-08-06T02:43:33.042Z
+  modified: 2026-08-06T02:59:29.652Z
   originSessionId: c000a00f-a6cc-4681-89f9-a1c39a80f8df
 ---
 
@@ -110,6 +110,20 @@ Claude Code 聊天 → /保存进度 → memory/*.md 文件 → Obsidian 可视�
 - `z15314102792-arch/chinese-chess` → 改为 public → 开启 Pages → 已部署
 - `z15314102792-arch/gomoku` → 改为 public → 开启 Pages → 已部署
 - URL：`https://z15314102792-arch.github.io/chinese-chess/` 和 `gomoku/`
+
+## 下次继续
+
+### 5. Huppy 最终决策：放弃 ✅
+
+**调研结论（2026-08-06）：**
+- `@slopus/huppy-wire` API 只有 3 个导出：`createEnvelope`（函数）、`SessionTurnEndStatus`（类型）、`SessionEnvelope`（类型）
+- `createEnvelope(role, content, options)` = `{ role, ...content, ...options }`，纯对象组装，30 行代码就能实现
+- **放弃原因不是代码难，是架构风险大：**
+  1. Huppy 依赖作者的云服务器中转（不像 claude-code-remote 纯本地直连）
+  2. 服务器在海外，可能被墙
+  3. 商业产品，作者随时可能收费或停运
+  4. Windows 兼容是长期负债（主要为 macOS 设计）
+- **结论：** 现有 `claude-code-remote` + ZeroTier 方案更稳定、零外部依赖，不值得替换
 
 ## 下次继续
 
