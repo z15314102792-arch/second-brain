@@ -19,7 +19,7 @@
 - [[项目/Agnes代理]] — 本地代理服务
 - [[项目/免费Claude]] — NVIDIA NIM，国内不可用
 - [[项目/手机Claude]] — 红米K70独立运行，Termux+Ubuntu，DeepSeek
-- [[项目/全局指令]] — CLAUDE.md 讨论、优化记录、待改进项
+- [[项目/全局指令优化]] — CLAUDE.md 讨论、优化记录、待改进项
 
 ## 存档
 
