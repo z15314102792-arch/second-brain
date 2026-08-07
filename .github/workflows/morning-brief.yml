@@ -35,6 +35,15 @@ jobs:
           done
           echo "DATE=${DATE}" >> $GITHUB_ENV
 
+      - name: 健康检查
+        run: |
+          check_site() { curl -s -o /dev/null -w "%{http_code}" --max-time 15 "$1" 2>/dev/null || echo "000"; }
+          CHESS_HTTP=$(check_site "https://z15314102792-arch.github.io/chinese-chess/")
+          GOMOKU_HTTP=$(check_site "https://z15314102792-arch.github.io/gomoku/")
+          DRAW_HTTP=$(check_site "https://z15314102792-arch.github.io/draw-and-guess/")
+          TEMPLE_HTTP=$(check_site "https://z15314102792-arch.github.io/star-moon-temple/")
+          echo "象棋: ${CHESS_HTTP} 五子棋: ${GOMOKU_HTTP} 画猜: ${DRAW_HTTP} 神殿: ${TEMPLE_HTTP}"
+
       - name: 提交结果
         run: |
           git config user.name "github-actions[bot]"
