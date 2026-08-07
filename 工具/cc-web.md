@@ -1,18 +1,18 @@
 ---
 name: cc-web
-description: cc-web — 退役，Web 远程 Claude 原型
-tags: [退役]
+description: cc-web — 废弃方案，Web 远程 Claude 原型
+tags: [废弃方案]
 metadata: 
   node_type: memory
   type: project
   path: C:\cc-web
-  status: 退役
+  status: 废弃方案
   replaced_by: claude-code-remote + ZeroTier
   modified: 2026-08-07T03:38:58.430Z
   originSessionId: 6dd31fbb-2c41-49f3-808f-f0380c8b1198
 ---
 
-# cc-web（退役）
+# cc-web（废弃方案）
 
 **状态**: ❌ 已废弃（server.log 显示不断重启，claude 命令找不到）
 **替代方案**: claude-code-remote + ZeroTier 直连

@@ -1,11 +1,13 @@
 ---
 name: 免费Claude
 description: free-claude-code — Claude Code 免费方案
+tags: [废弃方案]
 metadata: 
   node_type: memory
   type: project
+  status: 废弃方案
   path: C:\free-claude-code
-  modified: 2026-08-06T06:18:34.039Z
+  modified: 2026-08-07T06:57:42.410Z
   originSessionId: 6dd31fbb-2c41-49f3-808f-f0380c8b1198
 ---
 
