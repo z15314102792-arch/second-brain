@@ -22,14 +22,14 @@
       }
     },
     {
-      "query": "path:游戏/在用",
+      "query": "path:游戏/",
       "color": {
         "a": 1,
         "rgb": 6084188
       }
     },
     {
-      "query": "path:工具/在用",
+      "query": "path:工具/",
       "color": {
         "a": 1,
         "rgb": 4886745

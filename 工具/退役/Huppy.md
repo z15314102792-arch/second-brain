@@ -1,13 +1,13 @@
 ---
 name: Huppy
 description: Huppy — 远程 AI 编程助手，已安装但放弃使用
-tags: [已放弃]
+tags: [退役]
 metadata: 
   node_type: memory
   type: project
   path: /tmp/huppy-app (C:\Users\Administrator\AppData\Local\Temp\huppy-app)
   version: 1.1.3
-  status: 已放弃
+  status: 退役
   modified: 2026-08-07T03:39:00.835Z
   originSessionId: 6dd31fbb-2c41-49f3-808f-f0380c8b1198
 ---
