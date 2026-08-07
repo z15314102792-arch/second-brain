@@ -11,14 +11,10 @@
             "id": "5db4af194ba235b9",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "游戏/动物大战.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "动物大战"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "关系图谱"
             }
           }
         ]
@@ -172,9 +168,7 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {
-                "file": "游戏/动物大战.md"
-              },
+              "state": {},
               "icon": "lucide-info",
               "title": "笔记属性"
             }
@@ -199,18 +193,18 @@
   },
   "active": "5db4af194ba235b9",
   "lastOpenFiles": [
+    "MEMORY.md.tmp.15996.86bd2620d352",
+    "游戏/动物大战.md.tmp.15996.40ff0be359a5",
+    "游戏/动物大战.md.tmp.15996.11080d34a2af",
+    "存档/2026-08-07-进度.md.tmp.15996.d355e5cdd582",
+    "游戏/动物大战.md",
+    "MEMORY.md.tmp.15996.59b3ada201a9",
     "存档/2026-08-07-进度.md.tmp.15996.bd0ec6de6858",
     "游戏/动物大战.md.tmp.15996.294ebf124a8d",
     "MEMORY.md.tmp.15996.944e8e84d583",
     "存档/2026-08-07-进度.md.tmp.15996.4742e06b4d6a",
     "游戏/动物大战.md.tmp.15996.20705b9e6900",
     "游戏/动物大战.md.tmp.15996.2cdb7ca1a509",
-    "存档/2026-08-07-进度.md.tmp.15996.aae8337b6b1f",
-    "游戏/动物大战.md.tmp.15996.060964bc492c",
-    "游戏/动物大战.md.tmp.15996.b4a5b4a32e8c",
-    "存档/2026-08-07-进度.md.tmp.15996.514ddc22008f",
-    "游戏/动物大战.md.tmp.15996.2309c26ed2c8",
-    "游戏/动物大战.md",
     "工具/废弃/免费Claude.md",
     "工具/废弃/Huppy.md",
     "工具/废弃/cc-web.md",
