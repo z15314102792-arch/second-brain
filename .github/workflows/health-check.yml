@@ -29,7 +29,7 @@ jobs:
           GOMOKU_ICON="✅"; [ "$GOMOKU" != "200" ] && GOMOKU_ICON="❌"
           TEMPLE_ICON="✅"; [ "$TEMPLE" != "200" ] && TEMPLE_ICON="❌"
 
-          cat > "$FILE" << ENDOFFILE
+          cat > "$FILE" << EOF
           # 项目健康巡检 | ${DATE}
 
           | 项目 | 状态 | HTTP |
@@ -39,7 +39,15 @@ jobs:
           | 🏰 星月神殿 | ${TEMPLE_ICON} | ${TEMPLE} |
 
           > 🤖 由 GitHub Actions 云端执行，每 3 天一次，无需电脑开机
-          ENDOFFILE
+          EOF
+
+          echo "DATE=${DATE}" >> $GITHUB_ENV
+          echo "CHESS_ICON=${CHESS_ICON}" >> $GITHUB_ENV
+          echo "GOMOKU_ICON=${GOMOKU_ICON}" >> $GITHUB_ENV
+          echo "TEMPLE_ICON=${TEMPLE_ICON}" >> $GITHUB_ENV
+          echo "CHESS=${CHESS}" >> $GITHUB_ENV
+          echo "GOMOKU=${GOMOKU}" >> $GITHUB_ENV
+          echo "TEMPLE=${TEMPLE}" >> $GITHUB_ENV
 
           echo "巡检完成"
 
@@ -50,3 +58,15 @@ jobs:
           git add 每日早报/
           git diff --staged --quiet || git commit -m "健康巡检 $(date +%Y-%m-%d)"
           git push
+
+      - name: 微信通知
+        env:
+          SCT_KEY: ${{ secrets.SERVER_CHAN_KEY }}
+        run: |
+          python3 -c "
+          import urllib.request, urllib.parse, os
+          msg = f'象棋${CHESS_ICON}(${CHESS}) 五子棋${GOMOKU_ICON}(${GOMOKU}) 神殿${TEMPLE_ICON}(${TEMPLE})'
+          data = urllib.parse.urlencode({'title':f'项目巡检 | ${DATE}', 'desp':msg}).encode()
+          r = urllib.request.urlopen(urllib.request.Request(f'https://sctapi.ftqq.com/{os.environ[\"SCT_KEY\"]}.send', data=data))
+          print(r.read().decode())
+          "

@@ -2,7 +2,6 @@ name: AI 新闻采集
 
 on:
   schedule:
-    # 北京时间 8:57 = UTC 0:57，每天
     - cron: '57 0 * * *'
   workflow_dispatch:
 
@@ -48,17 +47,25 @@ jobs:
                 echo "  💬 [HN 讨论](${HN_URL})" >> "$FILE"
               fi
               echo "" >> "$FILE"
+
+              if [ $COUNT -le 5 ]; then
+                echo "${TITLE}" >> /tmp/titles.txt
+              fi
             fi
           done
 
           if [ "$COUNT" -eq 0 ]; then
             echo "今日暂无 AI 相关热门" >> "$FILE"
+            echo "今日暂无 AI 相关热门" >> /tmp/titles.txt
           fi
 
           echo "" >> "$FILE"
           echo "---" >> "$FILE"
           echo "" >> "$FILE"
           echo "> 🤖 由 GitHub Actions 云端采集，每天北京时间 8:57 | 打开 Claude Code 后 AI 自动分析" >> "$FILE"
+
+          echo "DATE=${DATE}" >> $GITHUB_ENV
+          echo "COUNT=${COUNT}" >> $GITHUB_ENV
 
           echo "采集完成，共 ${COUNT} 条"
 
@@ -69,3 +76,16 @@ jobs:
           git add 每日早报/
           git diff --staged --quiet || git commit -m "AI 新闻采集 $(date +%Y-%m-%d)"
           git push
+
+      - name: 微信通知
+        env:
+          SCT_KEY: ${{ secrets.SERVER_CHAN_KEY }}
+        run: |
+          python3 -c "
+          import urllib.request, urllib.parse, os
+          with open('/tmp/titles.txt') as f:
+              titles = f.read().strip()
+          data = urllib.parse.urlencode({'title':f'AI早报 | {os.environ[\"DATE\"]} · {os.environ[\"COUNT\"]}条', 'desp':titles}).encode()
+          r = urllib.request.urlopen(urllib.request.Request(f'https://sctapi.ftqq.com/{os.environ[\"SCT_KEY\"]}.send', data=data))
+          print(r.read().decode())
+          "
