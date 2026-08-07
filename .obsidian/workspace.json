@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "95668ffc444074a1",
+        "id": "764a96c1139587da",
         "type": "tabs",
         "children": [
           {
-            "id": "0b223192dd1fef12",
+            "id": "65ef01797f01b010",
             "type": "leaf",
             "state": {
               "type": "graph",
@@ -192,8 +192,11 @@
       "bases:新建数据库": false
     }
   },
-  "active": "0b223192dd1fef12",
+  "active": "65ef01797f01b010",
   "lastOpenFiles": [
+    "存档/2026-08-07-进度.md.tmp.5720.4c117c09465f",
+    "项目/五子棋.md.tmp.5720.545c0173c61c",
+    "项目/五子棋.md.tmp.5720.441d1bcb429a",
     "MEMORY.md.tmp.24872.507999f0a79f",
     "项目/你画我猜.md.tmp.24872.d6db8ec47318",
     "项目/你画我猜.md.tmp.24872.052e4b55c4b1",
@@ -204,9 +207,6 @@
     "MEMORY.md.tmp.24872.717f178bf85f",
     "MEMORY.md.tmp.24872.f544f0de516f",
     "每日早报/健康巡检-2026-08-07.md.tmp.5720.842b73c32a78",
-    "项目/星月神殿.md.tmp.24872.00978ddbe3f2",
-    "项目/星月神殿.md.tmp.24872.5c970bc312ef",
-    "CLAUDE.md.tmp.24872.1708e1c651e6",
     "项目/项目管家.md",
     "每日早报/2026-08-07-AI新闻.md",
     "每日早报/健康巡检-2026-08-07.md",
