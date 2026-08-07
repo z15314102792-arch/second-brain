@@ -5,17 +5,10 @@
   "showAttachments": false,
   "hideUnresolved": false,
   "showOrphans": true,
-  "collapse-color-groups": false,
+  "collapse-color-groups": true,
   "colorGroups": [
     {
-      "query": "file:CLAUDE.md",
-      "color": {
-        "a": 1,
-        "rgb": 10053324
-      }
-    },
-    {
-      "query": "file:MEMORY.md",
+      "query": "tag:#入口",
       "color": {
         "a": 1,
         "rgb": 10053324
@@ -67,6 +60,6 @@
   "repelStrength": 10,
   "linkStrength": 1,
   "linkDistance": 250,
-  "scale": 0.7132754626224388,
-  "close": true
+  "scale": 0.7132754626224382,
+  "close": false
 }
