@@ -1,0 +1,116 @@
+name: Daily Digest
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '57 0 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect and Analyze
+        env:
+          DEEPSEEK_KEY: ${{ secrets.DEEPSEEK_KEY }}
+          SCT_KEY: ${{ secrets.SERVER_CHAN_KEY }}
+        run: |
+          set -e
+          DATE=$(date +%Y-%m-%d)
+          mkdir -p 日报
+          echo "Step 1: Collect AI news from Hacker News..."
+          TOP_STORIES=$(curl -s --max-time 10 "https://hacker-news.firebaseio.com/v0/topstories.json" 2>/dev/null | head -c 500)
+          NEWS_COUNT=0
+          > /tmp/news_raw.txt
+          for ID in $(echo "$TOP_STORIES" | tr ',' '\n' | tr -d '[] ' | head -30); do
+            ITEM=$(curl -s --max-time 5 "https://hacker-news.firebaseio.com/v0/item/${ID}.json" 2>/dev/null)
+            TITLE=$(echo "$ITEM" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('title',''))" 2>/dev/null)
+            URL=$(echo "$ITEM" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('url',''))" 2>/dev/null)
+            HN_URL="https://news.ycombinator.com/item?id=${ID}"
+            if echo "$TITLE" | grep -qiE 'ai |llm|gpt|claude|chatgpt|openai|model|machine.learning|deep.learning|neural|transformer|agent|anthropic|gemini|qwen|deepseek|copilot|coding|programming'; then
+              NEWS_COUNT=$((NEWS_COUNT + 1))
+              echo "TITLE: ${TITLE}" >> /tmp/news_raw.txt
+              [ -n "$URL" ] && [ "$URL" != "null" ] && echo "LINK: ${URL}" >> /tmp/news_raw.txt
+              echo "HN: ${HN_URL}" >> /tmp/news_raw.txt
+              echo "---" >> /tmp/news_raw.txt
+            fi
+            [ $NEWS_COUNT -ge 10 ] && break
+          done
+          echo "Collected ${NEWS_COUNT} news items"
+
+          echo "Step 2: Health check projects..."
+          check_site() { curl -s -o /dev/null -w "%{http_code}" --max-time 15 "$1" 2>/dev/null || echo "000"; }
+          check_commit() {
+            curl -s --max-time 10 "https://api.github.com/repos/z15314102792-arch/$1/commits/main" 2>/dev/null | python3 -c "
+import sys,json
+try:
+  d=json.load(sys.stdin)
+  date=d['commit']['committer']['date'][:10]
+  msg=d['commit']['message'].split(chr(10))[0][:60]
+  print(f'{date} | {msg}')
+except: print('unknown')
+"
+          }
+          CHESS_HTTP=$(check_site "https://z15314102792-arch.github.io/chinese-chess/")
+          CHESS_CI=$(check_commit "chinese-chess")
+          GOMOKU_HTTP=$(check_site "https://z15314102792-arch.github.io/gomoku/")
+          GOMOKU_CI=$(check_commit "gomoku")
+          DRAW_HTTP=$(check_site "https://z15314102792-arch.github.io/draw-and-guess/")
+          DRAW_CI=$(check_commit "draw-and-guess")
+          TEMPLE_HTTP=$(check_site "https://z15314102792-arch.github.io/star-moon-temple/")
+          TEMPLE_CI=$(check_commit "star-moon-temple")
+          OK_COUNT=0
+          [ "$CHESS_HTTP" = "200" ] && OK_COUNT=$((OK_COUNT + 1))
+          [ "$GOMOKU_HTTP" = "200" ] && OK_COUNT=$((OK_COUNT + 1))
+          [ "$DRAW_HTTP" = "200" ] && OK_COUNT=$((OK_COUNT + 1))
+          [ "$TEMPLE_HTTP" = "200" ] && OK_COUNT=$((OK_COUNT + 1))
+          echo "Health: ${OK_COUNT}/4"
+
+          echo "Step 3: DeepSeek AI analysis..."
+          python3 /dev/stdin << 'PYEOF'
+import urllib.request, urllib.parse, json, os
+news_raw = ""
+try:
+    with open('/tmp/news_raw.txt', 'r') as f:
+        news_raw = f.read()
+except:
+    pass
+prompt = "你是我的私人AI管家。请根据以下数据生成每日综合速报。\n\n格式:\n### AI动态\n选出3-5条新闻,每条: **[中文标题](链接)** + 解释 + 关系\n\n### 项目状态\n四个项目状态\n\n### 一句话\n总结\n\n数据:\n" + news_raw + "\n项目: 象棋HTTP=" + os.environ['CHESS_HTTP'] + " 五子棋HTTP=" + os.environ['GOMOKU_HTTP'] + " 画猜HTTP=" + os.environ['DRAW_HTTP'] + " 神殿HTTP=" + os.environ['TEMPLE_HTTP']
+body = json.dumps({'model': 'deepseek-chat', 'messages': [{'role': 'user', 'content': prompt}], 'temperature': 0.7, 'max_tokens': 3000}, ensure_ascii=False).encode('utf-8')
+req = urllib.request.Request('https://api.deepseek.com/v1/chat/completions', data=body, headers={'Content-Type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + os.environ['DEEPSEEK_KEY']})
+resp = json.loads(urllib.request.urlopen(req, timeout=90).read())
+digest = resp['choices'][0]['message']['content']
+tokens = resp['usage']['total_tokens']
+print(f"DeepSeek used {tokens} tokens")
+with open('/tmp/digest.md', 'w', encoding='utf-8') as f:
+    f.write(digest)
+preview = digest[:1500]
+data = urllib.parse.urlencode({'title': '每日速报 | ' + os.environ['DATE'], 'desp': preview}).encode('utf-8')
+r = urllib.request.urlopen(urllib.request.Request('https://sctapi.ftqq.com/' + os.environ['SCT_KEY'] + '.send', data=data, headers={'Content-Type': 'application/x-www-form-urlencoded'}))
+print("WeChat push: " + r.read().decode()[:100])
+PYEOF
+
+          echo "Step 4: Save report..."
+          cat > "日报/${DATE}-综合早报.md" << FILEEOF
+# 每日综合速报 | ${DATE}
+> Cloud collection + DeepSeek AI analysis
+
+---
+$(cat /tmp/digest.md)
+---
+> Generated by GitHub Actions | Daily 8:57 Beijing time
+FILEEOF
+          echo "DATE=${DATE}" >> $GITHUB_ENV
+          echo "Done: ${DATE} | News: ${NEWS_COUNT} | Health: ${OK_COUNT}/4"
+
+      - name: Commit Results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add 日报/
+          git diff --staged --quiet || git commit -m "Daily digest $(date +%Y-%m-%d)"
+          git push
