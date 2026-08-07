@@ -49,26 +49,23 @@ jobs:
           DEEPSEEK_KEY: ${{ secrets.DEEPSEEK_KEY }}
           SCT_KEY: ${{ secrets.SERVER_CHAN_KEY }}
         run: |
-          python3 /dev/stdin << 'PYEOF'
-import urllib.request, urllib.parse, json, os
+          echo 'import urllib.request, urllib.parse, json, os
 news_raw = ""
 try:
-    with open('/tmp/news_raw.txt', 'r') as f:
+    with open("/tmp/news_raw.txt") as f:
         news_raw = f.read()
-except:
-    pass
-prompt = "你是私人AI管家。根据以下数据生成每日速报。格式: ### AI动态 + ### 项目状态 + ### 一句话。数据: " + news_raw
-body = json.dumps({'model': 'deepseek-chat', 'messages': [{'role': 'user', 'content': prompt}], 'temperature': 0.7, 'max_tokens': 3000}, ensure_ascii=False).encode('utf-8')
-req = urllib.request.Request('https://api.deepseek.com/v1/chat/completions', data=body, headers={'Content-Type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + os.environ['DEEPSEEK_KEY']})
-resp = json.loads(urllib.request.urlopen(req, timeout=90).read())
-digest = resp['choices'][0]['message']['content']
-with open('/tmp/digest.md', 'w', encoding='utf-8') as f:
-    f.write(digest)
-print("DeepSeek done: " + str(resp['usage']['total_tokens']) + " tokens")
-data = urllib.parse.urlencode({'title': '每日速报 | ' + os.environ['DATE'], 'desp': digest[:1500]}).encode('utf-8')
-r = urllib.request.urlopen(urllib.request.Request('https://sctapi.ftqq.com/' + os.environ['SCT_KEY'] + '.send', data=data, headers={'Content-Type': 'application/x-www-form-urlencoded'}))
-print("WeChat: " + r.read().decode()[:100])
-PYEOF
+except: pass
+prompt = "你是私人AI管家。根据以下数据生成每日速报。数据: " + news_raw
+body = json.dumps({"model":"deepseek-chat","messages":[{"role":"user","content":prompt}],"temperature":0.7,"max_tokens":3000},ensure_ascii=False).encode()
+req = urllib.request.Request("https://api.deepseek.com/v1/chat/completions",data=body,headers={"Content-Type":"application/json","Authorization":"Bearer "+os.environ["DEEPSEEK_KEY"]})
+resp = json.loads(urllib.request.urlopen(req,timeout=90).read())
+digest = resp["choices"][0]["message"]["content"]
+with open("/tmp/digest.md","w") as f: f.write(digest)
+print("DeepSeek: "+str(resp["usage"]["total_tokens"])+" tokens")
+data = urllib.parse.urlencode({"title":"每日速报","desp":digest[:1500]}).encode()
+urllib.request.urlopen(urllib.request.Request("https://sctapi.ftqq.com/"+os.environ["SCT_KEY"]+".send",data=data))
+print("WeChat OK")' > /tmp/analyze.py
+          python3 /tmp/analyze.py
 
       - name: 保存文件
         run: |
