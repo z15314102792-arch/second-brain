@@ -8,7 +8,7 @@ metadata:
   created: 2026-08-06
   status: 运行中
   originSessionId: be80e689-330f-4a06-b20e-796308e39605
-  modified: 2026-08-07T03:10:38.482Z
+  modified: 2026-08-07T05:48:45.817Z
 ---
 
 ## 架构
@@ -38,7 +38,7 @@ Android 手机
 ## API 配置
 
 - **Endpoint**：`https://api.deepseek.com/anthropic`（DeepSeek官方Anthropic兼容端点）
-- **Key**：`sk-530bc5bb72444fd7bdbe2cb0a31c353d`（独立Key，和PC分开计费）
+- **Key**：`sk-...`（独立Key，和PC分开计费，完整Key存于GitHub Secrets DEEPSEEK_KEY）
 - **主模型**：`deepseek-v4-pro[1m]`
 - **快速模型**：`deepseek-v4-flash`
 
