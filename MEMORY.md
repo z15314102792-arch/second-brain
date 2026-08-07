@@ -5,7 +5,7 @@ metadata:
   tags: 
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-08-07T04:18:07.812Z
+  modified: 2026-08-07T04:55:36.126Z
 ---
 
 ## 参考
@@ -31,6 +31,7 @@ metadata:
 - [[项目/Agnes代理]] — 本地代理服务
 - [[项目/免费Claude]] — NVIDIA NIM，国内不可用
 - [[项目/手机Claude]] — 红米K70独立运行，Termux+Ubuntu，DeepSeek
+- [[项目/动物大战]] — v0.2，GitHub Pages，动物自动对战·电子榨菜
 - [[项目/全局指令优化]] — CLAUDE.md 讨论、优化记录、待改进项
 
 ## 每日早报

@@ -1,91 +1,105 @@
 name: AI 新闻采集
-
 on:
   schedule:
     - cron: '57 0 * * *'
   workflow_dispatch:
-
 permissions:
   contents: write
-
 jobs:
   collect:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: 采集 AI 新闻
+      - name: 准备脚本
+        run: |
+          cat > /tmp/analyze.py << 'PYEOF'
+          import urllib.request, json, os
+          with open('/tmp/titles_raw.txt') as f:
+              raw = f.read()
+          prompt = f"""你是AI领域的技术翻译官。用户是不懂技术的普通人。
+          以下是今天Hacker News上AI相关的热门新闻标题。
+          为每条新闻做三件事：
+          1. 标题翻译成简洁中文
+          2. 用一两句大白话解释这条新闻说的是什么
+          3. 用💡标注「跟你有啥关系」
+          格式：每条用 --- 分隔，标题用 ## 开头，每条5-8行。"""
+          data = json.dumps({
+              'model': 'deepseek-chat',
+              'messages': [
+                  {'role': 'system', 'content': '你是AI技术翻译官。回复用中文,格式清晰,每条用---分隔。'},
+                  {'role': 'user', 'content': prompt + '\n\n' + raw}
+              ],
+              'temperature': 0.7, 'max_tokens': 4000
+          }).encode()
+          req = urllib.request.Request(
+              'https://api.deepseek.com/v1/chat/completions',
+              data=data,
+              headers={'Content-Type': 'application/json', 'Authorization': f'Bearer {os.environ["DEEPSEEK_KEY"]}'}
+          )
+          resp = urllib.request.urlopen(req)
+          result = json.loads(resp.read().decode())
+          print(result['choices'][0]['message']['content'])
+          PYEOF
+          cat > /tmp/notify.py << 'PYEOF'
+          import urllib.request, urllib.parse, os
+          with open('/tmp/ai_result.txt') as f:
+              content = f.read()
+          preview = content[:1000]
+          data = urllib.parse.urlencode({'title': f"AI早报 | {os.environ['DATE']} · {os.environ['COUNT']}条", 'desp': preview}).encode()
+          r = urllib.request.urlopen(urllib.request.Request(f"https://sctapi.ftqq.com/{os.environ['SCT_KEY']}.send", data=data))
+          print(r.read().decode())
+          PYEOF
+      - name: 采集并分析
+        env:
+          DEEPSEEK_KEY: ${{ secrets.DEEPSEEK_KEY }}
+          SCT_KEY: ${{ secrets.SERVER_CHAN_KEY }}
         run: |
           DATE=$(date +%Y-%m-%d)
           FILE="每日早报/${DATE}-AI新闻.md"
           mkdir -p 每日早报
-
-          echo "# AI 新闻采集 | ${DATE}" > "$FILE"
-          echo "" >> "$FILE"
-          echo "> 📡 云端自动采集，无需电脑开机。打开 Claude Code 后 AI 自动分析。" >> "$FILE"
-          echo "" >> "$FILE"
-          echo "---" >> "$FILE"
-          echo "" >> "$FILE"
-          echo "## 🔥 Hacker News 热门（AI 相关）" >> "$FILE"
-          echo "" >> "$FILE"
-
+          echo "📡 采集 Hacker News..."
           TOP_STORIES=$(curl -s --max-time 10 "https://hacker-news.firebaseio.com/v0/topstories.json" 2>/dev/null | head -c 500)
           COUNT=0
-
           for ID in $(echo "$TOP_STORIES" | tr ',' '\n' | tr -d '[] ' | head -30); do
             ITEM=$(curl -s --max-time 5 "https://hacker-news.firebaseio.com/v0/item/${ID}.json" 2>/dev/null)
             TITLE=$(echo "$ITEM" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('title',''))" 2>/dev/null)
             URL=$(echo "$ITEM" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('url',''))" 2>/dev/null)
             HN_URL="https://news.ycombinator.com/item?id=${ID}"
-
             if echo "$TITLE" | grep -qiE 'ai |llm|gpt|claude|chatgpt|openai|model|machine.learning|deep.learning|neural|transformer|agent|anthropic|gemini|qwen|deepseek|copilot|coding|programming'; then
               COUNT=$((COUNT + 1))
-              echo "- **${TITLE}**" >> "$FILE"
-              if [ -n "$URL" ] && [ "$URL" != "null" ]; then
-                echo "  🔗 [原文](${URL}) | [HN 讨论](${HN_URL})" >> "$FILE"
-              else
-                echo "  💬 [HN 讨论](${HN_URL})" >> "$FILE"
-              fi
-              echo "" >> "$FILE"
-
-              if [ $COUNT -le 5 ]; then
-                echo "${TITLE}" >> /tmp/titles.txt
-              fi
+              echo "${TITLE}" >> /tmp/titles_raw.txt
+              [ -n "$URL" ] && [ "$URL" != "null" ] && echo "LINK: ${URL}" >> /tmp/titles_raw.txt
+              echo "HN: ${HN_URL}" >> /tmp/titles_raw.txt
+              echo "---" >> /tmp/titles_raw.txt
             fi
+            [ $COUNT -ge 10 ] && break
           done
-
-          if [ "$COUNT" -eq 0 ]; then
-            echo "今日暂无 AI 相关热门" >> "$FILE"
-            echo "今日暂无 AI 相关热门" >> /tmp/titles.txt
+          echo "采集到 ${COUNT} 条"
+          if [ $COUNT -gt 0 ]; then
+            echo "🤖 DeepSeek 分析中..."
+            python3 /tmp/analyze.py > /tmp/ai_result.txt 2>&1
+          else
+            echo "今日暂无 AI 相关热门新闻。" > /tmp/ai_result.txt
           fi
-
-          echo "" >> "$FILE"
-          echo "---" >> "$FILE"
-          echo "" >> "$FILE"
-          echo "> 🤖 由 GitHub Actions 云端采集，每天北京时间 8:57 | 打开 Claude Code 后 AI 自动分析" >> "$FILE"
-
+          cat > "$FILE" << EOF
+          # AI 新闻早报 | ${DATE}
+          > 🤖 云端采集 + DeepSeek AI 分析 | 无需电脑开机
+          ---
+          $(cat /tmp/ai_result.txt)
+          ---
+          > 由 GitHub Actions + DeepSeek 云端生成 | 每天 8:57
+          EOF
           echo "DATE=${DATE}" >> $GITHUB_ENV
           echo "COUNT=${COUNT}" >> $GITHUB_ENV
-
-          echo "采集完成，共 ${COUNT} 条"
-
+          echo "✅ 完成"
+      - name: 微信通知
+        env:
+          SCT_KEY: ${{ secrets.SERVER_CHAN_KEY }}
+        run: python3 /tmp/notify.py
       - name: 提交结果
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add 每日早报/
-          git diff --staged --quiet || git commit -m "AI 新闻采集 $(date +%Y-%m-%d)"
+          git diff --staged --quiet || git commit -m "AI 新闻早报 $(date +%Y-%m-%d)"
           git push
-
-      - name: 微信通知
-        env:
-          SCT_KEY: ${{ secrets.SERVER_CHAN_KEY }}
-        run: |
-          python3 -c "
-          import urllib.request, urllib.parse, os
-          with open('/tmp/titles.txt') as f:
-              titles = f.read().strip()
-          data = urllib.parse.urlencode({'title':f'AI早报 | {os.environ[\"DATE\"]} · {os.environ[\"COUNT\"]}条', 'desp':titles}).encode()
-          r = urllib.request.urlopen(urllib.request.Request(f'https://sctapi.ftqq.com/{os.environ[\"SCT_KEY\"]}.send', data=data))
-          print(r.read().decode())
-          "
