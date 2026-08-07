@@ -142,7 +142,7 @@ async function loadToday() {
 
     let md;
     try {
-      md = await fetchFile(`每日早报/${dateStr}-综合早报.md`);
+      md = await fetchFile(`日报/${dateStr}-综合早报.md`);
     } catch {
       // 如果今天还没生成，尝试加载最新的
       const files = await listDir('每日早报');

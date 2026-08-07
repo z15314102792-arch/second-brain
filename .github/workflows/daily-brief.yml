@@ -47,6 +47,9 @@ jobs:
           DEEPSEEK_KEY: ${{ secrets.DEEPSEEK_KEY }}
           SCT_KEY: ${{ secrets.SERVER_CHAN_KEY }}
           CHESS_HTTP: ${{ env.CHESS_HTTP }}
+          GOMOKU_HTTP: ${{ env.GOMOKU_HTTP }}
+          DRAW_HTTP: ${{ env.DRAW_HTTP }}
+          TEMPLE_HTTP: ${{ env.TEMPLE_HTTP }}
         run: python3 scripts/daily_analyze.py
 
       - name: 保存并提交
