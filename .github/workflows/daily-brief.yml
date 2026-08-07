@@ -1,0 +1,83 @@
+name: Daily Brief
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '57 0 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 采集数据
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          mkdir -p 日报
+          echo "📡 采集新闻..."
+          TOP_STORIES=$(curl -s --max-time 10 "https://hacker-news.firebaseio.com/v0/topstories.json" 2>/dev/null | head -c 500)
+          > /tmp/news_raw.txt
+          for ID in $(echo "$TOP_STORIES" | tr ',' '\n' | tr -d '[] ' | head -30); do
+            ITEM=$(curl -s --max-time 5 "https://hacker-news.firebaseio.com/v0/item/${ID}.json" 2>/dev/null)
+            TITLE=$(echo "$ITEM" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('title',''))" 2>/dev/null)
+            URL=$(echo "$ITEM" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('url',''))" 2>/dev/null)
+            HN_URL="https://news.ycombinator.com/item?id=${ID}"
+            if echo "$TITLE" | grep -qiE 'ai |llm|gpt|claude|chatgpt|openai|model|machine.learning|deep.learning|neural|transformer|agent|anthropic|gemini|qwen|deepseek|copilot|coding|programming'; then
+              echo "TITLE: ${TITLE}" >> /tmp/news_raw.txt
+              [ -n "$URL" ] && [ "$URL" != "null" ] && echo "LINK: ${URL}" >> /tmp/news_raw.txt
+              echo "HN: ${HN_URL}" >> /tmp/news_raw.txt
+              echo "---" >> /tmp/news_raw.txt
+            fi
+          done
+          echo "DATE=${DATE}" >> $GITHUB_ENV
+
+      - name: 健康检查
+        run: |
+          check_site() { curl -s -o /dev/null -w "%{http_code}" --max-time 15 "$1" 2>/dev/null || echo "000"; }
+          CHESS_HTTP=$(check_site "https://z15314102792-arch.github.io/chinese-chess/")
+          GOMOKU_HTTP=$(check_site "https://z15314102792-arch.github.io/gomoku/")
+          DRAW_HTTP=$(check_site "https://z15314102792-arch.github.io/draw-and-guess/")
+          TEMPLE_HTTP=$(check_site "https://z15314102792-arch.github.io/star-moon-temple/")
+          echo "象棋: ${CHESS_HTTP} 五子棋: ${GOMOKU_HTTP} 画猜: ${DRAW_HTTP} 神殿: ${TEMPLE_HTTP}"
+
+      - name: AI分析
+        env:
+          DEEPSEEK_KEY: ${{ secrets.DEEPSEEK_KEY }}
+          SCT_KEY: ${{ secrets.SERVER_CHAN_KEY }}
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          python3 -c "
+import urllib.request, urllib.parse, json, os
+news_raw = ''
+try:
+    with open('/tmp/news_raw.txt') as f:
+        news_raw = f.read()
+except: pass
+prompt = '你是私人AI管家。根据以下数据生成每日综合速报。\n\n格式:\n### AI动态\n选出3-5条新闻,每条: **[中文标题](链接)** + 解释 + 关系\n\n### 项目状态\n四个项目状态\n\n### 一句话\n总结\n\n数据:\n' + news_raw
+body = json.dumps({'model':'deepseek-chat','messages':[{'role':'user','content':prompt}],'temperature':0.7,'max_tokens':3000},ensure_ascii=False).encode()
+req = urllib.request.Request('https://api.deepseek.com/v1/chat/completions',data=body,headers={'Content-Type':'application/json','Authorization':'Bearer '+os.environ['DEEPSEEK_KEY']})
+resp = json.loads(urllib.request.urlopen(req,timeout=90).read())
+digest = resp['choices'][0]['message']['content']
+print('DeepSeek: '+str(resp['usage']['total_tokens'])+' tokens')
+with open('/tmp/digest.md','w') as f: f.write(digest)
+preview = digest[:1500]
+data = urllib.parse.urlencode({'title':'每日速报 | '+os.environ['DATE'],'desp':preview}).encode()
+urllib.request.urlopen(urllib.request.Request('https://sctapi.ftqq.com/'+os.environ['SCT_KEY']+'.send',data=data,headers={'Content-Type':'application/x-www-form-urlencoded'}))
+print('WeChat OK')
+"
+          echo "# 每日综合速报 | ${DATE}" > "日报/${DATE}-综合早报.md"
+          echo "" >> "日报/${DATE}-综合早报.md"
+          cat /tmp/digest.md >> "日报/${DATE}-综合早报.md"
+          echo "DATE=${DATE}" >> $GITHUB_ENV
+
+      - name: 提交结果
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add 日报/
+          git diff --staged --quiet || git commit -m "每日综合速报 $(date +%Y-%m-%d)"
+          git push
