@@ -1,4 +1,4 @@
-name: 项目健康巡检
+name: 项目健康巡检 v3
 
 on:
   schedule:
@@ -125,7 +125,6 @@ except: print('unknown')
 
           巡检日期: {date}
 
-          ---
           请做以下分析，生成一条微信消息(Markdown格式):
 
           ## 要求
