@@ -15,21 +15,21 @@
       }
     },
     {
-      "query": "tag:#废弃方案",
+      "query": "tag:#已放弃",
       "color": {
         "a": 1,
         "rgb": 8421504
       }
     },
     {
-      "query": "path:游戏/",
+      "query": "path:游戏/在用",
       "color": {
         "a": 1,
         "rgb": 6084188
       }
     },
     {
-      "query": "path:工具/",
+      "query": "path:工具/在用",
       "color": {
         "a": 1,
         "rgb": 4886745
@@ -74,6 +74,6 @@
   "repelStrength": 10,
   "linkStrength": 1,
   "linkDistance": 250,
-  "scale": 0.7132754626224382,
+  "scale": 0.713275462622438,
   "close": true
 }

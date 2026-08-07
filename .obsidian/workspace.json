@@ -11,10 +11,14 @@
             "id": "5db4af194ba235b9",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "关系图谱"
+              "type": "markdown",
+              "state": {
+                "file": "游戏/动物大战.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "动物大战"
             }
           }
         ]
@@ -168,7 +172,9 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {},
+              "state": {
+                "file": "游戏/动物大战.md"
+              },
               "icon": "lucide-info",
               "title": "笔记属性"
             }
@@ -193,21 +199,21 @@
   },
   "active": "5db4af194ba235b9",
   "lastOpenFiles": [
+    "自动化/项目管家.md.tmp.5720.ae73cd0a8d52",
+    "自动化/项目管家.md.tmp.5720.703b882bb361",
+    "自动化/项目管家.md.tmp.5720.dba8e4658df6",
+    "自动化/项目管家.md.tmp.5720.81fa415bd7e5",
+    "自动化/项目管家.md.tmp.5720.2c9ad3f02c3b",
+    "存档/2026-08-07-进度.md.tmp.5720.5f5b0ac6a98d",
     "工具/手机Claude.md.tmp.24872.f1ff1963d994",
     "知识/记忆系统.md.tmp.24872.8fa3e8dc51e7",
     "CLAUDE.md.tmp.24872.4b540eaa781c",
     "MEMORY.md.tmp.24872.43ee93df30da",
     "MEMORY.md.tmp.24872.aa24503bfb99",
-    "MEMORY.md.tmp.24872.fc0420d373c4",
-    "MEMORY.md.tmp.24872.8de3fa387a7d",
     "工具/Ω废弃方案/免费Claude.md",
     "工具/Ω废弃方案/Huppy.md",
     "工具/Ω废弃方案/cc-web.md",
-    "工具/Ω废弃方案",
     "游戏/Ω废弃方案/星月神殿.md",
-    "游戏/Ω废弃方案",
-    "存档/2026-08-07-进度.md.tmp.15996.d53d1ee79458",
-    "游戏/动物大战.md.tmp.15996.10b55676da49",
     "工具/废弃方案/免费Claude.md",
     "工具/废弃方案/Huppy.md",
     "工具/废弃方案/cc-web.md",
