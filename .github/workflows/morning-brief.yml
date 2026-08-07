@@ -14,18 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Step1
+      - name: 采集数据
         run: |
           DATE=$(date +%Y-%m-%d)
+          mkdir -p 日报
+          echo "日期: ${DATE}"
           echo "DATE=${DATE}" >> $GITHUB_ENV
 
-      - name: Step2
-        run: echo "test"
-
-      - name: Commit
+      - name: 提交结果
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git diff --staged --quiet || git commit -m "test"
+          git add 日报/
+          git diff --staged --quiet || git commit -m "每日综合速报 $(date +%Y-%m-%d)"
           git push
