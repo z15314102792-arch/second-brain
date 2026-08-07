@@ -8,7 +8,7 @@ metadata:
   created: 2026-08-06
   status: 运行中
   originSessionId: be80e689-330f-4a06-b20e-796308e39605
-  modified: 2026-08-06T08:46:34.380Z
+  modified: 2026-08-07T03:10:15.458Z
 ---
 
 ## 架构
@@ -74,3 +74,8 @@ claude                      # 启动Claude Code
 
 - [ ] 同步 PC 记忆文件到手机
 - [ ] 配置 ~/.claude/CLAUDE.md 全局指令
+
+## 相关
+
+- [[项目/免费Claude]] — PC 端也曾尝试过的免费方案
+- [[项目/CCE模型]] — 多模型配置参考

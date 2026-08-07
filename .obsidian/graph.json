@@ -8,13 +8,6 @@
   "collapse-color-groups": false,
   "colorGroups": [
     {
-      "query": "path:项目/",
-      "color": {
-        "a": 1,
-        "rgb": 6076508
-      }
-    },
-    {
       "query": "path:参考/",
       "color": {
         "a": 1,
@@ -26,6 +19,13 @@
       "color": {
         "a": 1,
         "rgb": 15769680
+      }
+    },
+    {
+      "query": "path:项目/",
+      "color": {
+        "a": 1,
+        "rgb": 6084188
       }
     }
   ],

@@ -5,9 +5,9 @@ metadata:
   node_type: memory
   type: project
   path: C:\cc-web
-  status: abandoned
+  status: 已放弃
   replaced_by: claude-code-remote + ZeroTier
-  modified: 2026-08-06T06:11:54.981Z
+  modified: 2026-08-07T03:10:36.406Z
   originSessionId: 6dd31fbb-2c41-49f3-808f-f0380c8b1198
 ---
 

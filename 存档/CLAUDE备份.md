@@ -1,4 +1,17 @@
-# 全局指令
+---
+name: CLAUDE备份
+description: 旧版全局指令的备份存档，仅供参考，以当前 C:\Users\Administrator\.claude\CLAUDE.md 为准
+metadata: 
+  node_type: memory
+  type: reference
+  status: archived
+  modified: 2026-08-07T03:10:37.093Z
+  originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
+---
+
+# 全局指令（旧版备份）
+
+> ⚠️ 此文件为历史备份，以当前 `C:\Users\Administrator\.claude\CLAUDE.md` 为准。
 
 ## 语言
 
