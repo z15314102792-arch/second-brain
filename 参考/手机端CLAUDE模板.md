@@ -1,10 +1,10 @@
 ---
-name: claude
+name: 手机端CLAUDE模板
 description: 手机端 Claude Code 精简版全局指令模板（供参考）
 metadata: 
   node_type: memory
   type: reference
-  modified: 2026-08-07T03:09:46.359Z
+  modified: 2026-08-07T03:10:37.818Z
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
 ---
 

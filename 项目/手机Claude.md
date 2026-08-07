@@ -1,5 +1,5 @@
 ---
-name: claude
+name: 手机Claude
 description: 红米K70至尊版独立运行Claude Code，Termux+proot+Ubuntu，DeepSeek API
 metadata: 
   node_type: memory
@@ -8,7 +8,7 @@ metadata:
   created: 2026-08-06
   status: 运行中
   originSessionId: be80e689-330f-4a06-b20e-796308e39605
-  modified: 2026-08-07T03:10:15.458Z
+  modified: 2026-08-07T03:10:38.482Z
 ---
 
 ## 架构
