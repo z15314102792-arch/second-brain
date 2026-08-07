@@ -14,35 +14,78 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: 健康检查和采集
+      - name: 采集项目数据
         run: |
           DATE=$(date +%Y-%m-%d)
           FILE="每日早报/健康巡检-${DATE}.md"
           mkdir -p 每日早报
 
-          CHESS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://z15314102792-arch.github.io/chinese-chess/" 2>/dev/null || echo "000")
-          GOMOKU=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://z15314102792-arch.github.io/gomoku/" 2>/dev/null || echo "000")
-          DRAW=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://z15314102792-arch.github.io/draw-and-guess/" 2>/dev/null || echo "000")
-          TEMPLE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://z15314102792-arch.github.io/star-moon-temple/" 2>/dev/null || echo "000")
+          CHESS_HTTP=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://z15314102792-arch.github.io/chinese-chess/" 2>/dev/null || echo "000")
+          CHESS_COMMIT=$(curl -s --max-time 10 "https://api.github.com/repos/z15314102792-arch/chinese-chess/commits/main" 2>/dev/null | python3 -c "
+import sys,json
+try:
+  d=json.load(sys.stdin)
+  date=d['commit']['committer']['date'][:10]
+  msg=d['commit']['message'].split('\n')[0][:80]
+  print(f'{date} | {msg}')
+except: print('unknown')
+")
 
-          echo "CHESS=${CHESS}" >> $GITHUB_ENV
-          echo "GOMOKU=${GOMOKU}" >> $GITHUB_ENV
-          echo "DRAW=${DRAW}" >> $GITHUB_ENV
-          echo "TEMPLE=${TEMPLE}" >> $GITHUB_ENV
+          GOMOKU_HTTP=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://z15314102792-arch.github.io/gomoku/" 2>/dev/null || echo "000")
+          GOMOKU_COMMIT=$(curl -s --max-time 10 "https://api.github.com/repos/z15314102792-arch/gomoku/commits/main" 2>/dev/null | python3 -c "
+import sys,json
+try:
+  d=json.load(sys.stdin)
+  date=d['commit']['committer']['date'][:10]
+  msg=d['commit']['message'].split('\n')[0][:80]
+  print(f'{date} | {msg}')
+except: print('unknown')
+")
+
+          DRAW_HTTP=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://z15314102792-arch.github.io/draw-and-guess/" 2>/dev/null || echo "000")
+          DRAW_COMMIT=$(curl -s --max-time 10 "https://api.github.com/repos/z15314102792-arch/draw-and-guess/commits/main" 2>/dev/null | python3 -c "
+import sys,json
+try:
+  d=json.load(sys.stdin)
+  date=d['commit']['committer']['date'][:10]
+  msg=d['commit']['message'].split('\n')[0][:80]
+  print(f'{date} | {msg}')
+except: print('unknown')
+")
+
+          TEMPLE_HTTP=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://z15314102792-arch.github.io/star-moon-temple/" 2>/dev/null || echo "000")
+          TEMPLE_COMMIT=$(curl -s --max-time 10 "https://api.github.com/repos/z15314102792-arch/star-moon-temple/commits/main" 2>/dev/null | python3 -c "
+import sys,json
+try:
+  d=json.load(sys.stdin)
+  date=d['commit']['committer']['date'][:10]
+  msg=d['commit']['message'].split('\n')[0][:80]
+  print(f'{date} | {msg}')
+except: print('unknown')
+")
+
+          echo "CHESS_HTTP=${CHESS_HTTP}" >> $GITHUB_ENV
+          echo "CHESS_COMMIT=${CHESS_COMMIT}" >> $GITHUB_ENV
+          echo "GOMOKU_HTTP=${GOMOKU_HTTP}" >> $GITHUB_ENV
+          echo "GOMOKU_COMMIT=${GOMOKU_COMMIT}" >> $GITHUB_ENV
+          echo "DRAW_HTTP=${DRAW_HTTP}" >> $GITHUB_ENV
+          echo "DRAW_COMMIT=${DRAW_COMMIT}" >> $GITHUB_ENV
+          echo "TEMPLE_HTTP=${TEMPLE_HTTP}" >> $GITHUB_ENV
+          echo "TEMPLE_COMMIT=${TEMPLE_COMMIT}" >> $GITHUB_ENV
           echo "CHECK_DATE=${DATE}" >> $GITHUB_ENV
 
           cat > "$FILE" << REPORTEOF
           # 项目健康巡检 | ${DATE}
 
-          | 项目 | HTTP |
-          |------|------|
-          | 🎮 中国象棋 | ${CHESS} |
-          | ⚫ 五子棋 | ${GOMOKU} |
-          | 🎨 你画我猜 | ${DRAW} |
-          | 🏰 星月神殿 | ${TEMPLE} |
+          | 项目 | HTTP | 最后更新 |
+          |------|------|----------|
+          | 🎮 中国象棋 | ${CHESS_HTTP} | ${CHESS_COMMIT} |
+          | ⚫ 五子棋 | ${GOMOKU_HTTP} | ${GOMOKU_COMMIT} |
+          | 🎨 你画我猜 | ${DRAW_HTTP} | ${DRAW_COMMIT} |
+          | 🏰 星月神殿 | ${TEMPLE_HTTP} | ${TEMPLE_COMMIT} |
           REPORTEOF
 
-      - name: 提交结果
+      - name: 提交报告
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -50,7 +93,7 @@ jobs:
           git diff --staged --quiet || git commit -m "health check ${{ env.CHECK_DATE }}"
           git push
 
-      - name: AI总结并推微信
+      - name: AI深度分析并推微信
         env:
           SCT_KEY: ${{ secrets.SERVER_CHAN_KEY }}
           DEEPSEEK_KEY: ${{ secrets.DEEPSEEK_KEY }}
@@ -58,54 +101,77 @@ jobs:
           python3 << 'PYEOF'
           import urllib.request, json, os
 
-          chess = os.environ['CHESS']
-          gomoku = os.environ['GOMOKU']
-          draw = os.environ['DRAW']
-          temple = os.environ['TEMPLE']
           date = os.environ['CHECK_DATE']
 
-          ok = sum(1 for c in [chess,gomoku,draw,temple] if c == '200')
+          context = f"""你是项目健康分析师。你的用户有4个个人项目,以下是今天的巡检数据。
 
-          items = []
-          for name, code in [('中国象棋',chess),('五子棋',gomoku),('你画我猜',draw),('星月神殿',temple)]:
-              status = '正常' if code == '200' else '挂了'
-              items.append(f"{name}: {status}")
+          ## 项目详细数据
 
-          prompt = f"""你是项目巡检助手。把下面结果总结成微信消息，要求：
-          - 第一行总评（emoji开头，一句话概括）
-          - 空行
-          - 逐站点一行点评（emoji + 状态 + 一行通俗解释）
-          - 如果全正常表扬一句，有挂的给个提醒
-          - 说人话，不要技术名词和HTTP术语
+          1. 中国象棋(活跃项目, GitHub Pages部署)
+             HTTP状态: {os.environ['CHESS_HTTP']}
+             最后更新: {os.environ['CHESS_COMMIT']}
 
-          {date}
-          {chr(10).join(items)}
-          {ok}/4 正常"""
+          2. 五子棋(活跃项目, GitHub Pages部署)
+             HTTP状态: {os.environ['GOMOKU_HTTP']}
+             最后更新: {os.environ['GOMOKU_COMMIT']}
+
+          3. 你画我猜(活跃项目, GitHub Pages部署, 之前Railway/Render已过期)
+             HTTP状态: {os.environ['DRAW_HTTP']}
+             最后更新: {os.environ['DRAW_COMMIT']}
+
+          4. 星月神殿(已放弃项目, 用户明确表示不再维护)
+             HTTP状态: {os.environ['TEMPLE_HTTP']}
+             最后更新: {os.environ['TEMPLE_COMMIT']}
+
+          巡检日期: {date}
+
+          ---
+          请做以下分析，生成一条微信消息(Markdown格式):
+
+          ## 要求
+
+          1. 总评(一行): 今天整体怎么样?好的表扬,有问题的点出来。
+          2. 逐项目分析(每个项目3-5行):
+             - 状态(正常/异常)
+             - 最近动态(什么时候更新的、改了什么)
+             - 风险判断(有没有需要关注的问题)
+             - 建议动作(要做什么?不做什么?)
+          3. 重点提醒(1-2条): 有什么值得注意的趋势或隐患?
+
+          ## 规则
+          - 说人话,不要HTTP状态码,不要API路径,不要技术黑话
+          - 已放弃的项目不需要建议,标注"已放弃"即可
+          - 每个项目之间用空行分隔
+          - 用emoji增强可读性
+          - 总长度控制在微信单条消息能看完"""
 
           body = json.dumps({
               'model': 'deepseek-v4-flash',
-              'messages': [{'role': 'user', 'content': prompt}],
-              'max_tokens': 400
+              'messages': [{'role': 'user', 'content': context}],
+              'max_tokens': 600
           }, ensure_ascii=False).encode('utf-8')
 
           req = urllib.request.Request(
               'https://api.deepseek.com/v1/chat/completions',
               data=body,
-              headers={'Content-Type': 'application/json; charset=utf-8',
-                       'Authorization': 'Bearer ' + os.environ['DEEPSEEK_KEY']}
+              headers={
+                  'Content-Type': 'application/json; charset=utf-8',
+                  'Authorization': 'Bearer ' + os.environ['DEEPSEEK_KEY']
+              }
           )
           resp = json.loads(urllib.request.urlopen(req, timeout=30).read())
-          summary = resp['choices'][0]['message']['content']
+          analysis = resp['choices'][0]['message']['content']
 
           sendkey = os.environ['SCT_KEY']
           data = urllib.parse.urlencode({
               'title': f'🏥 项目巡检 · {date}',
-              'desp': summary
+              'desp': analysis
           }).encode('utf-8')
           urllib.request.urlopen(urllib.request.Request(
               f'https://sctapi.ftqq.com/{sendkey}.send',
               data=data,
               headers={'Content-Type': 'application/x-www-form-urlencoded'}
           ))
-          print('WeChat push done')
+          print('Analysis + push done')
+          print(f'Tokens used: {resp["usage"]["total_tokens"]}')
           PYEOF
