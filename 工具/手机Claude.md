@@ -8,7 +8,7 @@ metadata:
   created: 2026-08-06
   status: 运行中
   originSessionId: be80e689-330f-4a06-b20e-796308e39605
-  modified: 2026-08-07T05:48:45.817Z
+  modified: 2026-08-07T07:06:53.181Z
 ---
 
 ## 架构
@@ -77,5 +77,5 @@ claude                      # 启动Claude Code
 
 ## 相关
 
-- [[工具/废弃方案/免费Claude]] — PC 端也曾尝试过的免费方案
+- [[工具/Ω废弃方案/免费Claude]] — PC 端也曾尝试过的免费方案
 - [[工具/CCE模型]] — 多模型配置参考
