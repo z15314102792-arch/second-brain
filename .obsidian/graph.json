@@ -9,35 +9,59 @@
   "colorGroups": [
     {
       "query": "tag:#废弃方案",
-      "color": { "a": 1, "rgb": 8421504 }
+      "color": {
+        "a": 1,
+        "rgb": 8421504
+      }
     },
     {
       "query": "tag:#入口",
-      "color": { "a": 1, "rgb": 10053324 }
+      "color": {
+        "a": 1,
+        "rgb": 10053324
+      }
     },
     {
       "query": "path:游戏/",
-      "color": { "a": 1, "rgb": 6084188 }
+      "color": {
+        "a": 1,
+        "rgb": 6084188
+      }
     },
     {
       "query": "path:工具/",
-      "color": { "a": 1, "rgb": 4886745 }
+      "color": {
+        "a": 1,
+        "rgb": 4886745
+      }
     },
     {
       "query": "path:知识/",
-      "color": { "a": 1, "rgb": 4360186 }
+      "color": {
+        "a": 1,
+        "rgb": 4360186
+      }
     },
     {
       "query": "path:自动化/",
-      "color": { "a": 1, "rgb": 16743490 }
+      "color": {
+        "a": 1,
+        "rgb": 16743490
+      }
     },
     {
       "query": "path:日报/",
-      "color": { "a": 1, "rgb": 16761035 }
+      "color": {
+        "a": 1,
+        "rgb": 16761035
+      }
     },
     {
       "query": "path:存档/",
-      "color": { "a": 1, "rgb": 15769680 }
+      "color": {
+        "a": 1,
+        "rgb": 15769680
+      }
     }
   ],
   "collapse-display": false,
@@ -50,6 +74,6 @@
   "repelStrength": 10,
   "linkStrength": 1,
   "linkDistance": 250,
-  "scale": 0.7132754626224382,
+  "scale": 0.713275462622438,
   "close": true
 }
