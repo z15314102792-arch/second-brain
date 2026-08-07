@@ -2,7 +2,6 @@ name: 项目健康巡检
 
 on:
   schedule:
-    # 北京时间 9:13 = UTC 1:13，每3天
     - cron: '13 1 */3 * *'
   workflow_dispatch:
 
@@ -15,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: 健康检查
+      - name: 健康检查和采集
         run: |
           DATE=$(date +%Y-%m-%d)
           FILE="每日早报/健康巡检-${DATE}.md"
@@ -23,50 +22,90 @@ jobs:
 
           CHESS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://z15314102792-arch.github.io/chinese-chess/" 2>/dev/null || echo "000")
           GOMOKU=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://z15314102792-arch.github.io/gomoku/" 2>/dev/null || echo "000")
+          DRAW=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://z15314102792-arch.github.io/draw-and-guess/" 2>/dev/null || echo "000")
           TEMPLE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://z15314102792-arch.github.io/star-moon-temple/" 2>/dev/null || echo "000")
 
-          CHESS_ICON="✅"; [ "$CHESS" != "200" ] && CHESS_ICON="❌"
-          GOMOKU_ICON="✅"; [ "$GOMOKU" != "200" ] && GOMOKU_ICON="❌"
-          TEMPLE_ICON="✅"; [ "$TEMPLE" != "200" ] && TEMPLE_ICON="❌"
-
-          cat > "$FILE" << EOF
-          # 项目健康巡检 | ${DATE}
-
-          | 项目 | 状态 | HTTP |
-          |------|------|------|
-          | 🎮 中国象棋 | ${CHESS_ICON} | ${CHESS} |
-          | 🎮 五子棋 | ${GOMOKU_ICON} | ${GOMOKU} |
-          | 🏰 星月神殿 | ${TEMPLE_ICON} | ${TEMPLE} |
-
-          > 🤖 由 GitHub Actions 云端执行，每 3 天一次，无需电脑开机
-          EOF
-
-          echo "DATE=${DATE}" >> $GITHUB_ENV
-          echo "CHESS_ICON=${CHESS_ICON}" >> $GITHUB_ENV
-          echo "GOMOKU_ICON=${GOMOKU_ICON}" >> $GITHUB_ENV
-          echo "TEMPLE_ICON=${TEMPLE_ICON}" >> $GITHUB_ENV
           echo "CHESS=${CHESS}" >> $GITHUB_ENV
           echo "GOMOKU=${GOMOKU}" >> $GITHUB_ENV
+          echo "DRAW=${DRAW}" >> $GITHUB_ENV
           echo "TEMPLE=${TEMPLE}" >> $GITHUB_ENV
+          echo "CHECK_DATE=${DATE}" >> $GITHUB_ENV
 
-          echo "巡检完成"
+          cat > "$FILE" << REPORTEOF
+          # 项目健康巡检 | ${DATE}
+
+          | 项目 | HTTP |
+          |------|------|
+          | 🎮 中国象棋 | ${CHESS} |
+          | ⚫ 五子棋 | ${GOMOKU} |
+          | 🎨 你画我猜 | ${DRAW} |
+          | 🏰 星月神殿 | ${TEMPLE} |
+          REPORTEOF
 
       - name: 提交结果
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add 每日早报/
-          git diff --staged --quiet || git commit -m "健康巡检 $(date +%Y-%m-%d)"
+          git diff --staged --quiet || git commit -m "health check ${{ env.CHECK_DATE }}"
           git push
 
-      - name: 微信通知
+      - name: AI总结并推微信
         env:
           SCT_KEY: ${{ secrets.SERVER_CHAN_KEY }}
+          DEEPSEEK_KEY: ${{ secrets.DEEPSEEK_KEY }}
         run: |
-          python3 -c "
-          import urllib.request, urllib.parse, os
-          msg = f'象棋${CHESS_ICON}(${CHESS}) 五子棋${GOMOKU_ICON}(${GOMOKU}) 神殿${TEMPLE_ICON}(${TEMPLE})'
-          data = urllib.parse.urlencode({'title':f'项目巡检 | ${DATE}', 'desp':msg}).encode()
-          r = urllib.request.urlopen(urllib.request.Request(f'https://sctapi.ftqq.com/{os.environ[\"SCT_KEY\"]}.send', data=data))
-          print(r.read().decode())
-          "
+          python3 << 'PYEOF'
+          import urllib.request, json, os
+
+          chess = os.environ['CHESS']
+          gomoku = os.environ['GOMOKU']
+          draw = os.environ['DRAW']
+          temple = os.environ['TEMPLE']
+          date = os.environ['CHECK_DATE']
+
+          ok = sum(1 for c in [chess,gomoku,draw,temple] if c == '200')
+
+          items = []
+          for name, code in [('中国象棋',chess),('五子棋',gomoku),('你画我猜',draw),('星月神殿',temple)]:
+              status = '正常' if code == '200' else '挂了'
+              items.append(f"{name}: {status}")
+
+          prompt = f"""你是项目巡检助手。把下面结果总结成微信消息，要求：
+          - 第一行总评（emoji开头，一句话概括）
+          - 空行
+          - 逐站点一行点评（emoji + 状态 + 一行通俗解释）
+          - 如果全正常表扬一句，有挂的给个提醒
+          - 说人话，不要技术名词和HTTP术语
+
+          {date}
+          {chr(10).join(items)}
+          {ok}/4 正常"""
+
+          body = json.dumps({
+              'model': 'deepseek-v4-flash',
+              'messages': [{'role': 'user', 'content': prompt}],
+              'max_tokens': 400
+          }, ensure_ascii=False).encode('utf-8')
+
+          req = urllib.request.Request(
+              'https://api.deepseek.com/v1/chat/completions',
+              data=body,
+              headers={'Content-Type': 'application/json; charset=utf-8',
+                       'Authorization': 'Bearer ' + os.environ['DEEPSEEK_KEY']}
+          )
+          resp = json.loads(urllib.request.urlopen(req, timeout=30).read())
+          summary = resp['choices'][0]['message']['content']
+
+          sendkey = os.environ['SCT_KEY']
+          data = urllib.parse.urlencode({
+              'title': f'🏥 项目巡检 · {date}',
+              'desp': summary
+          }).encode('utf-8')
+          urllib.request.urlopen(urllib.request.Request(
+              f'https://sctapi.ftqq.com/{sendkey}.send',
+              data=data,
+              headers={'Content-Type': 'application/x-www-form-urlencoded'}
+          ))
+          print('WeChat push done')
+          PYEOF
