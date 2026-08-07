@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "764a96c1139587da",
+        "id": "0e3e0eddaa05e0ea",
         "type": "tabs",
         "children": [
           {
-            "id": "65ef01797f01b010",
+            "id": "5db4af194ba235b9",
             "type": "leaf",
             "state": {
               "type": "graph",
@@ -192,7 +192,7 @@
       "bases:新建数据库": false
     }
   },
-  "active": "65ef01797f01b010",
+  "active": "5db4af194ba235b9",
   "lastOpenFiles": [
     "CLAUDE.md.tmp.24872.61577813cf4f",
     "项目/Huppy.md.tmp.24872.d21281300457",
