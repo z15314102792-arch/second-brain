@@ -1,14 +1,14 @@
 ---
 name: cc-web
 description: cc-web — 已放弃，Web 远程 Claude 原型
+tags: [已放弃]
 metadata: 
   node_type: memory
   type: project
   path: C:\cc-web
   status: 已放弃
-  tags: [已放弃]
   replaced_by: claude-code-remote + ZeroTier
-  modified: 2026-08-07T03:21:54.459Z
+  modified: 2026-08-07T03:38:58.430Z
   originSessionId: 6dd31fbb-2c41-49f3-808f-f0380c8b1198
 ---
 

@@ -34,11 +34,14 @@ memory/
 ---
 name: <短横线连接的英文slug>
 description: <一句话描述，用于 AI 判断相关性>
+tags: [标签1, 标签2]            # 可选，Obsidian 图谱用，必须放顶层！
 metadata:
   type: user | feedback | project | reference  # 必填
   modified: <ISO 8601 时间戳>                   # 每次修改必须更新
 ---
 ```
+
+> ⚠️ **tags 必须放 frontmatter 顶层**（和 name/description 同级），不能嵌套在 metadata 里面。Obsidian 只认顶层 tags，嵌套的不生效。
 
 项目类文件额外包含：
 ```yaml
