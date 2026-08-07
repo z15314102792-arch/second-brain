@@ -1,0 +1,71 @@
+name: AI 新闻采集
+
+on:
+  schedule:
+    # 北京时间 8:57 = UTC 0:57，每天
+    - cron: '57 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 采集 AI 新闻
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          FILE="每日早报/${DATE}-AI新闻.md"
+          mkdir -p 每日早报
+
+          echo "# AI 新闻采集 | ${DATE}" > "$FILE"
+          echo "" >> "$FILE"
+          echo "> 📡 云端自动采集，无需电脑开机。打开 Claude Code 后 AI 自动分析。" >> "$FILE"
+          echo "" >> "$FILE"
+          echo "---" >> "$FILE"
+          echo "" >> "$FILE"
+          echo "## 🔥 Hacker News 热门（AI 相关）" >> "$FILE"
+          echo "" >> "$FILE"
+
+          TOP_STORIES=$(curl -s --max-time 10 "https://hacker-news.firebaseio.com/v0/topstories.json" 2>/dev/null | head -c 500)
+          COUNT=0
+
+          for ID in $(echo "$TOP_STORIES" | tr ',' '\n' | tr -d '[] ' | head -30); do
+            ITEM=$(curl -s --max-time 5 "https://hacker-news.firebaseio.com/v0/item/${ID}.json" 2>/dev/null)
+            TITLE=$(echo "$ITEM" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('title',''))" 2>/dev/null)
+            URL=$(echo "$ITEM" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('url',''))" 2>/dev/null)
+            HN_URL="https://news.ycombinator.com/item?id=${ID}"
+
+            if echo "$TITLE" | grep -qiE 'ai |llm|gpt|claude|chatgpt|openai|model|machine.learning|deep.learning|neural|transformer|agent|anthropic|gemini|qwen|deepseek|copilot|coding|programming'; then
+              COUNT=$((COUNT + 1))
+              echo "- **${TITLE}**" >> "$FILE"
+              if [ -n "$URL" ] && [ "$URL" != "null" ]; then
+                echo "  🔗 [原文](${URL}) | [HN 讨论](${HN_URL})" >> "$FILE"
+              else
+                echo "  💬 [HN 讨论](${HN_URL})" >> "$FILE"
+              fi
+              echo "" >> "$FILE"
+            fi
+          done
+
+          if [ "$COUNT" -eq 0 ]; then
+            echo "今日暂无 AI 相关热门" >> "$FILE"
+          fi
+
+          echo "" >> "$FILE"
+          echo "---" >> "$FILE"
+          echo "" >> "$FILE"
+          echo "> 🤖 由 GitHub Actions 云端采集，每天北京时间 8:57 | 打开 Claude Code 后 AI 自动分析" >> "$FILE"
+
+          echo "采集完成，共 ${COUNT} 条"
+
+      - name: 提交结果
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add 每日早报/
+          git diff --staged --quiet || git commit -m "AI 新闻采集 $(date +%Y-%m-%d)"
+          git push
