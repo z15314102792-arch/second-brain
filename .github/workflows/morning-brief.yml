@@ -44,19 +44,57 @@ jobs:
           TEMPLE_HTTP=$(check_site "https://z15314102792-arch.github.io/star-moon-temple/")
           echo "象棋: ${CHESS_HTTP} 五子棋: ${GOMOKU_HTTP} 画猜: ${DRAW_HTTP} 神殿: ${TEMPLE_HTTP}"
 
+      - name: 准备AI脚本
+        run: |
+          cat > /tmp/analyze.py << 'PYEOF'
+import urllib.request, urllib.parse, json, os
+news_raw = ""
+try:
+    with open('/tmp/news_raw.txt', 'r') as f:
+        news_raw = f.read()
+except:
+    pass
+prompt = "你是私人AI管家。根据以下数据生成每日综合速报。\n\n格式:\n### 🗞️ AI动态\n选出3-5条新闻,每条: **[中文标题](链接)** + 解释 + 💡关系\n\n### 🩺 项目状态\n四个项目状态\n\n### 📌 一句话\n总结\n\n数据:\n" + news_raw
+body = json.dumps({
+    'model': 'deepseek-chat',
+    'messages': [{'role': 'user', 'content': prompt}],
+    'temperature': 0.7,
+    'max_tokens': 3000
+}, ensure_ascii=False).encode('utf-8')
+req = urllib.request.Request(
+    'https://api.deepseek.com/v1/chat/completions',
+    data=body,
+    headers={
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': 'Bearer ' + os.environ['DEEPSEEK_KEY']
+    }
+)
+resp = json.loads(urllib.request.urlopen(req, timeout=90).read())
+digest = resp['choices'][0]['message']['content']
+tokens = resp['usage']['total_tokens']
+print(f"DeepSeek: {tokens} tokens")
+with open('/tmp/digest.md', 'w', encoding='utf-8') as f:
+    f.write(digest)
+preview = digest[:1500]
+data = urllib.parse.urlencode({
+    'title': f"每日速报 | {os.environ['DATE']}",
+    'desp': preview
+}).encode('utf-8')
+r = urllib.request.urlopen(urllib.request.Request(
+    f"https://sctapi.ftqq.com/{os.environ['SCT_KEY']}.send",
+    data=data,
+    headers={'Content-Type': 'application/x-www-form-urlencoded'}
+))
+print(f"微信推送: {r.read().decode()[:100]}")
+PYEOF
+
       - name: AI分析
         env:
           DEEPSEEK_KEY: ${{ secrets.DEEPSEEK_KEY }}
           SCT_KEY: ${{ secrets.SERVER_CHAN_KEY }}
         run: |
-          cat > /tmp/test.py << 'PYEOF'
-import urllib.request, json, os
-body = json.dumps({"model":"deepseek-chat","messages":[{"role":"user","content":"hello"}],"max_tokens":10}).encode()
-req = urllib.request.Request("https://api.deepseek.com/v1/chat/completions",data=body,headers={"Content-Type":"application/json","Authorization":"Bearer "+os.environ["DEEPSEEK_KEY"]})
-resp = json.loads(urllib.request.urlopen(req,timeout=30).read())
-print(resp["choices"][0]["message"]["content"])
-PYEOF
-          python3 /tmp/test.py
+          export DATE=$(date +%Y-%m-%d)
+          python3 /tmp/analyze.py
 
       - name: 保存文件
         run: |
