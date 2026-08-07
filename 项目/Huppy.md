@@ -6,8 +6,9 @@ metadata:
   type: project
   path: /tmp/huppy-app (C:\Users\Administrator\AppData\Local\Temp\huppy-app)
   version: 1.1.3
-  status: installed_not_authenticated
-  modified: 2026-08-06T06:10:28.896Z
+  status: 已放弃
+  tags: [已放弃]
+  modified: 2026-08-07T03:21:55.240Z
   originSessionId: 6dd31fbb-2c41-49f3-808f-f0380c8b1198
 ---
 

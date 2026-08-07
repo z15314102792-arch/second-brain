@@ -12,11 +12,12 @@
 - [[项目/中国象棋]] — v3.11，GitHub Pages，联机可用
 - [[项目/五子棋]] — v1.2，GitHub Pages
 - [[项目/你画我猜]] — Railway 部署，单人模式完备
-- [[项目/星月神殿]] — 双人闯关 v2.3，关卡待修
+- [[项目/星月神殿]] — 已放弃 🔘
+- [[项目/项目管家]] — AI自动化系统 v1.0，Skills+Workflows+Cron
 - [[项目/第二大脑]] — Obsidian 可视化，Git 备份
-- [[项目/cc-web]] — 已放弃
+- [[项目/cc-web]] — 已放弃 🔘
 - [[项目/CCE模型]] — 多模型配置
-- [[项目/Huppy]] — v1.1.3，已放弃
+- [[项目/Huppy]] — 已放弃 🔘
 - [[项目/Agnes代理]] — 本地代理服务
 - [[项目/免费Claude]] — NVIDIA NIM，国内不可用
 - [[项目/手机Claude]] — 红米K70独立运行，Termux+Ubuntu，DeepSeek

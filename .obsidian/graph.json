@@ -8,6 +8,13 @@
   "collapse-color-groups": false,
   "colorGroups": [
     {
+      "query": "tag:#已放弃",
+      "color": {
+        "a": 1,
+        "rgb": 8421504
+      }
+    },
+    {
       "query": "path:参考/",
       "color": {
         "a": 1,

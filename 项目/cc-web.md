@@ -6,8 +6,9 @@ metadata:
   type: project
   path: C:\cc-web
   status: 已放弃
+  tags: [已放弃]
   replaced_by: claude-code-remote + ZeroTier
-  modified: 2026-08-07T03:10:36.406Z
+  modified: 2026-08-07T03:21:54.459Z
   originSessionId: 6dd31fbb-2c41-49f3-808f-f0380c8b1198
 ---
 
