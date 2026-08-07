@@ -8,6 +8,20 @@
   "collapse-color-groups": false,
   "colorGroups": [
     {
+      "query": "file:CLAUDE.md",
+      "color": {
+        "a": 1,
+        "rgb": 10053324
+      }
+    },
+    {
+      "query": "file:MEMORY.md",
+      "color": {
+        "a": 1,
+        "rgb": 10053324
+      }
+    },
+    {
       "query": "tag:#已放弃",
       "color": {
         "a": 1,

@@ -168,9 +168,7 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {
-                "file": "未命名.base"
-              },
+              "state": {},
               "icon": "lucide-info",
               "title": "笔记属性"
             }
@@ -193,30 +191,30 @@
       "bases:新建数据库": false
     }
   },
-  "active": "1124d9a87b2c1806",
+  "active": "5db4af194ba235b9",
   "lastOpenFiles": [
+    "CLAUDE.md.tmp.24872.782dc740bbdf",
+    "CLAUDE.md.tmp.24872.f2624660d143",
+    "MEMORY.md",
+    "未命名.base",
+    "2026-08-07.md",
     "存档/2026-08-07-进度.md.tmp.8460.6f5ed0d944f7",
     "CLAUDE.md.tmp.24872.7c22fcdd531c",
     "项目/项目管家.md.tmp.5720.ea1c00574af3",
     "未命名 1.canvas",
-    "未命名.base",
     "未命名.canvas",
-    "2026-08-07.md",
     "每日早报/健康巡检-2026-08-07.md",
     "项目/第二大脑.md.tmp.24872.0dea5371fd00",
     "存档/2026-08-07-进度.md.tmp.24872.3bb5e887c929",
     "项目/五子棋.md.tmp.5720.372db118eaf7",
     "CLAUDE.md.tmp.24872.61577813cf4f",
     "项目/Huppy.md.tmp.24872.d21281300457",
-    "项目/cc-web.md.tmp.24872.167877f2c35f",
-    "项目/星月神殿.md.tmp.24872.4a56e5737c16",
     "项目/星月神殿.md",
     "存档/2026-08-06-进度.md",
     "项目/项目管家.md",
     "每日早报/2026-08-07-AI新闻.md",
     "存档/象棋基线.md",
     "项目/Huppy.md",
-    "MEMORY.md",
     "2026-08-06.md",
     "项目/全局指令优化.md",
     "项目/五子棋.md",
