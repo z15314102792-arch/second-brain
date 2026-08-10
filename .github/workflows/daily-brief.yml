@@ -3,7 +3,7 @@ name: Daily Brief
 on:
   workflow_dispatch:
   schedule:
-    - cron: '57 0 * * *'
+    - cron: '55 23 * * *'
 
 permissions:
   contents: write
