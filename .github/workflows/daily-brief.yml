@@ -40,19 +40,33 @@ jobs:
           echo "CHESS_HTTP=$(check_site 'https://z15314102792-arch.github.io/chinese-chess/')" >> $GITHUB_ENV
           echo "GOMOKU_HTTP=$(check_site 'https://z15314102792-arch.github.io/gomoku/')" >> $GITHUB_ENV
           echo "DRAW_HTTP=$(check_site 'https://z15314102792-arch.github.io/draw-and-guess/')" >> $GITHUB_ENV
+          echo "ANIMAL_HTTP=$(check_site 'https://z15314102792-arch.github.io/animal-battle/')" >> $GITHUB_ENV
           echo "TEMPLE_HTTP=$(check_site 'https://z15314102792-arch.github.io/star-moon-temple/')" >> $GITHUB_ENV
 
+      - name: 防重复检查
+        id: dedup
+        run: |
+          if [ -f "日报/${DATE}-综合早报.md" ]; then
+            echo "今日报告已存在（可能已被本地cron准时触发），跳过后续步骤"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: AI分析推送
+        if: steps.dedup.outputs.skip != 'true'
         env:
           DEEPSEEK_KEY: ${{ secrets.DEEPSEEK_KEY }}
           SCT_KEY: ${{ secrets.SERVER_CHAN_KEY }}
           CHESS_HTTP: ${{ env.CHESS_HTTP }}
           GOMOKU_HTTP: ${{ env.GOMOKU_HTTP }}
           DRAW_HTTP: ${{ env.DRAW_HTTP }}
+          ANIMAL_HTTP: ${{ env.ANIMAL_HTTP }}
           TEMPLE_HTTP: ${{ env.TEMPLE_HTTP }}
         run: python3 scripts/daily_analyze.py
 
       - name: 保存并提交
+        if: steps.dedup.outputs.skip != 'true'
         run: |
           echo "# 每日综合速报 | ${DATE}" > "日报/${DATE}-综合早报.md"
           echo "" >> "日报/${DATE}-综合早报.md"
