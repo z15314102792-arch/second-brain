@@ -5,7 +5,7 @@ metadata:
   tags: 
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-08-10T03:16:50.530Z
+  modified: 2026-08-10T12:01:26.514Z
 ---
 
 ## 🎮 游戏
@@ -37,6 +37,7 @@ metadata:
 - [[知识/手机端CLAUDE模板]] — 手机精简指令
 - [[知识/分类器拦截解决]] — 安全分类器问题
 - [[知识/GitHub国内访问]] — SSH 443 避墙方案
+- [[知识/ClaudeCode跨会话消息]] — 跨会话消息传递功能调研
 
 ## 🤖 自动化
 
