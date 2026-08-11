@@ -1,24 +1,25 @@
 # -*- coding: utf-8 -*-
-"""每日综合速报 - AI分析 + 微信推送"""
+"""AI日报 — DeepSeek分析 + 微信推送"""
 import urllib.request
 import urllib.parse
 import json
 import os
-import sys
 
 DATE = os.environ.get('DATE', 'unknown')
 DEEPSEEK_KEY = os.environ['DEEPSEEK_KEY']
 SCT_KEY = os.environ['SCT_KEY']
+YESTERDAY = os.environ.get('YESTERDAY', '')
+YESTERDAY_REPORT = os.environ.get('YESTERDAY_REPORT', '')
 
 # 读取新闻数据
 news_raw = ''
 try:
-    with open('/tmp/news_raw.txt', 'r') as f:
+    with open('/tmp/news_raw.txt', 'r', encoding='utf-8') as f:
         news_raw = f.read()
 except FileNotFoundError:
     pass
 
-# 项目健康状态：把 HTTP 码翻译成给人看的话
+# 项目健康状态
 chess_http = os.environ.get('CHESS_HTTP', '?')
 gomoku_http = os.environ.get('GOMOKU_HTTP', '?')
 draw_http = os.environ.get('DRAW_HTTP', '?')
@@ -35,57 +36,110 @@ def desc(code, name, note=''):
     else:
         return f'{name} [HTTP {code}] 状态未知'
 
-# 构建提示词 — 使用多行字符串避免引号嵌套问题
-prompt_lines = []
-prompt_lines.append("你是我的私人AI管家。我是一个喜欢做小游戏的个人开发者，有几个业余项目部署在GitHub Pages上。")
-prompt_lines.append("请根据以下数据生成每日综合速报。")
-prompt_lines.append("")
-prompt_lines.append("== 格式要求 ==")
-prompt_lines.append("")
-prompt_lines.append("### 1. AI动态")
-prompt_lines.append("从原始新闻中选出3-5条，按重要程度排序。每条必须包含：")
-prompt_lines.append("")
-prompt_lines.append("重要性: ★★★（必读）/ ★★（值得关注）/ ★（知道就行）")
-prompt_lines.append("")
-prompt_lines.append("标题（中文翻译，附链接）")
-prompt_lines.append("")
-prompt_lines.append("- 发生了什么: 用2-3句话讲清楚核心内容。不要只扔标题，要说清楚：谁发布了什么、有什么用、怎么做到的。")
-prompt_lines.append("- 为什么重要: 对行业或开发者意味着什么。")
-prompt_lines.append("- 跟我有啥关系: 对我这个做小游戏的个人开发者有什么实际影响。无关的就说'暂时关系不大'。")
-prompt_lines.append("")
-prompt_lines.append("重要性标准:")
-prompt_lines.append("- ★★★ 直接影响你的开发工具链、部署方式、或能帮你省钱省时间")
-prompt_lines.append("- ★★ 行业大趋势，可以关注")
-prompt_lines.append("- ★ 知道就行，不需要行动")
-prompt_lines.append("注意: ★的简短写，★★★的才展开写。不要每条一样长。")
-prompt_lines.append("")
-prompt_lines.append("### 2. 项目状态")
-prompt_lines.append("五个项目的线上运行情况：")
-prompt_lines.append("")
-prompt_lines.append(desc(chess_http, '中国象棋', '双人在线对战游戏'))
-prompt_lines.append(desc(gomoku_http, '五子棋', '联机五子棋对战'))
-prompt_lines.append(desc(draw_http, '你画我猜', '多人你画我猜'))
-prompt_lines.append(desc(animal_http, '动物大战', '动物自动对战游戏，最新版本 v3.5'))
-prompt_lines.append(desc(temple_http, '星月神殿', '已退役不再维护，404是正常状态，不需要处理'))
-prompt_lines.append("")
-prompt_lines.append("重要提示: 星月神殿已经退役了！404是正常的，不要在报告中建议修复它。")
-prompt_lines.append("")
-prompt_lines.append("如果有非退役项目的异常（不是200），单独列出来说明可能的原因和修复方向。")
-prompt_lines.append("")
-prompt_lines.append("### 3. 今日小结")
-prompt_lines.append("2-3句话总结今天最重要的信息和需要做的事。")
-prompt_lines.append("")
-prompt_lines.append("=== 原始新闻数据 ===")
-prompt_lines.append(news_raw)
+# ══════════════════════════════════════════
+# 构建提示词
+# ══════════════════════════════════════════
+prompt_parts = []
 
-prompt = "\n".join(prompt_lines)
+# 角色设定
+prompt_parts.append("你是我的私人AI管家。我是一个喜欢做小游戏的个人开发者，业余项目部署在GitHub Pages上。")
+prompt_parts.append("请生成今天的AI日报。必须严格遵循以下格式，不要遗漏任何板块。")
+prompt_parts.append("")
 
+# ═══ 格式要求 ═══
+prompt_parts.append("=" * 40)
+prompt_parts.append("输出格式（严格遵循）")
+prompt_parts.append("=" * 40)
+prompt_parts.append("")
+
+# 板块1：AI动态
+prompt_parts.append("## 1. AI动态")
+prompt_parts.append("")
+prompt_parts.append("选出3-5条最重要的AI相关新闻。格式要求：")
+prompt_parts.append("")
+prompt_parts.append("**每条新闻必须包含可点击的Markdown链接！** 标题和HN讨论都要用 [文字](URL) 格式。")
+prompt_parts.append("示例格式：")
+prompt_parts.append("### ★★★ [中文标题](原文URL)")
+prompt_parts.append("[HN讨论](HN的URL)")
+prompt_parts.append("")
+prompt_parts.append("- **发生了什么**：2-3句话讲清楚核心内容")
+prompt_parts.append("- **为什么重要**：对行业或开发者意味着什么")
+prompt_parts.append("- **跟我有啥关系**：对我这个做小游戏的个人开发者有什么实际影响。无关就说'暂时关系不大'")
+prompt_parts.append("")
+prompt_parts.append("重要性标准：")
+prompt_parts.append("- ★★★ 直接影响开发工具链、部署方式、或能省钱省时间 → 展开写")
+prompt_parts.append("- ★★ 行业大趋势 → 中等篇幅")
+prompt_parts.append("- ★ 知道就行 → 简短写")
+prompt_parts.append("")
+
+# 板块2：项目健康
+prompt_parts.append("## 2. 项目健康")
+prompt_parts.append("")
+prompt_parts.append("用表格展示五个项目的运行状态，并补充昨日动态：")
+prompt_parts.append("")
+prompt_parts.append("| 项目 | HTTP | 昨日动态 |")
+prompt_parts.append("|------|------|----------|")
+prompt_parts.append(desc(chess_http, '中国象棋', '双人在线对战'))
+prompt_parts.append(desc(gomoku_http, '五子棋', '联机对战'))
+prompt_parts.append(desc(draw_http, '你画我猜', '多人你画我猜'))
+prompt_parts.append(desc(animal_http, '动物大战', '动物自动对战'))
+prompt_parts.append(desc(temple_http, '星月神殿', '已退役，404正常'))
+prompt_parts.append("")
+prompt_parts.append("「昨日动态」列请根据下方提供的昨日AI日报内容，总结每个项目昨天做了什么改动或保持稳定。"
+                     "如果昨日日报没提到某个项目，写'无变动'。")
+prompt_parts.append("星月神殿已退役，永远标注'已退役'，不要建议修复。")
+prompt_parts.append("")
+
+# 板块3：昨日日志
+prompt_parts.append("## 3. 昨日日志")
+prompt_parts.append("")
+prompt_parts.append("根据下方提供的昨日AI日报，总结昨天的操作内容。格式：")
+prompt_parts.append("")
+prompt_parts.append("- **做了什么**：列出昨天进行的主要操作（项目改动、系统调整、Bug修复等）")
+prompt_parts.append("- **为什么这么做**：解释每项操作的动机和背景")
+prompt_parts.append("- **效果如何**：操作的结果（已部署？已修复？待验证？）")
+prompt_parts.append("")
+prompt_parts.append("如果没有昨日日报，写'昨日无记录'即可。")
+prompt_parts.append("")
+
+# 板块4：今日小结
+prompt_parts.append("## 4. 今日小结")
+prompt_parts.append("")
+prompt_parts.append("分两部分：")
+prompt_parts.append("")
+prompt_parts.append("**新闻方面**：对今天推送的AI新闻提出你的看法和建议。哪条值得我花时间看？哪条可以直接忽略？有没有什么趋势值得警惕或把握？")
+prompt_parts.append("")
+prompt_parts.append("**项目方面**：对昨天的操作做简短评价。做得好的提一句，有隐患的指出来，可以改进的建议说一下。")
+prompt_parts.append("")
+
+# ═══ 原始数据 ═══
+prompt_parts.append("=" * 40)
+prompt_parts.append("原始数据")
+prompt_parts.append("=" * 40)
+prompt_parts.append("")
+
+prompt_parts.append("--- 今日新闻 ---")
+prompt_parts.append(news_raw if news_raw.strip() else "（今日暂无AI相关新闻）")
+prompt_parts.append("")
+
+if YESTERDAY_REPORT.strip():
+    prompt_parts.append("--- 昨日AI日报（供参考） ---")
+    # 只取前3000字符，避免token浪费
+    prompt_parts.append(YESTERDAY_REPORT[:3000])
+else:
+    prompt_parts.append("--- 昨日AI日报 ---")
+    prompt_parts.append("（无昨日记录）")
+
+prompt = "\n".join(prompt_parts)
+
+# ══════════════════════════════════════════
 # 调用 DeepSeek
+# ══════════════════════════════════════════
 body = json.dumps({
     'model': 'deepseek-chat',
     'messages': [{'role': 'user', 'content': prompt}],
     'temperature': 0.7,
-    'max_tokens': 4000
+    'max_tokens': 6000
 }, ensure_ascii=False).encode('utf-8')
 
 req = urllib.request.Request(
@@ -96,19 +150,22 @@ req = urllib.request.Request(
         'Authorization': f'Bearer {DEEPSEEK_KEY}'
     }
 )
-resp = json.loads(urllib.request.urlopen(req, timeout=90).read())
+resp = json.loads(urllib.request.urlopen(req, timeout=120).read())
 digest = resp['choices'][0]['message']['content']
 tokens = resp['usage']['total_tokens']
 print(f"DeepSeek: {tokens} tokens")
 
-# 保存结果
+# 保存
 with open('/tmp/digest.md', 'w', encoding='utf-8') as f:
     f.write(digest)
 
+# ══════════════════════════════════════════
 # 微信推送
-preview = digest[:2000]
+# ══════════════════════════════════════════
+# Server酱支持 [文字](URL) Markdown链接
+preview = digest[:2500]  # 多取一些，保证日志和总结都能推送到
 data = urllib.parse.urlencode({
-    'title': f'每日速报 | {DATE}',
+    'title': f'AI日报 | {DATE}',
     'desp': preview
 }).encode('utf-8')
 
@@ -117,4 +174,5 @@ r = urllib.request.urlopen(urllib.request.Request(
     data=data,
     headers={'Content-Type': 'application/x-www-form-urlencoded'}
 ))
-print(f"WeChat: {r.read().decode()[:100]}")
+result = r.read().decode()
+print(f"WeChat: {result[:100]}")

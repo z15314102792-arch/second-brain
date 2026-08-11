@@ -66,8 +66,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <body>
 
 <div class="header">
-  <h1>📋 每日速报</h1>
-  <p>云端采集 · AI 分析 · 自动推送</p>
+  <h1>🤖 AI日报</h1>
+  <p>云端采集 · AI 分析 · 自动推送 · 每天7:55</p>
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('today')">📰 今日</button>
     <button class="tab-btn" onclick="switchTab('archive')">📚 往期</button>
@@ -76,7 +76,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 </div>
 
 <div id="tab-today" class="content active">
-  <div class="loading"><div class="spinner"></div><p>加载今日速报...</p></div>
+  <div class="loading"><div class="spinner"></div><p>加载AI日报...</p></div>
 </div>
 
 <div id="tab-archive" class="content">
@@ -142,20 +142,25 @@ async function loadToday() {
 
     let md;
     try {
-      md = await fetchFile(`日报/${dateStr}-综合早报.md`);
+      md = await fetchFile(`日报/${dateStr}-AI日报.md`);
     } catch {
-      // 如果今天还没生成，尝试加载最新的
-      const files = await listDir('日报');
-      const digests = files
-        .filter(f => f.name.includes('综合早报'))
-        .sort((a, b) => b.name.localeCompare(a.name));
-      if (digests.length === 0) throw new Error('暂无报告');
-      md = await fetchFile(digests[0].path);
+      try {
+        // 兼容旧格式
+        md = await fetchFile(`日报/${dateStr}-综合早报.md`);
+      } catch {
+        // 加载最新的
+        const files = await listDir('日报');
+        const digests = files
+          .filter(f => f.name.includes('AI日报') || f.name.includes('综合早报'))
+          .sort((a, b) => b.name.localeCompare(a.name));
+        if (digests.length === 0) throw new Error('暂无报告');
+        md = await fetchFile(digests[0].path);
+      }
     }
 
     el.innerHTML = `<div class="markdown-body">${renderMarkdown(md)}</div>`;
   } catch (e) {
-    el.innerHTML = `<div class="empty"><div class="empty-icon">📭</div><p>暂无今日速报</p><p style="font-size:12px;color:#666">每天早上 8:57 自动生成</p></div>`;
+    el.innerHTML = `<div class="empty"><div class="empty-icon">📭</div><p>暂无AI日报</p><p style="font-size:12px;color:#666">每天早上 7:55 自动生成</p></div>`;
     console.error(e);
   }
 }
@@ -165,7 +170,7 @@ async function loadArchive() {
   try {
     const files = await listDir('日报');
     const digests = files
-      .filter(f => f.name.includes('综合早报'))
+      .filter(f => f.name.includes('AI日报') || f.name.includes('综合早报'))
       .sort((a, b) => b.name.localeCompare(a.name));
 
     if (digests.length === 0) {
@@ -175,7 +180,7 @@ async function loadArchive() {
 
     let html = '<ul class="archive-list">';
     for (const f of digests) {
-      const date = f.name.replace('-综合早报.md', '');
+      const date = f.name.replace('-AI日报.md', '').replace('-综合早报.md', '');
       html += `<li class="archive-item" onclick="loadArchiveItem('${f.path}', '${date}')">
         <span class="date">📋 ${date}</span>
         <span class="arrow">→</span>
