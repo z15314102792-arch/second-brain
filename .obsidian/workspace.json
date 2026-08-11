@@ -11,10 +11,14 @@
             "id": "8fa617993fe8fd9a",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "关系图谱"
+              "type": "markdown",
+              "state": {
+                "file": "存档/2026-08-11-进度.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2026-08-11-进度"
             }
           }
         ]
@@ -168,7 +172,9 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {},
+              "state": {
+                "file": "存档/2026-08-11-进度.md"
+              },
               "icon": "lucide-info",
               "title": "笔记属性"
             }
@@ -193,6 +199,10 @@
   },
   "active": "8fa617993fe8fd9a",
   "lastOpenFiles": [
+    "存档/2026-08-11-进度.md.tmp.25064.b0662919c576",
+    "知识/手机AI与自动化.md.tmp.25064.3bddf5ec4ca5",
+    "存档/2026-08-11-进度.md.tmp.2052.674b1ab1ef2a",
+    "MEMORY.md.tmp.27676.8117c0d07974",
     "存档/2026-08-11-进度.md.tmp.25092.42bd410ab0f8",
     "游戏/螺丝消除.md.tmp.25092.8229527f5f6c",
     "知识/goal命令.md",
@@ -203,10 +213,6 @@
     "游戏/螺丝消除.md.tmp.25092.2660cf93be70",
     "游戏/螺丝消除.md.tmp.25092.38ae195c848c",
     "游戏/螺丝消除.md.tmp.25092.683100c801a1",
-    "游戏/螺丝消除.md.tmp.25092.6ea2b723cf53",
-    "MEMORY.md.tmp.12608.ef0242062d9c",
-    "知识/goal命令.md.tmp.12608.922258db0505",
-    "存档/2026-08-11-进度.md.tmp.12608.90a8d8a7c45b",
     "知识/副业调研.md",
     "自动化/项目管家.md",
     "知识/手机AI与自动化.md",

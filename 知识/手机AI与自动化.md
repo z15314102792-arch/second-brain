@@ -5,7 +5,7 @@ tags: [手机, AI, 自动化, 端侧AI]
 metadata:
   type: reference
   device: 红米K70（骁龙8 Gen系列 / 8G+ RAM / HyperOS）
-  modified: 2026-08-11T06:37:32.010Z
+  modified: 2026-08-11T09:51:28.145Z
   originSessionId: 3148f26d-3249-4f5e-9638-549b9116aa7c
 ---
 
@@ -50,7 +50,12 @@ metadata:
 
 ## 手机AI自动化方案
 
-### 首选：Roubao（肉包）
+### ~~首选：Roubao（肉包）~~ ❌ 已废弃
+
+> ⚠️ **2026-08-11 废弃**：用户了解后判断用不上——Roubao 是"手替"（自动操作 App），日常聊天问答用豆包就够了，手机自动化不是当前需求。
+
+<details>
+<summary>原始调研内容（折叠）</summary>
 
 **一句话**：装个APP，对着手机说话，它帮你自动操作。
 
@@ -75,6 +80,8 @@ metadata:
 - 检测到支付/密码页自动停（安全保护）
 - 不是100%成功，界面复杂可能失败
 - K70省电机制可能杀后台
+
+</details>
 
 ### 备选：ApkClaw
 - 基于OpenClaw框架，功能更强
