@@ -41,8 +41,8 @@ jobs:
             fi
           done
           echo "DATE=${DATE}" >> $GITHUB_ENV
-          # git log 让 AI 知道实际改了什么，不再漏报
-          git log --since="3 days ago" --oneline --all > /tmp/git_log.txt
+          # 只取昨天的 commit，加日期方便 AI 过滤
+          git log --since="1 day ago" --format="%h %ad %s" --date=short --all > /tmp/git_log.txt
           GL=$(cat /tmp/git_log.txt)
           echo "GL<<EOF" >> $GITHUB_ENV
           echo "${GL}" >> $GITHUB_ENV
