@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""AI日报 v2.3 — DeepSeek分析 + 微信推送 + 跨仓库git log"""
+"""AI日报 v2.4 — DeepSeek分析 + 微信推送 + 跨仓库git log"""
 import urllib.request
 import urllib.parse
 import json
@@ -76,8 +76,8 @@ prompt_parts.append("")
 prompt_parts.append("**「昨日动态」列必须逐条扫描下方 git log！禁止漏报！**")
 prompt_parts.append("git log 格式: commit_hash 日期 消息。消息里包含项目名（动物大战/五子棋/象棋/你画我猜/日报/记忆等）。")
 prompt_parts.append("识别规则：看到「动物大战 v3.6」→ 动物大战写「v3.6 防御性错误处理」。看到「日报系统」→ 对应系统改动。")
-	prompt_parts.append("按时间**正序**排列（v3.4→v3.5→v4.0，禁止倒序！）。用「、」分隔每条改动。")
-prompt_parts.append("一个项目有多条 commit 就逐条列出。如果 git log 里确实没有某项目的提交，才写「无变动」。")
+prompt_parts.append("一个项目有多条 commit 就逐条列出，按时间正序排列（v3.4→v3.5→v4.0，禁止倒序！），用顿号分隔。")
+prompt_parts.append("如果 git log 里确实没有某项目的提交，才写「无变动」。")
 prompt_parts.append("不许写「代码提交记录中未出现」这种废话——直接列出版本号和改动内容。")
 prompt_parts.append("")
 prompt_parts.append("表格格式：")
@@ -108,7 +108,7 @@ prompt_parts.append("")
 # 板块4：今日小结（评价和建议）
 prompt_parts.append("## 4. 今日小结")
 prompt_parts.append("")
-prompt_parts.append("小结是你的**评价和建议**，不是重复日志内容：")
+prompt_parts.append("小结是你的**评价和建议**，不是重复日志内容。这是日报最重要的板块，必须认真写，不能敷衍。")
 prompt_parts.append("")
 prompt_parts.append("**新闻评价**：今天哪条新闻最值得关注？有什么趋势或风险？")
 prompt_parts.append("")
@@ -169,7 +169,7 @@ with open('/tmp/digest.md', 'w', encoding='utf-8') as f:
 # 微信推送
 # ══════════════════════════════════════════
 # Server酱支持 [文字](URL) Markdown链接
-preview = digest[:5000]  # 多取一些，保证日志和总结都能推送到
+preview = digest[:5000]  # 确保小结能完整推送
 data = urllib.parse.urlencode({
     'title': f'AI日报 | {DATE}',
     'desp': preview
