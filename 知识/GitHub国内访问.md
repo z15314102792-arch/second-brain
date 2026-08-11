@@ -1,12 +1,12 @@
 ---
 name: github-china-access
-description: GitHub 在国内网络不稳定——HTTPS经常被干扰，SSH走443端口是最稳方案
+description: GitHub 在国内网络不稳定——HTTPS和22端口常被墙，SSH走ssh.github.com:443是唯一稳定方案
 metadata: 
   node_type: memory
   tags: 
     - 踩坑
   type: reference
-  modified: 2026-08-07T06:38:22.709Z
+  modified: 2026-08-11T12:06:43.949Z
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
 ---
 
@@ -14,20 +14,26 @@ metadata:
 
 ## 踩到的坑
 
-在国内用 HTTPS 方式 push/pull GitHub 经常失败：
-- `Could not resolve host: github.com`（DNS 污染）
-- `Failed to connect to github.com:443`（TCP 被干扰）
-- 时好时坏，和白名单/防火墙无关，是 GFW 层面的干扰
+在国内用 Git 访问 GitHub 经常失败，原因都在 GFW（防火墙）层面：
 
-## 最佳方案：SSH over 443
+| 错误信息 | 原因 |
+|----------|------|
+| `Could not resolve host: github.com` | DNS 污染 |
+| `Failed to connect to github.com:443` | TCP 被干扰（HTTPS 端口） |
+| `ssh: connect to host github.com port 22: Connection timed out` | SSH 22 端口被墙 |
+| `fatal: unable to access 'https://github.com/...': The requested URL returned error: 403` | HTTPS 认证被干扰 |
 
-GitHub 提供 `ssh.github.com`，SSH 走 443 端口（和网页浏览一样），GFW 眼里就是普通 HTTPS 流量。
+**关键认知**：只有 `ssh.github.com:443` 是通的。GitHub 官方提供这个地址就是为了绕过防火墙——SSH 流量走 HTTPS 端口，GFW 看起来就是普通网页浏览。
 
-### 1. SSH config
+## 最终方案：Host github.com → ssh.github.com:443
 
-`~/.ssh/config`：
+**核心思路**：让 `github.com` 这个 Host 名直接指向 `ssh.github.com:443`，这样所有 `git@github.com:...` 格式的 SSH 地址自动走 443 端口，不需要任何 git remote 改写。
+
+### SSH config（最终版本）
+
+`C:\Users\Administrator\.ssh\config`：
 ```
-Host ssh.github.com
+Host github.com
     HostName ssh.github.com
     Port 443
     User git
@@ -35,31 +41,67 @@ Host ssh.github.com
     IdentitiesOnly yes
 ```
 
-### 2. Git remote
+### 为什么这个配置比旧版好
 
-所有仓库 remote 改为 SSH 格式：
+旧版配置（已废弃）：
 ```
-git@ssh.github.com:用户名/仓库名.git
+Host ssh.github.com        ← 单独定义一个 ssh.github.com Host
+    HostName ssh.github.com
+    Port 443
+    ...
 ```
+旧版的问题：需要把每个仓库的 remote 从 `git@github.com:...` 改成 `git@ssh.github.com:...`，或者用 `insteadOf` 做 URL 改写。多了两个容易出错的地方。
 
-### 3. insteadOf 兜底
+新版只需一条 SSH config，什么都不用改：
+- remote 保持 `git@github.com:z15314102792-arch/second-brain.git` 不动
+- SSH 看到目标 Host 是 `github.com`，自动走 `ssh.github.com:443`
+- 新仓库 clone 时直接用 `git@github.com:...` 格式，自动走 443
 
-防止 Obsidian Git 插件或其他工具把 remote 改回 HTTPS：
+### 不需要 insteadOf
+
+旧版需要 `git config --global url."git@ssh.github.com:".insteadOf "https://github.com/"` 来做 URL 改写。新版不需要——只要 remote 是 SSH 格式（`git@github.com:...`），SSH config 自动处理。HTTPS 格式的 remote 依然会被墙，但可以直接 `git remote set-url origin git@github.com:...` 改成 SSH。
+
+### 验证命令
+
 ```bash
-git config --global url."git@ssh.github.com:z15314102792-arch/".insteadOf "https://github.com/z15314102792-arch/"
+# 测试 SSH 连通性
+ssh -T git@github.com
+# 应该输出: Hi z15314102792-arch! You've successfully authenticated...
+
+# 测试 git 操作
+git push --dry-run
+# 应该输出: Everything up-to-date
 ```
 
-这样即使 remote 显示 HTTPS，Git 底层也会自动转成 SSH。
+## 加密墙原理（给不是搞技术的人）
+
+| 端口 | 用途 | 被墙？ | 为什么 |
+|------|------|--------|--------|
+| github.com:443 | HTTPS | ✅ 经常被墙 | GFW 会主动干扰 GitHub 的 HTTPS |
+| github.com:22 | SSH | ✅ 被墙 | GFW 封锁 SSH 默认端口 |
+| **ssh.github.com:443** | SSH over HTTPS | ❌ 通 | GFW 以为是普通网页，不拦 |
+
+简单理解：GFW 是个门卫，拦下了 GitHub 的 HTTPS 和 SSH 端口，但 `ssh.github.com:443` 伪装成了普通网页流量，门卫看不出来就放行了。
+
+## SSH 密钥安全提醒
+
+**私钥（`id_ed25519`，没有 `.pub` 后缀）绝对不能暴露。** 它等同于你的 GitHub 密码。
+
+私钥文件位置：`C:\Users\Administrator\.ssh\id_ed25519`
+公钥文件位置：`C:\Users\Administrator\.ssh\id_ed25519.pub`（可以公开）
+
+> ⚠️ 2026-08-11 曾因 VS Code 误选中导致私钥泄露到对话上下文，已重新生成密钥对。详见 [[存档/2026-08-11-进度]]。
 
 ## 已应用此方案的仓库
 
-| 仓库 | 路径 |
-|------|------|
-| second-brain | `C:\Users\Administrator\.claude\projects\C--\memory` |
-| chinese-chess | `C:\chinese-chess` |
-| gomoku | `C:\gomoku` |
-| draw-and-guess | `C:\draw-and-guess` |
-| animal-battle | `C:\animal-battle` |
+| 仓库 | 路径 | remote 格式 |
+|------|------|-------------|
+| second-brain | `C:\Users\Administrator\.claude\projects\C--\memory` | `git@github.com:z15314102792-arch/second-brain.git` |
+| chinese-chess | `C:\chinese-chess` | `git@github.com:z15314102792-arch/chinese-chess.git` |
+| gomoku | `C:\gomoku` | `git@github.com:z15314102792-arch/gomoku.git` |
+| draw-and-guess | `C:\draw-and-guess` | `git@github.com:z15314102792-arch/draw-and-guess.git` |
+| screw-jam | `C:\screw-jam` | `git@github.com:z15314102792-arch/screw-jam.git` |
+| animal-battle | `C:\animal-battle` | `git@github.com:z15314102792-arch/animal-battle.git` |
 
 ## 为什么不用的方案
 
@@ -69,3 +111,5 @@ git config --global url."git@ssh.github.com:z15314102792-arch/".insteadOf "https
 | 改 hosts 文件 | GitHub IP 经常变，不可靠 |
 | 代理/VPN | 额外开销，不值得为 git 专门开 |
 | 国内镜像（Gitee） | 延迟同步，多一套管理 |
+| HTTPS + Personal Access Token | 和 HTTPS 一样被墙，没有区别 |
+| `insteadOf` URL 改写 | 旧方案需要，新 SSH config 后不需要了 |

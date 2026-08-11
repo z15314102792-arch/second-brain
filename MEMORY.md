@@ -5,7 +5,7 @@ metadata:
   tags: 
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-08-11T09:38:53.270Z
+  modified: 2026-08-11T12:04:39.558Z
 ---
 
 ## 🎮 游戏
@@ -46,6 +46,10 @@ metadata:
 ## 🤖 自动化
 
 - [[自动化/项目管家]] — Skills + Workflows + Cron
+
+## 📂 项目
+
+- [[项目/进云老师剪辑]] — v1.0，教育IP口播剪辑，20分钟读稿→1分21秒竖屏成片
 
 ## 📰 日报
 
