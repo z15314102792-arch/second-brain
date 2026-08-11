@@ -41,6 +41,12 @@ jobs:
             fi
           done
           echo "DATE=${DATE}" >> $GITHUB_ENV
+          # git log 让 AI 知道实际改了什么，不再漏报
+          git log --since="3 days ago" --oneline --all > /tmp/git_log.txt
+          GL=$(cat /tmp/git_log.txt)
+          echo "GL<<EOF" >> $GITHUB_ENV
+          echo "${GL}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
           YR=$(cat /tmp/yesterday_report.txt)
           echo "YR<<EOF" >> $GITHUB_ENV
           echo "${YR}" >> $GITHUB_ENV
@@ -76,6 +82,7 @@ jobs:
           ANIMAL_HTTP: ${{ env.ANIMAL_HTTP }}
           TEMPLE_HTTP: ${{ env.TEMPLE_HTTP }}
           YESTERDAY_REPORT: ${{ env.YR }}
+          GIT_LOG: ${{ env.GL }}
         run: python3 scripts/daily_analyze.py
 
       - name: 保存并提交

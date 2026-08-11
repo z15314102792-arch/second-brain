@@ -8,8 +8,8 @@ import os
 DATE = os.environ.get('DATE', 'unknown')
 DEEPSEEK_KEY = os.environ['DEEPSEEK_KEY']
 SCT_KEY = os.environ['SCT_KEY']
-YESTERDAY = os.environ.get('YESTERDAY', '')
 YESTERDAY_REPORT = os.environ.get('YESTERDAY_REPORT', '')
+GIT_LOG = os.environ.get('GIT_LOG', '')
 
 # 读取新闻数据
 news_raw = ''
