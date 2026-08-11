@@ -5,7 +5,7 @@
   "showAttachments": false,
   "hideUnresolved": false,
   "showOrphans": true,
-  "collapse-color-groups": true,
+  "collapse-color-groups": false,
   "colorGroups": [
     {
       "query": "tag:#废弃方案",
@@ -69,11 +69,11 @@
   "textFadeMultiplier": 0,
   "nodeSizeMultiplier": 1,
   "lineSizeMultiplier": 1,
-  "collapse-forces": false,
+  "collapse-forces": true,
   "centerStrength": 0.518987341772152,
   "repelStrength": 10,
   "linkStrength": 1,
   "linkDistance": 249,
   "scale": 0.7132754626224354,
-  "close": false
+  "close": true
 }
