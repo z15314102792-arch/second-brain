@@ -44,7 +44,7 @@ jobs:
           # ── memory 仓库的 git log ──
           git log --since="2 days ago" --format="%h %ad %s" --date=short --all > /tmp/git_log.txt
           # ── 游戏仓库的 git log（各自独立仓库，用 git clone 拉取）──
-          for repo in chinese-chess gomoku draw-and-guess animal-battle star-moon-temple; do
+          for repo in chinese-chess gomoku draw-and-guess animal-battle screw-jam star-moon-temple; do
             echo "" >> /tmp/git_log.txt
             echo "=== $repo ===" >> /tmp/git_log.txt
             git clone --depth 5 "https://github.com/z15314102792-arch/$repo.git" "/tmp/repo_$repo" 2>/dev/null && \
@@ -67,6 +67,7 @@ jobs:
           echo "GOMOKU_HTTP=$(check_site 'https://z15314102792-arch.github.io/gomoku/')" >> $GITHUB_ENV
           echo "DRAW_HTTP=$(check_site 'https://z15314102792-arch.github.io/draw-and-guess/')" >> $GITHUB_ENV
           echo "ANIMAL_HTTP=$(check_site 'https://z15314102792-arch.github.io/animal-battle/')" >> $GITHUB_ENV
+          echo "SCREW_HTTP=$(check_site 'https://z15314102792-arch.github.io/screw-jam/')" >> $GITHUB_ENV
           echo "TEMPLE_HTTP=$(check_site 'https://z15314102792-arch.github.io/star-moon-temple/')" >> $GITHUB_ENV
 
       - name: 防重复检查
@@ -88,6 +89,7 @@ jobs:
           GOMOKU_HTTP: ${{ env.GOMOKU_HTTP }}
           DRAW_HTTP: ${{ env.DRAW_HTTP }}
           ANIMAL_HTTP: ${{ env.ANIMAL_HTTP }}
+          SCREW_HTTP: ${{ env.SCREW_HTTP }}
           TEMPLE_HTTP: ${{ env.TEMPLE_HTTP }}
           YESTERDAY_REPORT: ${{ env.YR }}
           GIT_LOG: ${{ env.GL }}

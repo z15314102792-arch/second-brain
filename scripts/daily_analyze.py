@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""AI日报 v2.4 — DeepSeek分析 + 微信推送 + 跨仓库git log"""
+"""AI日报 v2.5 — DeepSeek分析 + 微信推送 + 跨仓库git log + 螺丝消除"""
 import urllib.request
 import urllib.parse
 import json
@@ -24,6 +24,7 @@ chess_http = os.environ.get('CHESS_HTTP', '?')
 gomoku_http = os.environ.get('GOMOKU_HTTP', '?')
 draw_http = os.environ.get('DRAW_HTTP', '?')
 animal_http = os.environ.get('ANIMAL_HTTP', '?')
+screw_http = os.environ.get('SCREW_HTTP', '?')
 temple_http = os.environ.get('TEMPLE_HTTP', '?')
 
 def desc(code, name, note=''):
@@ -71,12 +72,13 @@ prompt_parts.append("")
 # 板块2：项目健康
 prompt_parts.append("## 2. 项目健康")
 prompt_parts.append("")
-prompt_parts.append("五个项目的HTTP状态 + 昨日实际变动。")
+prompt_parts.append("六个项目的HTTP状态 + 昨日实际变动。")
 prompt_parts.append("")
 prompt_parts.append("**「昨日动态」列必须逐条扫描下方 git log！禁止漏报！**")
-prompt_parts.append("git log 格式: commit_hash 日期 消息。消息里包含项目名（动物大战/五子棋/象棋/你画我猜/日报/记忆等）。")
+prompt_parts.append("git log 格式: commit_hash 日期 消息。消息里包含项目名（动物大战/五子棋/象棋/你画我猜/螺丝消除/日报/记忆等）。")
 prompt_parts.append("识别规则：看到「动物大战 v3.6」→ 动物大战写「v3.6 防御性错误处理」。看到「日报系统」→ 对应系统改动。")
-prompt_parts.append("一个项目有多条 commit 就逐条列出，按时间正序排列（v3.4→v3.5→v4.0，禁止倒序！），用顿号分隔。")
+prompt_parts.append("一个项目有多条 commit 就逐条列出，按时间正序排列（v3.4→v3.5→v4.0，禁止倒序！）。")
+prompt_parts.append("每条改动独占一行，用 &lt;br&gt; 换行，不要堆在一起。")
 prompt_parts.append("如果 git log 里确实没有某项目的提交，才写「无变动」。")
 prompt_parts.append("不许写「代码提交记录中未出现」这种废话——直接列出版本号和改动内容。")
 prompt_parts.append("")
@@ -87,6 +89,7 @@ prompt_parts.append(desc(chess_http, '中国象棋', '双人象棋'))
 prompt_parts.append(desc(gomoku_http, '五子棋', '联机五子棋'))
 prompt_parts.append(desc(draw_http, '你画我猜', '你画我猜'))
 prompt_parts.append(desc(animal_http, '动物大战', '动物自动对战'))
+prompt_parts.append(desc(screw_http, '螺丝消除', '抖音解压小游戏'))
 prompt_parts.append(desc(temple_http, '星月神殿', '已退役'))
 prompt_parts.append("")
 prompt_parts.append("星月神殿永远标注'已退役'。")
