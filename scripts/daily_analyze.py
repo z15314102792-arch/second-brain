@@ -125,8 +125,6 @@ prompt_parts.append(news_raw if news_raw.strip() else "（今日暂无AI相关�
 prompt_parts.append("")
 
 prompt_parts.append("--- git log（昨天所有代码改动，逐条读！每条都要反映到「昨日动态」和「昨日日志」里） ---")
-	prompt_parts.append("格式说明：以「=== 仓库名 ===」开头的区块是该游戏仓库的提交记录。")
-	prompt_parts.append("例如「=== animal-battle ===」下面的 commit 是动物大战的代码改动，禁止漏报！")
 prompt_parts.append(GIT_LOG if GIT_LOG.strip() else "（无 git 记录）")
 prompt_parts.append("")
 
