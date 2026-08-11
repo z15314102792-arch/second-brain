@@ -41,14 +41,14 @@ jobs:
             fi
           done
           echo "DATE=${DATE}" >> $GITHUB_ENV
-          # ── memory 仓库的 git log ──
-          git log --since="2 days ago" --format="%h %ad %s" --date=short --all > /tmp/git_log.txt
+          # ── memory 仓库的 git log（只取昨天北京时间的提交）──
+          git log --after="${YESTERDAY}T00:00:00+08:00" --before="${YESTERDAY}T23:59:59+08:00" --format="%h %ad %s" --date=short --all > /tmp/git_log.txt
           # ── 游戏仓库的 git log（各自独立仓库，用 git clone 拉取）──
           for repo in chinese-chess gomoku draw-and-guess animal-battle screw-jam star-moon-temple; do
             echo "" >> /tmp/git_log.txt
             echo "=== $repo ===" >> /tmp/git_log.txt
             git clone --depth 5 "https://github.com/z15314102792-arch/$repo.git" "/tmp/repo_$repo" 2>/dev/null && \
-              git -C "/tmp/repo_$repo" log --since="30 hours ago" --format="%h %ad %s" --date=short >> /tmp/git_log.txt 2>/dev/null || \
+              git -C "/tmp/repo_$repo" log --after="${YESTERDAY}T00:00:00+08:00" --before="${YESTERDAY}T23:59:59+08:00" --format="%h %ad %s" --date=short >> /tmp/git_log.txt 2>/dev/null || \
               echo "(无法获取)" >> /tmp/git_log.txt
           done
           GL=$(cat /tmp/git_log.txt)
