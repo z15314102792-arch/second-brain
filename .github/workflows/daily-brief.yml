@@ -3,7 +3,7 @@ name: AI日报
 on:
   workflow_dispatch:
   schedule:
-    - cron: '55 23 * * *'
+    - cron: '0 19 * * *'
 
 permissions:
   contents: write
