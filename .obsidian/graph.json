@@ -18,49 +18,49 @@
       "query": "tag:#入口",
       "color": {
         "a": 1,
-        "rgb": 10053324
+        "rgb": 11225020
       }
     },
     {
       "query": "path:游戏/",
       "color": {
         "a": 1,
-        "rgb": 6084188
+        "rgb": 6732650
       }
     },
     {
       "query": "path:工具/",
       "color": {
         "a": 1,
-        "rgb": 4886745
+        "rgb": 4367861
       }
     },
     {
       "query": "path:知识/",
       "color": {
         "a": 1,
-        "rgb": 4360186
+        "rgb": 2541274
       }
     },
     {
       "query": "path:自动化/",
       "color": {
         "a": 1,
-        "rgb": 16743490
+        "rgb": 16754470
       }
     },
     {
       "query": "path:日报/",
       "color": {
         "a": 1,
-        "rgb": 16761035
+        "rgb": 15483002
       }
     },
     {
       "query": "path:存档/",
       "color": {
         "a": 1,
-        "rgb": 15769680
+        "rgb": 16763432
       }
     }
   ],
@@ -75,5 +75,5 @@
   "linkStrength": 1,
   "linkDistance": 249,
   "scale": 0.7132754626224354,
-  "close": true
+  "close": false
 }
