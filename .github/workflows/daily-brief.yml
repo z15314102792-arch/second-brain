@@ -2,6 +2,11 @@ name: AI日报
 
 on:
   workflow_dispatch:
+    inputs:
+      force:
+        description: '强制重新生成'
+        required: false
+        default: 'false'
   schedule:
     - cron: '55 23 * * *'
 
