@@ -5,7 +5,7 @@ metadata:
   tags: 
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-08-11T02:52:18.275Z
+  modified: 2026-08-11T03:54:35.263Z
 ---
 
 ## 🎮 游戏
@@ -13,7 +13,7 @@ metadata:
 - [[游戏/中国象棋]] — v3.11，联机可用
 - [[游戏/五子棋]] — v1.3，GitHub Pages
 - [[游戏/你画我猜]] — v8.14，单人模式完备
-- [[游戏/螺丝消除]] — v1.0，Canvas+WebAudio单文件，ScrewJam复刻
+- [[游戏/螺丝消除]] — v1.3，Canvas+WebAudio单文件，ScrewJam复刻，微信兼容
 - [[游戏/动物大战]] — v4.0，12种动物+6地图+卡片选择UI+引导页+青蛙臭鼬+沼泽
 - [[游戏/废弃/星月神殿]] — 双人闯关，废弃方案
 
