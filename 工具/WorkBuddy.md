@@ -11,7 +11,7 @@ metadata:
   type: tool
   status: 运行中
   version: v5.3.11
-  modified: 2026-08-12T03:21:40.103Z
+  modified: 2026-08-12T10:18:06.714Z
   originSessionId: 97234303-2b96-4c4c-8a01-e4743f297fee
 ---
 
@@ -49,4 +49,10 @@ metadata:
 
 ## 安装记录
 
-- 2026-08-12: 通过 winget 安装桌面端 v5.3.11 + npm 安装 CLI v2.134.0
+- 2026-08-12 凌晨: winget 安装桌面端 v5.3.11 + npm 安装 CLI v2.134.0
+- 2026-08-12 深夜: 白屏重装（原因是 HTTP 401 认证过期）。winget 卸载受权限限制失败 → 用自带卸载器 → 发现 3 个后台进程未退出 → taskkill 杀掉 → winget 覆盖安装成功。`.workbuddy` 用户数据目录完整保留。
+
+### 重装避坑要点
+- winget 管理员权限无法卸载用户域安装的包 → 用安装目录下的 `Uninstall WorkBuddy.exe`
+- 卸载后 WorkBuddy 进程不会自动退出 → 需手动 `taskkill`
+- `app.asar` 可能被系统锁 → 直接 winget 覆盖安装即可
