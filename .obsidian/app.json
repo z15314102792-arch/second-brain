@@ -3,6 +3,10 @@
     ".git/",
     ".gitignore",
     ".obsidian/",
+    ".claude/",
+    "copilot/",
+    ".agents/",
+    ".opencode/",
     "*.tmp.*",
     "*.canvas"
   ]
