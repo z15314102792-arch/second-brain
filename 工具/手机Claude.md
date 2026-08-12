@@ -8,7 +8,7 @@ metadata:
   created: 2026-08-06
   status: 运行中
   originSessionId: be80e689-330f-4a06-b20e-796308e39605
-  modified: 2026-08-07T12:22:49.846Z
+  modified: 2026-08-12T09:14:22.414Z
 ---
 
 ## 架构
@@ -68,21 +68,28 @@ claude                      # 启动Claude Code
 | 记忆文件 | ✅ 全套 | 🟡 进行中（已打包，等安装） |
 | 全局指令 | ✅ 完整 | 🟡 进行中（精简模板已就绪） |
 
-## 记忆同步（2026-08-07）
+## 记忆同步（2026-08-12 已落地）
 
-**方案**：PC 端 HTTP 服务（端口3456）→ 手机端 curl 一键安装
-- 安装包：`C:\tmp\phone-http\phone-memory-sync.tar.gz`（22个.md文件，27KB）
-- 安装脚本：`C:\tmp\phone-http\phone-setup.sh`
-- CLAUDE.md 精简模板：`知识/手机端CLAUDE模板.md`
-- 启动服务：双击 `C:\tmp\phone-http\start-server.bat`（端口3456，已验证防火墙放行）
+**方案**：Git + GitHub SSH 443 端口（放弃旧 HTTP 服务方案）
+- 仓库：`git@github.com:z15314102792-arch/second-brain.git`
+- 手机 Termux 直接 `git clone` 到 `~/storage/shared/Documents/second-brain/`
+- SSH 配置：`ssh -p 443 git@ssh.github.com`（防墙）
+- 安装脚本：`sh scripts/phone-setup.sh`（一键建 `sy`/`ph` 命令）
+- Obsidian App 打开 `Documents/second-brain` 作为库
 
-**精简规则**：保留语言/自测/沟通，移除 Agent分派/调研先行/版本标示/会话存档/编码自查
+### 日常使用
 
-## 待做
+| 操作 | 怎么操作 |
+|------|----------|
+| 拉取最新笔记 | Termux → `sy` |
+| 上传改动 | Termux → `ph` |
+| 看/写笔记 | Obsidian App |
+| 看关系图谱 | Obsidian 右下角图标 |
 
-- [ ] 完成记忆同步安装（用户启动 bat → 手机 curl）
-- [ ] 验证：文件数=22、CLAUDE.md 存在、claude 启动列出项目
-- [ ] 每次 PC 端记忆更新后同步到手机（需建立自动流程）
+### 重要提醒
+
+- Termux 本体操作，不要进 Ubuntu proot（proot 里创建的文件 App 看不到）
+- `.obsidian/graph.json` 已从 git 追踪中移除（多设备冲突源）
 
 ## 相关
 
