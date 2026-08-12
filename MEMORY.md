@@ -5,7 +5,7 @@ metadata:
   tags: 
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-08-12T11:50:08.819Z
+  modified: 2026-08-12T12:26:21.376Z
 ---
 
 ## 🎮 游戏
@@ -46,6 +46,7 @@ metadata:
 - [[知识/AIGC游戏美术方案]] — 五款游戏的免费AI美术素材生成方案，即梦为主
 - [[知识/Obsidian-RAG配置指南]] — Copilot插件+DeepSeek API，让AI搜索本地笔记
 - [[知识/系统根因分析]] — Claude Code 8大根因+社区方案+修复策略
+- [[知识/CLAUDE-md规则强制执行]] — 6种社区方案调研，hooks是唯一有效强制手段
 
 ## 🤖 自动化
 
