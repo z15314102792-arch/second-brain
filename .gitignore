@@ -11,3 +11,9 @@ copilot/
 # === 临时文件 ===
 ..md
 2026-08-07.md
+
+
+
+
+# Ignore Smart Environment folder
+.smart-env
