@@ -5,20 +5,20 @@ metadata:
   node_type: memory
   type: project
   status: 运行中
-  version: v1.2
-  modified: 2026-08-12T09:24:33.347Z
+  version: v1.3
+  modified: 2026-08-12T19:03:54.387Z
   originSessionId: 97234303-2b96-4c4c-8a01-e4743f297fee
 ---
 
 # Obsidian Copilot + Ollama 配置
 
-> v1.2 | 2026-08-12
+> v1.3 | 2026-08-13
 
 ## 最终架构
 
 ```
 Obsidian Copilot v4.0.0
-  ├── 聊天模型: qwen2.5:3b (Ollama 本地) ← 等凌晨3点 cron 自动下载 7b
+  ├── 聊天模型: qwen2.5:7b (Ollama 本地) ← 已下载 ✅
   ├── Embedding: bge-m3 (Ollama 本地)
   ├── 诊断代理: 127.0.0.1:11435 → 127.0.0.1:11434
   │   └── 路径重写: /chat/completions → /v1/chat/completions
@@ -30,10 +30,20 @@ Obsidian Copilot v4.0.0
 
 | 模型 | 用途 | 大小 | 状态 |
 |------|------|------|------|
-| qwen2.5:3b | 聊天/RAG | 1.9GB | ✅ 运行中 |
-| bge-m3 | 向量嵌入 | 1.2GB | ✅ 运行中 |
-| qwen2.5:7b | 聊天/RAG（目标） | 4.7GB | ⏳ 凌晨 cron 自动下载 |
-| nomic-embed-text | 向量嵌入（旧） | 0.3GB | 🗑️ 已弃用，可删除 |
+| qwen2.5:7b | 聊天/RAG（目标） | 4.68GB | ✅ 已下载 2026-08-13 03:03 |
+| qwen2.5:3b | 聊天/RAG（备用） | 1.93GB | ✅ 运行中 |
+| bge-m3 | 向量嵌入 | 1.16GB | ✅ 运行中 |
+| nomic-embed-text | 向量嵌入（旧） | 0.27GB | 🗑️ 已弃用，可删除 |
+
+## 📥 下载记录
+
+| 模型 | 完成时间 | 大小 | 速度 | 结果 |
+|------|----------|------|------|------|
+| qwen2.5:7b | 2026-08-13 03:03:31 | 4.68GB | 35-81 MB/s | ✅ 成功 |
+| bge-m3 | 2026-08-12 | 1.16GB | — | ✅ 成功 |
+| qwen2.5:3b | 2026-08-12 | 1.93GB | — | ✅ 成功 |
+
+**关键结论**：qwen2.5:7b 白天反复卡死在 80-92%（网速仅 16KB/s），凌晨 3 点下载网速飙到 80MB/s，几十秒完成。**大模型下载必须走凌晨时段**。
 
 ## 优化配置（v1.2 新增）
 
@@ -59,14 +69,14 @@ Obsidian Copilot v4.0.0
 | 2 | 聊天窗口空白 | provider 缺 `origin` 字段，JS 崩溃 | 加 `origin: {kind: "byok"}` |
 | 3 | "Failed to fetch" → 404 | Copilot 用 OpenAI 格式 `/chat/completions`，Ollama 在 `/v1/chat/completions` | 代理路径重写 |
 | 4 | enableSemanticSearchV3 = false | 索引需要此开关为 true 才启动 | 改为 true |
-| 5 | qwen2.5:3b 回答太泛 | 3B 参数推理弱 + nomic-embed-text 中文差 | 升级 bge-m3 + 中文提示词 + 等 7b |
+| 5 | qwen2.5:3b 回答太泛 | 3B 参数推理弱 + nomic-embed-text 中文差 | 升级 bge-m3 + 中文提示词 + 7b |
 
 ## 关键配置项（data.json）
 
 | 配置 | 值 | 说明 |
 |------|-----|------|
 | defaultChainType | `"vault_qa"` | RAG 问答模式 |
-| defaultModelKey | `"qwen2.5:3b\|ollama"` | 聊天模型（7b 下载后改回） |
+| defaultModelKey | `"qwen2.5:3b\|ollama"` | ⚠️ 待切换为 7b |
 | embeddingModelKey | `"bge-m3\|ollama"` | 向量嵌入模型 |
 | enableSemanticSearchV3 | `true` | **必须为 true，否则索引不启动** |
 | temperature | `0.3` | 适中的创造性 |
@@ -98,7 +108,7 @@ Obsidian Copilot v4.0.0
 ### 3. 下载模型
 
 ```bash
-ollama pull qwen2.5:3b   # 先用 3b，网速好再下 7b
+ollama pull qwen2.5:7b   # 建议凌晨下载，白天网速仅 16KB/s 会卡死
 ollama pull bge-m3
 ```
 
@@ -135,6 +145,7 @@ python ollama-proxy.py
 
 ## 待办
 
-- [ ] 凌晨 3 点 cron 自动下载 qwen2.5:7b，明天验证
+- [x] 凌晨 3 点 cron 自动下载 qwen2.5:7b → ✅ 已完成（2026-08-13 03:03）
 - [ ] 7b 下载成功后：改回 defaultModelKey + configuredModels + backends
+- [ ] 切换 7b 后重新加载 Copilot 插件 + 重建索引
 - [ ] 写一键换机脚本（自动安装 Ollama + 下载模型 + 配置 Copilot + 启动代理）
