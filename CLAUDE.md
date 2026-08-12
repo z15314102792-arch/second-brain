@@ -5,12 +5,12 @@ metadata:
   tags: 
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-08-12T08:46:13.969Z
+  modified: 2026-08-12T08:54:12.628Z
 ---
 
 # 第二大脑 · AI 操作手册
 
-> 版本 v2.6 | 2026-08-12
+> 版本 v2.7 | 2026-08-12
 
 ## 这是什么
 
