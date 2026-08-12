@@ -5,12 +5,12 @@ metadata:
   tags: 
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-08-12T08:54:12.628Z
+  modified: 2026-08-12T11:50:14.236Z
 ---
 
 # 第二大脑 · AI 操作手册
 
-> 版本 v2.7 | 2026-08-12
+> 版本 v3.0 | 2026-08-12
 
 ## 这是什么
 
@@ -102,7 +102,11 @@ metadata:
    - 工具 → `工具/xxx.md` 或 `工具/废弃/xxx.md`
    - 知识 → `知识/xxx.md`
    - 自动化 → `自动化/xxx.md`
-3. `git add -A && git commit -m "..." && git push origin master && git push hdd master`
+3. **提交前自检**：
+   - `git add 存档/ 游戏/ 工具/ 知识/ 项目/ 日报/ 自动化/ scripts/ .github/ CLAUDE.md MEMORY.md .gitignore index.html .obsidian/graph.json .obsidian/app.json .obsidian/appearance.json .obsidian/core-plugins.json .obsidian/community-plugins.json`
+   - ⚠️ 禁止 `git add -A`——会混入第三方软件自动生成的未审核文件
+   - `git diff --stat --cached` 确认暂存区无误
+   - `git commit -m "..." && git push origin master && git push hdd master`
    - origin → GitHub，hdd → G 盘完整备份（硬盘未连接时 hdd 推送会失败，不影响 origin）
 4. **硬盘备份（Git版）**：将全部文件拷贝到 `G:\claude 记忆\Git版\{日期}-{次数}\`
    - 日期格式 `YYYY-MM-DD`，次数为当天第几次保存（01 起）
