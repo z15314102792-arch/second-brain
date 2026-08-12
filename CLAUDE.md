@@ -5,7 +5,7 @@ metadata:
   tags: 
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-08-12T07:42:05.870Z
+  modified: 2026-08-12T07:51:05.386Z
 ---
 
 # 第二大脑 · AI 操作手册
@@ -102,7 +102,11 @@ metadata:
    - 工具 → `工具/xxx.md` 或 `工具/废弃/xxx.md`
    - 知识 → `知识/xxx.md`
    - 自动化 → `自动化/xxx.md`
-3. `git add -A && git commit -m "..." && git push origin master && git push backup master`（备份盘未连接时 backup 推送会跳过，不影响 origin）
+3. `git add -A && git commit -m "..." && git push origin master`
+4. **硬盘备份**：将全部文件（排除 `.git/`）拷贝到 `G:\claude 记忆\Git版\{日期}-{次数}\`
+   - 日期格式 `YYYY-MM-DD`，次数为当天第几次保存（01 起）
+   - 用 `find . -type f -not -path './.git/*' | while` 逐文件拷贝
+   - 硬盘未连接时跳过此步
 
 ### 每周一次（建议周日晚上）
 4. 运行 `/记忆体检` — 检查知识库健康度
