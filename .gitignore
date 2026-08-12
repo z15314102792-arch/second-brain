@@ -1,6 +1,9 @@
 # === Obsidian 自动生成（含第三方插件，可能含密钥）===
 .obsidian/plugins/
 .obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/graph.json
+.trash/
 
 # === Copilot 自动生成的技能目录（非手动创建）===
 .agents/
