@@ -1,0 +1,32 @@
+{
+  "instructions": "此文件是 Copilot 插件的参考配置。请在 Obsidian 中打开设置 → Copilot 进行配置。",
+  "recommended_setup": {
+    "chat_model": {
+      "provider": "deepseek",
+      "model": "deepseek-chat",
+      "base_url": "https://api.deepseek.com/v1",
+      "note": "DeepSeek 国内直连，便宜好用（￥1/百万token），注册 platform.deepseek.com 获取 API Key"
+    },
+    "embedding_model": {
+      "option_a": {
+        "name": "方案A: 本地免费 (推荐)",
+        "tool": "LM Studio",
+        "download": "https://lmstudio.ai/",
+        "model": "text-embedding-qwen3-embedding-0.6b",
+        "note": "下载 LM Studio → 搜索并加载 embedding 模型 → 启用 CORS → 记下本地地址"
+      },
+      "option_b": {
+        "name": "方案B: 云端付费",
+        "provider": "deepseek",
+        "model": "deepseek-chat",
+        "note": "用同一个 DeepSeek API Key，但 embedding 效果不如专用模型"
+      }
+    },
+    "qa_settings": {
+      "qaExclusions": ".git/,.obsidian/",
+      "autoIndexStrategy": "ON_MODE_SWITCH",
+      "note": "排除 .git 和 .obsidian 配置目录，只索引你的笔记内容"
+    }
+  },
+  "usage": "配置完成后，在 Copilot 对话窗口切换到 'Vault QA' 模式，就可以用自然语言搜索你的笔记了。例如：'我之前调研螺丝消除游戏时得出什么结论？'"
+}
