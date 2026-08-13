@@ -4,7 +4,7 @@ description: Claude Code file watcher bug——用 Edit 原子保存 settings.js
 metadata:
   node_type: memory
   type: reference
-  modified: 2026-08-13T03:04:48.347Z
+  modified: 2026-08-13T04:18:14.142Z
   originSessionId: d4628283-c00a-44d4-84b8-e47c02346778
 ---
 
@@ -29,8 +29,11 @@ Claude Code 靠文件 watcher 监听 settings.json 的变化来热加载 hook �
 
 ## 影响复盘
 
-2026-08-12 的 hook 修复工作（verification-gate 补 contract、metacog 按 session_id 隔离、token-guard 加只读逃生通道）改完后，**实际可能都还没生效**，需要重启后重测一次。
+2026-08-12 的 hook 修复工作（verification-gate 补 contract、token-guard 加只读逃生通道）改完后，**实际可能都还没生效**，需要重启后重测一次。
+
+> ⚠️ 更正（2026-08-13）：其中「metacog 按 session_id 隔离」后来确认是无效工作——metacog 有更根本的 `isError` 字段错误（真实字段是 `is_error`），已被软删废弃，见 [[hook静默失效审计]]。
 
 ## 相关
 
 - [[CLAUDE-md规则强制执行]] — hooks 是唯一有效强制手段的调研，本坑是 hooks 系统自身的一个 bug
+- [[hook静默失效审计]] — 6个hook审计5个失效，metacog 因 isError 字段错误被软删
