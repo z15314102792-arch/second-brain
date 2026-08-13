@@ -20,3 +20,5 @@ copilot/
 
 # Ignore Smart Environment folder
 .smart-env
+# Copilot 自动生成的索引文件
+.obsidian/copilot-index-*.json

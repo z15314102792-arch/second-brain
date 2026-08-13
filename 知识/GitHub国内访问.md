@@ -1,12 +1,12 @@
 ---
 name: github-china-access
-description: GitHub 在国内网络不稳定——HTTPS和22端口常被墙，SSH走ssh.github.com:443是唯一稳定方案
+description: GitHub 国内访问——HTTPS全被墙，remote统一用 git@github.com（SSH config自动走443），禁止直接用 git@ssh.github.com
 metadata: 
   node_type: memory
   tags: 
     - 踩坑
   type: reference
-  modified: 2026-08-11T12:06:43.949Z
+  modified: 2026-08-13T02:55:22.897Z
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
 ---
 
@@ -92,7 +92,7 @@ git push --dry-run
 
 > ⚠️ 2026-08-11 曾因 VS Code 误选中导致私钥泄露到对话上下文，已重新生成密钥对。详见 [[存档/2026-08-11-进度]]。
 
-## 已应用此方案的仓库
+## 已应用此方案的仓库（2026-08-13 全盘检测后补全）
 
 | 仓库 | 路径 | remote 格式 |
 |------|------|-------------|
@@ -102,6 +102,26 @@ git push --dry-run
 | draw-and-guess | `C:\draw-and-guess` | `git@github.com:z15314102792-arch/draw-and-guess.git` |
 | screw-jam | `C:\screw-jam` | `git@github.com:z15314102792-arch/screw-jam.git` |
 | animal-battle | `C:\animal-battle` | `git@github.com:z15314102792-arch/animal-battle.git` |
+| cc-web | `C:\cc-web` | `git@github.com:z15314102792-arch/cc-web.git` |
+| star-moon-temple | `C:\star-moon-temple` | `git@github.com:z15314102792-arch/star-moon-temple.git` |
+| free-claude-code | `C:\free-claude-code` | `git@github.com:z15314102792-arch/free-claude-code.git` |
+| dashboard | `C:\dashboard` | `git@github.com:z15314102792-arch/dashboard.git` |
+
+## 2026-08-13 全盘检测的补充结论
+
+全盘扫描 9 个项目的 git 仓库，发现三类 remote 错误，已全部修复：
+
+| 错误类型 | 现象 | 修复 |
+|----------|------|------|
+| remote 指向错误仓库 | chinese-chess 的 remote 指到了 animal-battle | `remote set-url` 改回 |
+| remote 用 `git@ssh.github.com` | host key 验证失败 | 改回 `git@github.com`（SSH config 自动走 443） |
+| remote 用 HTTPS | `Empty reply from server` / `Could not connect to github.com:443` | 改回 SSH |
+
+**关键结论**：
+1. **remote 一律用 `git@github.com:...` 格式**，SSH config 会自动走 443 端口
+2. **不要直接写 `git@ssh.github.com:...`**——绕过了 SSH config 的 Host 匹配，会 host key 验证失败
+3. **HTTPS 格式（`https://github.com/...`）全部被墙**，一个都不能用
+4. 标准 `git@github.com` 在配置了 SSH config 后完全可用（本次 9 个项目全部验证通过）
 
 ## 为什么不用的方案
 
