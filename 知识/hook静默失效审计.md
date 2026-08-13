@@ -4,7 +4,7 @@ description: 6个hook审计发现5个静默失效，失效原因分类+修复方
 metadata: 
   node_type: memory
   type: reference
-  modified: 2026-08-13T03:52:22.762Z
+  modified: 2026-08-13T04:03:39.532Z
   originSessionId: f2741554-ffca-47e9-9a4d-84a925bc159a
 ---
 
@@ -38,5 +38,11 @@ metadata:
 | echo-of-prompt.py | 依赖缺失 | 软删（.disabled） |
 | session-end.js | 路径不匹配 | 修复路径 |
 | verification-gate.py | 全局无 contracts | 保留（项目级有效） |
+
+## 误报案例（v2 上线当天）
+
+research-gate v2 重写后第一轮就误拦：汇报测试结果时写了「说"推荐"→ exit 2」，「推荐」二字被关键词匹配误判成"在给推荐方案"。用户决策：**保留硬拦截（选 B）**，不再修关键词。
+
+> 关键词匹配判断语义，方向本身脆弱，会漏检也会误报。已修两轮关键词，用户拍板保留后停止投入。
 
 相关：[[知识/CLAUDE-md规则强制执行]]
