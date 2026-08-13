@@ -1,0 +1,6 @@
+{
+  "name": "memory-core-integrity",
+  "required_file": "MEMORY.md",
+  "min_size_bytes": 500,
+  "active": true
+}
