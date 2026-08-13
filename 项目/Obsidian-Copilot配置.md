@@ -4,15 +4,15 @@ description: Obsidian Copilot v4.0.0 + Ollama 本地模型集成全记录，含�
 metadata: 
   node_type: memory
   type: project
-  status: 运行中
-  version: v1.3
-  modified: 2026-08-12T19:03:54.387Z
+  status: 待定
+  version: v1.5
+  modified: 2026-08-13T12:12:32.684Z
   originSessionId: 97234303-2b96-4c4c-8a01-e4743f297fee
 ---
 
 # Obsidian Copilot + Ollama 配置
 
-> v1.3 | 2026-08-13
+> v1.5 | 2026-08-13
 
 ## 最终架构
 
@@ -143,9 +143,52 @@ python ollama-proxy.py
 | 诊断代理 | `C:\Users\Administrator\.claude\projects\C--\ollama-proxy.py` |
 | 代理日志 | `C:\Users\Administrator\.claude\projects\C--\proxy.log` |
 
+## 检索跑偏根因 + 止损决策（2026-08-13）
+
+### 根因（4 组实测排除法）
+
+7b 模型 ✅、bge-m3 排序 ✅、索引 ✅ 都正常，问题在 **Copilot 插件检索拼装环节**：
+
+1. bge-m3 输出 1024 维，Orama 向量库只建 256 维 → 相似度乱算（issue #1224）
+2. MiniSearch 中文退化单字匹配，英文词反而准 → 「私有改 public」被顶前
+
+### 调研「更新+重建」结论
+
+- 更新无意义（装的 v4.0.0 已是最新，8/11 发布）
+- 重建索引有 75% 把握（源码已修维度 bug + 中文 bigram），命令 =「Force Reindex Vault」
+
+### 决策：止损
+
+用户体验「太差，要非常严谨才能勉强答」。决定**放弃折腾 Copilot 检索**：查笔记/问版本/找信息 → 直接问 Claude Code；Copilot 留作聊天/写作。
+
 ## 待办
 
 - [x] 凌晨 3 点 cron 自动下载 qwen2.5:7b → ✅ 已完成（2026-08-13 03:03）
-- [ ] 7b 下载成功后：改回 defaultModelKey + configuredModels + backends
-- [ ] 切换 7b 后重新加载 Copilot 插件 + 重建索引
-- [ ] 写一键换机脚本（自动安装 Ollama + 下载模型 + 配置 Copilot + 启动代理）
+- [x] 7b 下载成功后：改回 defaultModelKey + configuredModels + backends → ✅ 已完成（三层全 = qwen2.5:7b）
+- [x] 7b 实测 → ✅ 已测，检索跑偏根因定位（见上）
+- [ ] 写一键换机脚本 → 因放弃 Copilot 检索，降级为「可选」
+
+## 用户反馈与决策（2026-08-13）
+
+### 7b「不聪明」反馈
+
+用户实测后反馈 qwen2.5:7b 不够聪明。查配置：GTX 1650 4GB + 32GB 内存 + i5-10400F，本地模型舒适区 7b~14b。
+
+### 三方案讨论结论
+
+| 方案 | 结论 |
+|------|------|
+| qwen3:8b | 小改善（60→70 分），非质变 |
+| qwen3:14b | 更聪明但 CPU 硬扛，慢 |
+| 混合方案（本地找笔记 + DeepSeek 云端回答） | 唯一能「明显变聪明」，¥10 用很久 |
+
+**核心认知**：本地小模型换哪代都不可能「很聪明」，变聪明只有云端。当初选纯本地时未摊开讲这个代价。
+
+### 决策
+
+不升级、不上混合方案，保持现状。Copilot 检索已止损，查笔记改问 Claude Code；Ollama 留着本地聊天/写作。
+
+### 环境备注
+
+- Ollama 已升级 0.32.8，自带白色聊天界面 + launch 启动器（launch 是启动第三方 AI 工具，与本项目无关）
+- nomic-embed-text 已弃用，可删（274MB）
