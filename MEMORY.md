@@ -5,7 +5,7 @@ metadata:
   tags: 
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-08-13T05:07:53.162Z
+  modified: 2026-08-13T12:13:39.568Z
 ---
 
 ## 🎮 游戏
@@ -62,6 +62,7 @@ metadata:
 - [[项目/Obsidian-Copilot配置]] — v1.0，Copilot v4.0.0+Ollama集成排错全记录
 - [[项目/今日问题审计]] — v1.0，8/12会话全面审计，8个根因+解决规划
 - [[项目/数字人口播]] — v1.0，克隆脸+声音→口播视频，因4GB显卡暂停
+- [[项目/AI短剧解说视频]] — v1.0，文案→AI生成动态画面→成片，VideoClaw已部署
 
 ## 📰 日报
 
