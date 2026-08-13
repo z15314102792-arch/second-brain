@@ -5,7 +5,7 @@ metadata:
   tags: 
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-08-12T12:26:21.376Z
+  modified: 2026-08-13T03:04:55.791Z
 ---
 
 ## 🎮 游戏
@@ -47,6 +47,7 @@ metadata:
 - [[知识/Obsidian-RAG配置指南]] — Copilot插件+DeepSeek API，让AI搜索本地笔记
 - [[知识/系统根因分析]] — Claude Code 8大根因+社区方案+修复策略
 - [[知识/CLAUDE-md规则强制执行]] — 6种社区方案调研，hooks是唯一有效强制手段
+- [[知识/ClaudeCode改hook需重启]] — 改 hook 必须重启 Claude Code 才生效（file watcher bug）
 
 ## 🤖 自动化
 
