@@ -5,7 +5,7 @@ metadata:
   tags: 
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-08-13T03:04:55.791Z
+  modified: 2026-08-13T03:14:38.451Z
 ---
 
 ## 🎮 游戏
@@ -41,7 +41,7 @@ metadata:
 - [[知识/分类器拦截解决]] — 安全分类器问题
 - [[知识/GitHub国内访问]] — SSH 443 避墙方案
 - [[知识/ClaudeCode跨会话消息]] — 跨会话消息传递功能调研
-- [[知识/goal命令]] — /goal 自主执行命令用法
+- [[知识/goal命令]] — /goal 官方命令，无熔断器，需 bound 子句封顶
 - [[知识/手机AI与自动化]] — K70端侧AI+自动化方案全览，含核心概念解释
 - [[知识/AIGC游戏美术方案]] — 五款游戏的免费AI美术素材生成方案，即梦为主
 - [[知识/Obsidian-RAG配置指南]] — Copilot插件+DeepSeek API，让AI搜索本地笔记
