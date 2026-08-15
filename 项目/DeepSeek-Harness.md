@@ -5,13 +5,13 @@ metadata:
   node_type: memory
   type: project
   status: 运行中
-  version: v1.2
-  modified: 2026-08-15T16:10:00.000Z
+  version: v1.3
+  modified: 2026-08-15T16:45:00.000Z
 ---
 
 # DeepSeek Harness 项目
 
-## 版本：v1.2（根治前端转圈：升级 Edge 92 → 151）
+## 版本：v1.3（装 3 个插件：插件市场 + 记忆 + 浏览器）
 
 ## 背景
 用户想下载「deepseek Hermes」，经调研确认是 DeepSeek 官方刚出的首款 Agent 产品 **DeepSeek Harness**（命令 `dsh`），不是 Nous Research 的 Hermes Agent（第三方软件）。
@@ -30,6 +30,7 @@ metadata:
 5. 桌面快捷方式：`C:\Users\Administrator\Desktop\DeepSeek Harness.lnk`
 6. 更换快捷方式图标为黑色鲸鱼（开放平台 `fe-static.deepseek.com/platform/favicon.svg` → sharp 转 ICO：`deepseek-black.ico`）
 7. **根治「转圈」问题**（见下方「转圈根因」）
+8. **装 3 个插件**（dshmarket + dsh-persona-memory + @anweat/dsh-browser），见下方「插件安装」
 
 ## 转圈根因（真正原因，纠正 v1.1 的误判）
 
@@ -59,6 +60,24 @@ metadata:
 - 前端 Web UI 是 **v0.1 开发者预览版**，对**过时浏览器**不兼容（需要 Edge 93+ / 新版 Chrome）。
 - ⚠️ **v1.1 曾误判根因是 `127.0.0.1` 和 Edge `--app` 模式**，实为 Edge 92 过旧导致 `Object.hasOwn` 崩溃 + WebSocket bug。已纠正。
 
+## 插件安装（v1.3）
+
+装了 3 个社区插件（都装到 web profile：`~/.dsh/profiles/web/`）：
+
+| 插件 | 版本 | 作用 |
+|------|------|------|
+| dshmarket | 1.3.1 | 插件市场入口，Web UI 出现「设置→插件市场」 |
+| dsh-persona-memory | 0.1.12 | 跨会话记忆（存 MEMORY.md / USER.md） |
+| @anweat/dsh-browser | 0.1.3 | 浏览器自动化（AI 操作网页） |
+
+### 前置与坑
+- **必须先装 pnpm**（`npm i -g pnpm` → v11.21.0），`dsh plugin` 底层调 pnpm。
+- **sharp 国内下载坑**：browser 依赖 sharp@0.32.0 从 GitHub 下 libvips 首次超时，重试后成功。若再遇到，设 `npm_config_sharp_libvips_binary_host=https://cdn.npmmirror.com/binaries/sharp-libvips`（pnpm 11 的 `config set` 不支持自定义 key，需直接写 .npmrc）。
+- 装完需**重启 dsh web** 才生效。
+
+### 验证
+重启后 CDP 实测：仍转圈 false、主界面正常、无异常。
+
 ## 使用方式
 - 双击桌面「DeepSeek Harness」图标（普通浏览器打开 localhost）
 - 界面地址：http://localhost:3080
@@ -71,6 +90,7 @@ metadata:
 - Edge 自动更新组件损坏，改用官方 MSI 静默覆盖升级（国内直连微软、免费、零依赖）
 
 ## 待办
-- 用户双击桌面图标，确认能正常进主界面并完成一次真实对话。
+- 用户刷新/重开网页，确认「设置→插件市场」入口出现、记忆插件生效。
 - （可选）等 dsh 正式版后，再考虑「独立窗口」体验。
 - （注意）dsh 升级后 index.html 的 polyfill 可能被覆盖；若未来又转圈且浏览器旧，需重新注入。
+- （注意）dsh 升级后 profile 目录的插件可能需重装；装插件前先确认 pnpm 可用 + sharp 镜像配置。
