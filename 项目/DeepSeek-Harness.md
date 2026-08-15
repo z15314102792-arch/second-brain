@@ -5,13 +5,13 @@ metadata:
   node_type: memory
   type: project
   status: 运行中
-  version: v1.4
+  version: v1.5
   modified: 2026-08-15T17:00:00.000Z
 ---
 
 # DeepSeek Harness 项目
 
-## 版本：v1.4（插件市场加载失败修复：服务崩溃重启）
+## 版本：v1.5（用户真人实测通过，转圈根治彻底收尾）
 
 ## 背景
 用户想下载「deepseek Hermes」，经调研确认是 DeepSeek 官方刚出的首款 Agent 产品 **DeepSeek Harness**（命令 `dsh`），不是 Nous Research 的 Hermes Agent（第三方软件）。
@@ -54,6 +54,8 @@ metadata:
 - 异常/错误：无
 
 ✅ 结论：进主界面 + WebSocket 正常 + 无异常。
+
+- **用户真人实测（2026-08-15）**：双击桌面图标，进主界面 + 完成一次真实对话，✅ 通过。转圈问题彻底闭环。
 
 ## 关键结论
 - dsh 后端 / API Key / 模型 / 网络 **全部正常**（`dsh --profile headless` 调用模型验证通过）
