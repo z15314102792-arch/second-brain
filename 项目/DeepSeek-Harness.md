@@ -5,13 +5,13 @@ metadata:
   node_type: memory
   type: project
   status: 运行中
-  version: v1.3
-  modified: 2026-08-15T16:45:00.000Z
+  version: v1.4
+  modified: 2026-08-15T17:00:00.000Z
 ---
 
 # DeepSeek Harness 项目
 
-## 版本：v1.3（装 3 个插件：插件市场 + 记忆 + 浏览器）
+## 版本：v1.4（插件市场加载失败修复：服务崩溃重启）
 
 ## 背景
 用户想下载「deepseek Hermes」，经调研确认是 DeepSeek 官方刚出的首款 Agent 产品 **DeepSeek Harness**（命令 `dsh`），不是 Nous Research 的 Hermes Agent（第三方软件）。
@@ -78,6 +78,12 @@ metadata:
 ### 验证
 重启后 CDP 实测：仍转圈 false、主界面正常、无异常。
 
+### 插件市场加载失败排查（v1.4）
+- **现象**：装完插件后，Web UI 插件市场显示「插件目录加载失败，请稍后重试」。
+- **排查**：快照文件 `data/registry-snapshot.json` JSON 合法（457 插件）；数据源 `awesome-dsh-plugin.com` 国内可达。**真正原因是 dsh web 服务进程崩溃（3080 无监听）**，前端请求不到 `/dsh-market/registry`。
+- **修复**：重启 dsh web 后恢复，接口返回 `source: live`、573 插件、HTTP 200。
+- **隐患**：崩溃确切原因未定位（当时日志被清理）；若再次崩溃需保留日志排查。
+
 ## 使用方式
 - 双击桌面「DeepSeek Harness」图标（普通浏览器打开 localhost）
 - 界面地址：http://localhost:3080
@@ -90,7 +96,8 @@ metadata:
 - Edge 自动更新组件损坏，改用官方 MSI 静默覆盖升级（国内直连微软、免费、零依赖）
 
 ## 待办
-- 用户刷新/重开网页，确认「设置→插件市场」入口出现、记忆插件生效。
+- （已确认 ✅）插件市场入口出现、目录加载正常（573 插件）。
+- （待观察）记忆插件（dsh-persona-memory）是否跨会话生效。
 - （可选）等 dsh 正式版后，再考虑「独立窗口」体验。
 - （注意）dsh 升级后 index.html 的 polyfill 可能被覆盖；若未来又转圈且浏览器旧，需重新注入。
 - （注意）dsh 升级后 profile 目录的插件可能需重装；装插件前先确认 pnpm 可用 + sharp 镜像配置。
