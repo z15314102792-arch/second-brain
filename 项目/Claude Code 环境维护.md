@@ -1,3 +1,14 @@
+---
+name: claude-code-env-maintenance
+description: Claude Code 环境维护——hook 中文乱码三重根因修复（bash语法+python路径+GBK编码）
+metadata: 
+  node_type: memory
+  type: project
+  status: 稳定
+  version: v1.1
+  modified: 2026-08-15T10:00:00.000Z
+---
+
 # Claude Code 环境维护
 
 > 版本 v1.1 · 2026-08-15

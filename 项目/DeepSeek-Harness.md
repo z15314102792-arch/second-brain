@@ -1,3 +1,14 @@
+---
+name: deepseek-harness
+description: DeepSeek Harness（dsh）安装记录，网页包装成桌面
+metadata: 
+  node_type: memory
+  type: project
+  status: 运行中
+  version: v1.1
+  modified: 2026-08-15T10:00:00.000Z
+---
+
 # DeepSeek Harness 项目
 
 ## 版本：v1.1（修复前端转圈 + 更换黑色鲸鱼图标）
