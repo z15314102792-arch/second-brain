@@ -1,17 +1,17 @@
 ---
 name: claude-code-env-maintenance
-description: Claude Code 环境维护——hook 中文乱码三重根因修复 + API 成本优化调研（中转选型/降本方案）
+description: Claude Code 环境维护——hook 中文乱码三重根因修复 + API 成本优化调研 + check_edit_spiral 误拦修复
 metadata: 
   node_type: memory
   type: project
   status: 稳定
-  version: v1.2
-  modified: 2026-08-15T18:20:00.000Z
+  version: v1.3
+  modified: 2026-08-15T22:00:00.000Z
 ---
 
 # Claude Code 环境维护
 
-> 版本 v1.2 · 2026-08-15
+> 版本 v1.3 · 2026-08-15
 
 ## v1.1 — 修复中文乱码
 
@@ -69,3 +69,31 @@ metadata:
 ### 软文避雷名单
 
 非线智能API、星链4SAPI、灵眸AI（LMU-AI=lmuai 同名 + 返利链接）均为自推软文，已剔除。
+
+---
+
+## v1.3 — 修复 check_edit_spiral 误拦（调阈值到 8）
+
+### 问题
+
+token-guard.py 的 check_edit_spiral 按「同一文件 Edit 次数」计数（不区分成功/失败、不区分参数是否相同），默认 ≥3 次就拦截，把正常的多处编辑误判成「编辑死循环」；改 token-guard.py 本身时甚至把自己锁死（改到第 3 次就被拦）。
+
+### 调研结论（loop-breaker 官方 README）
+
+**遇到误报 → 调高 consecutive_threshold 或加 ignore_tools，不要用 off（禁用）。** 即「调阈值优先，别删除检查」。
+
+> 另发现：Edit 失败（old_string 不匹配）返回 <tool_use_error>，不触发 PostToolUse / PostToolUseFailure（Issue #24908），故「挪到 PostToolUse 按失败计数」方案不可行。
+
+### 修复
+
+- 只改 settings.json 的 env，加 CLAUDE_FOCUS_EDIT_FAIL_LIMIT=8（同文件 Edit 到第 8 次才拦）。
+- 未改 token-guard.py 代码；「完全相同重试」的精确防护（check_exact_retry）仍在。
+
+### 验证
+
+- settings.json JSON 合法（json.load 通过），CLAUDE_FOCUS_EDIT_FAIL_LIMIT = 8 已写入。
+
+### 待办
+
+- [ ] 需重启 Claude Code 才生效（settings.json env 改动不热加载）
+- [ ] 若一个文件一次改超过 8 处仍被拦，可再调高或改用 ignore_tools 方案
