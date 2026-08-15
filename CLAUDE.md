@@ -10,7 +10,7 @@ metadata:
 
 # 第二大脑 · AI 操作手册
 
-> 版本 v3.0 | 2026-08-12
+> 版本 v3.1 | 2026-08-15
 
 ## 这是什么
 
@@ -106,7 +106,8 @@ metadata:
    - `git add 存档/ 游戏/ 工具/ 知识/ 项目/ 日报/ 自动化/ scripts/ .github/ CLAUDE.md MEMORY.md .gitignore index.html .obsidian/graph.json .obsidian/app.json .obsidian/appearance.json .obsidian/core-plugins.json .obsidian/community-plugins.json`
    - ⚠️ 禁止 `git add -A`——会混入第三方软件自动生成的未审核文件
    - `git diff --stat --cached` 确认暂存区无误
-   - `git commit -m "..." && git push origin master && git push hdd master`
+   - **同步顺序（2026-08-15 起）**：先 `git pull origin master`（拉云端最新，避免覆盖其他设备改动）→ 再 `git commit -m "..."`（提交本地改动）→ 最后 `git push origin master && git push hdd master`（推送）
+   - 若 pull 时遇到冲突，停下来向用户说明再处理，不要硬来
    - origin → GitHub，hdd → G 盘完整备份（硬盘未连接时 hdd 推送会失败，不影响 origin）
 4. **硬盘备份（Git版）**：将全部文件拷贝到 `G:\claude 记忆\Git版\{日期}-{次数}\`
    - 日期格式 `YYYY-MM-DD`，次数为当天第几次保存（01 起）
