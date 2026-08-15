@@ -97,15 +97,15 @@ git push --dry-run
 | 仓库 | 路径 | remote 格式 |
 |------|------|-------------|
 | second-brain | `C:\Users\Administrator\.claude\projects\C--\memory` | `git@github.com:z15314102792-arch/second-brain.git` |
-| chinese-chess | `C:\chinese-chess` | `git@github.com:z15314102792-arch/chinese-chess.git` |
-| gomoku | `C:\gomoku` | `git@github.com:z15314102792-arch/gomoku.git` |
-| draw-and-guess | `C:\draw-and-guess` | `git@github.com:z15314102792-arch/draw-and-guess.git` |
-| screw-jam | `C:\screw-jam` | `git@github.com:z15314102792-arch/screw-jam.git` |
-| animal-battle | `C:\animal-battle` | `git@github.com:z15314102792-arch/animal-battle.git` |
-| cc-web | `C:\cc-web` | `git@github.com:z15314102792-arch/cc-web.git` |
-| star-moon-temple | `C:\star-moon-temple` | `git@github.com:z15314102792-arch/star-moon-temple.git` |
-| free-claude-code | `C:\free-claude-code` | `git@github.com:z15314102792-arch/free-claude-code.git` |
-| dashboard | `C:\dashboard` | `git@github.com:z15314102792-arch/dashboard.git` |
+| chinese-chess | `E:\项目\chinese-chess` | `git@github.com:z15314102792-arch/chinese-chess.git` |
+| gomoku | `E:\项目\gomoku` | `git@github.com:z15314102792-arch/gomoku.git` |
+| draw-and-guess | `E:\项目\draw-and-guess` | `git@github.com:z15314102792-arch/draw-and-guess.git` |
+| screw-jam | `E:\项目\screw-jam` | `git@github.com:z15314102792-arch/screw-jam.git` |
+| animal-battle | `E:\项目\animal-battle` | `git@github.com:z15314102792-arch/animal-battle.git` |
+| cc-web | `E:\项目\cc-web` | `git@github.com:z15314102792-arch/cc-web.git` |
+| star-moon-temple | `E:\项目\star-moon-temple` | `git@github.com:z15314102792-arch/star-moon-temple.git` |
+| free-claude-code | `E:\项目\free-claude-code` | `git@github.com:z15314102792-arch/free-claude-code.git` |
+| dashboard | `E:\项目\dashboard` | `git@github.com:z15314102792-arch/dashboard.git` |
 
 ## 2026-08-13 全盘检测的补充结论
 

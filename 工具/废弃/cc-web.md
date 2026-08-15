@@ -5,7 +5,7 @@ tags: [废弃方案]
 metadata: 
   node_type: memory
   type: project
-  path: C:\cc-web
+  path: E:\项目\cc-web
   status: 废弃方案
   replaced_by: claude-code-remote + ZeroTier
   modified: 2026-08-07T03:38:58.430Z
@@ -19,7 +19,7 @@ metadata:
 
 ## 做了什么
 
-- 搭建了原型：`C:\cc-web\`（server.js + public/index.html）
+- 搭建了原型：`E:\项目\cc-web\`（server.js + public/index.html）
 - 架构：浏览器 ←WebSocket→ Node.js ←spawn→ claude
 - 前端：移动端优先的聊天 UI，支持 Markdown 渲染、流式显示
 
