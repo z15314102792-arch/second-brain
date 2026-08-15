@@ -20,7 +20,7 @@ metadata:
 ## 你已经有的
 
 - ✅ Obsidian v1.13.6 已安装
-- ✅ 知识库已关联：`C:\Users\Administrator\.claude\projects\C--\memory`
+- ✅ 知识库已关联：`E:\第二大脑`
 - ✅ 社区插件已开启
 
 ## 你需要做的（3步，约15分钟）

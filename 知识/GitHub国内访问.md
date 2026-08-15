@@ -96,7 +96,7 @@ git push --dry-run
 
 | 仓库 | 路径 | remote 格式 |
 |------|------|-------------|
-| second-brain | `C:\Users\Administrator\.claude\projects\C--\memory` | `git@github.com:z15314102792-arch/second-brain.git` |
+| second-brain | `E:\第二大脑` | `git@github.com:z15314102792-arch/second-brain.git` |
 | chinese-chess | `E:\项目\chinese-chess` | `git@github.com:z15314102792-arch/chinese-chess.git` |
 | gomoku | `E:\项目\gomoku` | `git@github.com:z15314102792-arch/gomoku.git` |
 | draw-and-guess | `E:\项目\draw-and-guess` | `git@github.com:z15314102792-arch/draw-and-guess.git` |
