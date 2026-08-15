@@ -49,6 +49,7 @@ metadata:
 - [[知识/CLAUDE-md规则强制执行]] — 6种社区方案调研，hooks是唯一有效强制手段
 - [[知识/ClaudeCode改hook需重启]] — 改 hook 必须重启 Claude Code 才生效（file watcher bug）
 - [[知识/hook静默失效审计]] — 6个hook审计5个静默失效，治理原则
+- [[知识/会话存档全记录]] — 任何事情（含纯咨询/被拒请求）都要写进日志
 
 ## 🤖 自动化
 
