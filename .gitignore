@@ -22,3 +22,6 @@ copilot/
 .smart-env
 # Copilot 自动生成的索引文件
 .obsidian/copilot-index-*.json
+
+# === 密钥文件（明文 API key，禁止同步到 GitHub）===
+工具/API密钥.md

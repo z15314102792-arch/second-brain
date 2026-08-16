@@ -26,6 +26,7 @@ metadata:
 - [[工具/废弃/Huppy]] — 远程编程助手
 - [[工具/废弃/免费Claude]] — NVIDIA NIM，国内不可用
 - [[工具/WorkBuddy]] — v5.3.11，腾讯AI办公Agent，已装CLI+桌面端
+- [[工具/API密钥]] — v1.0，所有 API 密钥集中存放（本地，已 gitignore）
 
 ## 🧠 知识
 
