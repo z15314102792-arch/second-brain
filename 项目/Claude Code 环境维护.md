@@ -1,17 +1,17 @@
 ---
 name: claude-code-env-maintenance
-description: Claude Code 环境维护——hook 中文乱码三重根因修复 + API 成本优化调研 + check_edit_spiral 误拦修复
+description: Claude Code 环境维护——hook 修复 + API 成本优化 + 读链接/识图能力扩展（mcp-vision 识图 + 读链接 Skill）
 metadata: 
   node_type: memory
   type: project
   status: 稳定
-  version: v1.3
-  modified: 2026-08-15T22:00:00.000Z
+  version: v1.4
+  modified: 2026-08-16T13:00:00.000Z
 ---
 
 # Claude Code 环境维护
 
-> 版本 v1.3 · 2026-08-15
+> 版本 v1.4 · 2026-08-16
 
 ## v1.1 — 修复中文乱码
 
@@ -97,3 +97,48 @@ token-guard.py 的 check_edit_spiral 按「同一文件 Edit 次数」计数（�
 
 - [ ] 需重启 Claude Code 才生效（settings.json env 改动不热加载）
 - [ ] 若一个文件一次改超过 8 处仍被拦，可再调高或改用 ignore_tools 方案
+
+---
+
+## v1.4 — 加「读链接」+「识图」能力（2026-08-16）
+
+用户想让 Claude Code（后端 DeepSeek 纯文本模型）获得两个新本领：①读链接（抖音/B站/小红书/网页 → 说出内容）；②识图（看图/截图/视频帧）。
+
+### 识图（✅ 已完成验证）
+
+- 装 `mcp-vision`（`pip install mcp-vision`），配智谱 GLM-4V-Flash（复用 CCE 已有 zhipu key）。
+- 原理：眼睛（视觉模型）+ 大脑（DeepSeek）分离——图片先交给 GLM-4V 转文字，再喂 DeepSeek。DeepSeek 的 Anthropic 接口本身不支持图片。
+- 验证：GLM-4V-Flash 测试 status 200，能描述图片内容。
+
+### 读链接（✅ 已完成，需用户登录浏览器测真实视频）
+
+- 封装成 Skill：`C:\Users\Administrator\.claude\skills\读链接\`（SKILL.md v1.1 + scripts/read_link.py），一句话触发「帮我看看这个链接」。
+- 技术链：yt-dlp 探测/下载音频 → ffmpeg 切片 → 智谱 GLM-ASR 转写；网页走 httpx 抓正文；图片交给识图 MCP。
+- 验证：网页抓取 OK、ASR 单段+60秒切片转写 OK、本地 loopback 端到端 OK。
+
+### 关键决策：ASR 用智谱 GLM-ASR 纯 HTTP，弃本地 FunASR
+
+本地 FunASR 连踩 3 坑后放弃（Hypothesis Reset）：
+1. funasr import 段错误（torch 没装，funasr 把 torch 当可选依赖跳过了）
+2. 装 torch 2.13 后 import 报 `c10.dll` 加载失败（WinError 1114）
+3. onnxruntime 1.28 同样 DLL 加载失败——判断是 workbuddy 便携 Python 3.13 对原生 C++ 扩展的 DLL 加载有问题（VC++ 运行库其实都在 System32）
+
+改用智谱 `glm-asr-2512`（`POST open.bigmodel.cn/api/paas/v4/audio/transcriptions`），复用 zhipu key，国内直连、纯 HTTP、无本地 C 库。单次 ≤30 秒，用 ffmpeg 切 25 秒段解决长音频。
+
+### 平台限制（需用户知晓）
+
+- B站/抖音/小红书有反爬，需浏览器登录后脚本读 cookie（`--cookies-from-browser chrome`，可用环境变量 `LINK_COOKIE_BROWSER` 切换）。实测 B 站无登录返回 HTTP 412。
+- 智谱 GLM-ASR 免费额度待确认（用户付不了费，需关注计费）。
+
+### 文件清单
+
+- `C:\Users\Administrator\.claude\skills\读链接\SKILL.md`（v1.1）
+- `C:\Users\Administrator\.claude\skills\读链接\scripts\read_link.py`
+- mcp-vision 配置写入 `.claude.json`（`claude mcp add`）
+- API key 运行时从 `.cce/configs.json` 读取，未硬编码
+
+### 待办
+
+- [ ] 用户在浏览器登录 B站/抖音后，测真实视频链接
+- [ ] 确认智谱 GLM-ASR 免费额度
+- [ ] （可选）read_link.py 的下载时长上限、并发切片优化
