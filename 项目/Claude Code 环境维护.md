@@ -5,13 +5,13 @@ metadata:
   node_type: memory
   type: project
   status: 稳定
-  version: v1.4
-  modified: 2026-08-16T13:00:00.000Z
+  version: v1.5
+  modified: 2026-08-16T13:40:00.000Z
 ---
 
 # Claude Code 环境维护
 
-> 版本 v1.4 · 2026-08-16
+> 版本 v1.5 · 2026-08-16
 
 ## v1.1 — 修复中文乱码
 
@@ -142,3 +142,38 @@ token-guard.py 的 check_edit_spiral 按「同一文件 Edit 次数」计数（�
 - [ ] 用户在浏览器登录 B站/抖音后，测真实视频链接
 - [ ] 确认智谱 GLM-ASR 免费额度
 - [ ] （可选）read_link.py 的下载时长上限、并发切片优化
+
+---
+
+## v1.5 — 读链接全打通：本地 FunASR + 抖音免登录（2026-08-16）
+
+### 推翻 v1.4 的两个判断
+
+1. **FunASR 失败根因不是 Python 3.13**：真实根因是缺 VC++ 运行库 `vcruntime140_2.dll`（VC++ 2019+ 的 DLL，torch 的 c10.dll 依赖它）。用 winget 装 `Microsoft.VCRedist.2015+.x64`（v14.51.36247.0）后，torch 2.13.0+cpu 和 funasr 1.4.2 直接 import 成功。之前"workbuddy 便携 Python 3.13 对原生 C++ 扩展 DLL 加载有问题"的判断是错的。
+2. **改用标准 Python 3.11**（`C:\Users\Administrator\AppData\Local\Programs\Python\Python311\python.exe`，winget 装）作为 Skill 运行环境，比 workbuddy 便携 3.13 更稳。
+
+### 本地 FunASR 免费转写（弃智谱 GLM-ASR）
+
+- Python 3.11 上 `pip install torch torchaudio funasr`（清华源），模型用 SenseVoiceSmall（iic/SenseVoiceSmall，约 936MB，首次从 ModelScope 下载）。
+- 验证：转写「今天天气很好，我们一起去公园玩」完全正确，rtf 0.14（比实时快 7 倍），清理掉 SenseVoice 的 `<|zh|>` 等标记 token。
+- read_link.py 的 transcribe() 改用本地 FunASR，删掉智谱 GLM-ASR、load_zhipu_key、ffmpeg 切片逻辑。**免费无限量**，不再依赖智谱 ASR 计费。
+
+### 抖音免登录下载突破（关键，借鉴开源踩坑）
+
+之前卡在「Fresh cookies needed」签名墙。按用户要求"借鉴别人的路径"，SSH clone 开源项目看实现后打通：
+
+- **方案来源**：`Evil0ctal/Douyin_TikTok_Download_API`（a_bogus 纯 Python 签名实现，用 gmssl 的 SM3 哈希）+ `jsnjzxy/abogus_cpp`（签名算法 JS 版参考）。GitHub HTTPS 被墙，走 `git@github.com:...`（SSH 443）。
+- **免登录原理**：`aweme_id`（短链重定向正则提取）→ 游客 `ttwid`（POST `ttwid.bytedance.com/ttwid/union/register/` 自动获取）→ 构造 detail API 参数 + `msToken=''` 置空 + `a_bogus` 签名 → GET `aweme/v1/web/aweme/detail/` 拿视频直链（douyinvod CDN）。
+- **验证**：用户实测链接 `v.douyin.com/xn8UvyQCqRE/` 端到端跑通——拿到标题「零基础搭AI知识库…」+ 作者「姜胡说」+ 直链，FunASR 转写全文。
+- **关键文件**：`scripts/douyin_sign.py`（a_bogus 签名，复制自开源，保留 license 注释）+ read_link.py 加抖音免登录分支（`is_douyin`/`extract_aweme_id`/`get_ttwid`/`fetch_douyin`/`download_douyin_audio`）。
+
+### 版本
+
+- SKILL.md v1.3（抖音免登录 + 本地 FunASR）
+- read_link.py 用 Python 3.11 运行（SKILL.md 调用命令已改路径）
+
+### 待办
+
+- [ ] B站/小红书仍可能需登录 cookie（B站无登录实测 HTTP 412）
+- [ ] 抖音 a_bogus 签名算法可能随抖音更新失效，失效时需重新同步开源实现（Douyin_TikTok_Download_API 等）
+- [ ] 抖音直链有效期约 1-2 小时，下载需及时
