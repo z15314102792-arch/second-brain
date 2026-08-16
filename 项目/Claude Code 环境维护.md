@@ -5,8 +5,8 @@ metadata:
   node_type: memory
   type: project
   status: 稳定
-  version: v1.5
-  modified: 2026-08-16T13:40:00.000Z
+  version: v1.6
+  modified: 2026-08-16T14:00:00.000Z
 ---
 
 # Claude Code 环境维护
@@ -177,3 +177,35 @@ token-guard.py 的 check_edit_spiral 按「同一文件 Edit 次数」计数（�
 - [ ] B站/小红书仍可能需登录 cookie（B站无登录实测 HTTP 412）
 - [ ] 抖音 a_bogus 签名算法可能随抖音更新失效，失效时需重新同步开源实现（Douyin_TikTok_Download_API 等）
 - [ ] 抖音直链有效期约 1-2 小时，下载需及时
+
+---
+
+## v1.6 — 读链接扩展多平台：B站免登录攻克 + 长音频切片（2026-08-16）
+
+### B站 412 风控绕过（关键突破）
+
+- **问题**：B站视频页对免登录请求返回 412（「哔哩哔哩安全风控策略」），yt-dlp 和 httpx + buvid3/buvid4 都失败。
+- **根因**：B站 2025-2026 风控升级，需要 WBI 签名 + 完整设备指纹（buvid3/4 + b_nut + bili_ticket）+ **TLS/JA3 指纹模拟**。yt-dlp 缺 TLS 指纹模拟，httpx 缺 WBI 签名和 TLS 指纹。
+- **解法**：装 `bilibili-api-python`（Nemo2011 库，内置 WBI 签名缓存 + buvid 自动生成 + curl_cffi 的 impersonate 浏览器 TLS 指纹模拟），免登录拿标题 + 音频流。
+- **验证**：B站视频「三星堆：是谁杀死了他们的神？」（438 秒）端到端跑通，转写全文。
+
+### 长音频切片（修复 OOM）
+
+- **问题**：34 分钟长音频一次性转写报 `not enough memory: 19080449424 bytes`（≈19GB），SenseVoice 的 self-attention 对整个序列算爆内存。
+- **根因**：FunASR 没有 VAD 模型时整个音频当一个 chunk 处理；`batch_size_s` 依赖 VAD 才分段，单独传不生效。
+- **解法**：ffmpeg 把长音频（>60 秒）切成 60 秒小段，逐段转写再拼接。
+- **验证**：438 秒视频切 8 段，转写成功无 OOM。
+
+### 多平台覆盖现状
+
+| 平台 | 方案 | 状态 |
+|------|------|------|
+| 抖音 | a_bogus 签名 + 游客 ttwid | ✅ 免登录已验证 |
+| B站 | bilibili-api WBI 签名 + TLS 指纹 | ✅ 免登录已验证 |
+| 网页 | httpx 抓正文 | ✅ 已验证 |
+| 小红书/微博/YouTube | yt-dlp 通用路径 | 代码已覆盖，需真实链接实测 |
+
+### 版本
+
+- SKILL.md v1.4、read_link.py 加 B站分支（is_bilibili/fetch_bilibili/download_bilibili_audio）+ transcribe 切片
+- 新增依赖：bilibili-api-python + curl_cffi（Python 3.11 环境）
