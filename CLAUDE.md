@@ -6,12 +6,12 @@ metadata:
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
   modified: 2026-08-16
-  version: v4.1
+  version: v4.3
 ---
 
 # 第二大脑 · AI 操作手册
 
-> 版本 v4.1 | 2026-08-16
+> 版本 v4.3 | 2026-08-16
 
 ## 这是什么
 
@@ -36,6 +36,8 @@ E:\第二大脑\
 ├── 📦 仓库/           ← 废弃的、备份的、历史基线（不常用但留着）
 ├── 🔐 系统/           ← 密钥等敏感文件（已 gitignore，不能外传）
 ├── 🗑️ _垃圾站/        ← 不要的内容，先丢这（下划线开头，自动排最下面）
+├── scripts/           ← 脚本目录（simplify_md.py 等，备份用）
+├── index.html         ← 知识库入口网页
 │
 └── .obsidian/         ← Obsidian 配置（不要改）
 ```
@@ -124,6 +126,7 @@ metadata:
 | 🔘 灰 | `tag:#废弃方案` | 任意目录 | 废弃方案（覆盖任何目录色） |
 
 **铁律：**
+- `graph.json` 只在本机 PC 生效，**不同步 git**（手机/电脑互相覆盖会冲突，2026-08-12 已踩坑）。手机端图谱用默认灰色。
 - 每个目录都必须有颜色。新增目录时 → 同步更新 `graph.json` 和上表。
 - 任何文件都不能是黑色（系统/ 例外，但系统/ 只有密钥一个文件，通常被 gitignore 不显示）。
 - 分类按**人看得懂**的维度：这是干嘛的 → 还能不能用。
@@ -137,7 +140,7 @@ metadata:
    - 操作步骤 → `技能/xxx.md`
    - 工具配置 → `资料/xxx.md`
 3. **提交前自检**：
-   - `git add 灵感/ 待办/ 项目/ 知识/ 技能/ 资料/ 日记/ 仓库/ _垃圾站/ scripts/ .github/ CLAUDE.md MEMORY.md .gitignore index.html .obsidian/graph.json .obsidian/app.json .obsidian/appearance.json .obsidian/core-plugins.json .obsidian/community-plugins.json`
+   - `git add 灵感/ 待办/ 项目/ 知识/ 技能/ 资料/ 日记/ 仓库/ _垃圾站/ scripts/ .github/ CLAUDE.md MEMORY.md .gitignore index.html .obsidian/app.json .obsidian/appearance.json .obsidian/core-plugins.json .obsidian/community-plugins.json`
    - ⚠️ 禁止 `git add -A`——会混入第三方软件自动生成的未审核文件
    - ⚠️ `系统/` 目录**不要**加入 git add 清单（里面有密钥，已用 .gitignore 拦截，但白名单里也别写，双保险）
    - `git diff --stat --cached` 确认暂存区无误
