@@ -6,12 +6,12 @@ metadata:
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
   modified: 2026-08-16
-  version: v4.0
+  version: v4.1
 ---
 
 # 第二大脑 · AI 操作手册
 
-> 版本 v4.0 | 2026-08-16
+> 版本 v4.1 | 2026-08-16
 
 ## 这是什么
 
