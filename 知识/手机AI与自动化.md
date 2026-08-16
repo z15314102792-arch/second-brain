@@ -104,5 +104,5 @@ metadata:
 
 ## 相关
 
-- [[工具/手机Claude]] — 红米K70上跑Claude Code的方案
+- [[资料/手机Claude]] — 红米K70上跑Claude Code的方案
 - [[知识/用户人物画像]] — 用户偏好和习惯

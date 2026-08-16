@@ -20,7 +20,7 @@ metadata:
 
 1. **字段漂移**：读错 payload 字段名 —— `message`/`history` 实际不存在、`isError` 实际是 `is_error`（下划线）
 2. **依赖缺失**：依赖的文件从未创建 —— echo-of-prompt 的 `task-context.md`
-3. **路径不匹配**：文件名/路径对不上 —— session-end 找 `session-xxx-progress.md`，实际是 `存档/xxx-进度.md`
+3. **路径不匹配**：文件名/路径对不上 —— session-end 找 `session-xxx-progress.md`，实际是 `日记/xxx-进度.md`
 
 ## 治理原则（调研社区得出，可复用）
 

@@ -1,0 +1,100 @@
+{
+  "collapse-filter": false,
+  "search": "-path:日记",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "tag:#废弃方案",
+      "color": {
+        "a": 1,
+        "rgb": 8421504
+      }
+    },
+    {
+      "query": "tag:#入口",
+      "color": {
+        "a": 1,
+        "rgb": 11225020
+      }
+    },
+    {
+      "query": "path:系统/",
+      "color": {
+        "a": 1,
+        "rgb": 6381921
+      }
+    },
+    {
+      "query": "path:项目/",
+      "color": {
+        "a": 1,
+        "rgb": 6732650
+      }
+    },
+    {
+      "query": "path:知识/",
+      "color": {
+        "a": 1,
+        "rgb": 2541274
+      }
+    },
+    {
+      "query": "path:技能/",
+      "color": {
+        "a": 1,
+        "rgb": 16754470
+      }
+    },
+    {
+      "query": "path:资料/",
+      "color": {
+        "a": 1,
+        "rgb": 4367861
+      }
+    },
+    {
+      "query": "path:日记/",
+      "color": {
+        "a": 1,
+        "rgb": 15483002
+      }
+    },
+    {
+      "query": "path:仓库/",
+      "color": {
+        "a": 1,
+        "rgb": 16763432
+      }
+    },
+    {
+      "query": "path:灵感/",
+      "color": {
+        "a": 1,
+        "rgb": 12216520
+      }
+    },
+    {
+      "query": "path:待办/",
+      "color": {
+        "a": 1,
+        "rgb": 9268835
+      }
+    }
+  ],
+  "collapse-display": true,
+  "showArrow": true,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1,
+  "lineSizeMultiplier": 1,
+  "collapse-forces": true,
+  "centerStrength": 0.518987341772152,
+  "repelStrength": 10,
+  "linkStrength": 1,
+  "linkDistance": 249,
+  "scale": 1.2474767941386427,
+  "close": true
+}

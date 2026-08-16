@@ -2,7 +2,6 @@
 .obsidian/plugins/
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
-.obsidian/graph.json
 .trash/
 
 # === Copilot 自动生成的技能目录（非手动创建）===
@@ -24,4 +23,4 @@ copilot/
 .obsidian/copilot-index-*.json
 
 # === 密钥文件（明文 API key，禁止同步到 GitHub）===
-工具/API密钥.md
+系统/API密钥.md
