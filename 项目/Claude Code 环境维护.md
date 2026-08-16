@@ -5,8 +5,8 @@ metadata:
   node_type: memory
   type: project
   status: 稳定
-  version: v1.6
-  modified: 2026-08-16T14:00:00.000Z
+  version: v1.7
+  modified: 2026-08-16T14:20:00.000Z
 ---
 
 # Claude Code 环境维护
@@ -188,6 +188,7 @@ token-guard.py 的 check_edit_spiral 按「同一文件 Edit 次数」计数（�
 - **根因**：B站 2025-2026 风控升级，需要 WBI 签名 + 完整设备指纹（buvid3/4 + b_nut + bili_ticket）+ **TLS/JA3 指纹模拟**。yt-dlp 缺 TLS 指纹模拟，httpx 缺 WBI 签名和 TLS 指纹。
 - **解法**：装 `bilibili-api-python`（Nemo2011 库，内置 WBI 签名缓存 + buvid 自动生成 + curl_cffi 的 impersonate 浏览器 TLS 指纹模拟），免登录拿标题 + 音频流。
 - **验证**：B站视频「三星堆：是谁杀死了他们的神？」（438 秒）端到端跑通，转写全文。
+- **追加坑（音频下载也要 curl_cffi）**：B站音频 CDN（mcdn.bilivideo.cn 等）同样检测 TLS 指纹，httpx 下载会报 SSL `UNEXPECTED_EOF_WHILE_READING`（不同视频走不同 CDN，严格程度不同）。`download_bilibili_audio` 已改用 curl_cffi 的 `impersonate("chrome110")` 下载，覆盖所有 CDN。
 
 ### 长音频切片（修复 OOM）
 
@@ -209,3 +210,27 @@ token-guard.py 的 check_edit_spiral 按「同一文件 Edit 次数」计数（�
 
 - SKILL.md v1.4、read_link.py 加 B站分支（is_bilibili/fetch_bilibili/download_bilibili_audio）+ transcribe 切片
 - 新增依赖：bilibili-api-python + curl_cffi（Python 3.11 环境）
+
+---
+
+## v1.7 — 沉淀「卡点止损判定」工作方法论（2026-08-16）
+
+任务三（分析两种执行方式效率）的产出，已写入 Claude Code 记忆库（feedback 类型，自动加载）。
+
+### 结论
+
+- 用户让我分析「自己顺路径一路破解」vs「遇卡点就调研」哪个快、省 token。调研斯坦福/MIT、Lovable、Bito.ai、ISSTA 等硬数据：**试错循环占 token 约 60%，带调试循环比一次生成贵 5.6 倍，预先检索便宜 6 倍、快 3 倍**——「遇卡点就调研」全面占优。
+- 但用户追出关键问题：「遇卡点就调研」若无**判定标准**（怎么知道该停手了）就是空话。深入调研 AI 领域（自适应 RAG、信息增益、重复熔断器）得出 4 条客观判定标准。
+
+### 沉淀的 4 条止损判定（详见记忆库 stuck-stop-loss）
+
+1. 信息增益递减 → 停
+2. 本质重复熔断（连续 3 次只改表面参数）→ 强制停
+3. 原因不收敛 → 停
+4. 不迷信「我觉得」（AI 过度自信，只信客观信号）
+
+核心：判定不靠主观感觉（AI 和试错的人都会过度自信），靠信息增益等客观信号。
+
+### 版本
+
+- 记忆库新增 `stuck-stop-loss.md`（feedback）+ MEMORY.md 索引 +1 行
