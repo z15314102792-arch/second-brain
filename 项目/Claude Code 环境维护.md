@@ -5,8 +5,8 @@ metadata:
   node_type: memory
   type: project
   status: 稳定
-  version: v1.7
-  modified: 2026-08-16T14:20:00.000Z
+  version: v1.8
+  modified: 2026-08-16
 ---
 
 # Claude Code 环境维护
@@ -234,3 +234,23 @@ token-guard.py 的 check_edit_spiral 按「同一文件 Edit 次数」计数（�
 ### 版本
 
 - 记忆库新增 `stuck-stop-loss.md`（feedback）+ MEMORY.md 索引 +1 行
+
+---
+
+## v1.8 — Codex 迁移收尾 + 中转站套壳鉴定（2026-08-16）
+
+### codex 命令 PowerShell 失败修复
+
+- 根因：`codex.cmd` 中文提示 UTF-8 编码，cmd.exe 按 GBK 读乱码，脚本崩
+- 修复：重写 `C:\Users\Administrator\AppData\Roaming\npm\codex.cmd`（纯 ASCII）+ 新建 `codex.ps1`；验证 `codex --version` → 0.148.0-alpha.9
+
+### 中转站（tkapi.cc.cd）套壳实锤
+
+- API 返回 `_sub2api_display_scaled: true`（Sub-API 套壳字段）
+- 模型自曝「动态路由」、报不出型号只说「基于 GPT-5」
+- 禁网逼供三问全「不知道」，自认「不足以证明 GPT-5.6 是公开发布的产品」
+- 结论：非真 GPT-5.6，套壳站跑的知识截止较早的便宜模型
+
+### Codex hooks 精简
+
+- `.codex/hooks.json` 删 6 个 Claude 迁来旧 hook，只留 session-end.js
