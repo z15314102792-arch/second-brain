@@ -50,6 +50,7 @@ metadata:
 - [[知识/ClaudeCode改hook需重启]] — 改 hook 必须重启 Claude Code 才生效（file watcher bug）
 - [[知识/hook静默失效审计]] — 6个hook审计5个静默失效，治理原则
 - [[知识/会话存档全记录]] — 任何事情（含纯咨询/被拒请求）都要写进日志
+- [[知识/用户语言风格]] — 用户语言风格画像，帮助 AI 读懂用户怎么说话
 
 ## 🤖 自动化
 
@@ -66,6 +67,7 @@ metadata:
 - [[项目/AI短剧解说视频]] — v1.0，文案→AI生成动态画面→成片，VideoClaw已部署
 - [[项目/Claude Code 环境维护]] — v1.3，hook 乱码修复 + API 成本优化 + edit 误拦修复
 - [[项目/DeepSeek-Harness]] — v1.1，官方 DeepSeek Harness 网页包装成桌面
+- [[项目/提示词优化清单]] — 基于 1605 条真实消息分析的提示词优化清单
 
 ## 📰 日报
 
