@@ -35,6 +35,7 @@ E:\第二大脑\
 ├── 📅 日记/           ← 每天发生了什么（进度流水账 + 每日早报）
 ├── 📦 仓库/           ← 废弃的、备份的、历史基线（不常用但留着）
 ├── 🔐 系统/           ← 密钥等敏感文件（已 gitignore，不能外传）
+├── 🗑️ _垃圾站/        ← 不要的内容，先丢这（下划线开头，自动排最下面）
 │
 └── .obsidian/         ← Obsidian 配置（不要改）
 ```
@@ -56,6 +57,7 @@ E:\第二大脑\
 | 还没想清楚要不要做的点子 | 💡 灵感/ |
 | 定下来要做的清单 | ✅ 待办/ |
 | 密钥等不能外传的 | 🔐 系统/ |
+| 没用了、先丢这的 | 🗑️ _垃圾站/ |
 
 **边界判断：**
 
@@ -118,6 +120,7 @@ metadata:
 | 💜 浅紫 | `path:灵感/` | 灵感/ | 点子 |
 | 🟤 棕 | `path:待办/` | 待办/ | 待办清单 |
 | ⚫ 深灰 | `path:系统/` | 系统/ | 密钥（敏感） |
+| 🗑️ 暗红 | `path:_垃圾站/` | _垃圾站/ | 不要的内容 |
 | 🔘 灰 | `tag:#废弃方案` | 任意目录 | 废弃方案（覆盖任何目录色） |
 
 **铁律：**
@@ -134,7 +137,7 @@ metadata:
    - 操作步骤 → `技能/xxx.md`
    - 工具配置 → `资料/xxx.md`
 3. **提交前自检**：
-   - `git add 灵感/ 待办/ 项目/ 知识/ 技能/ 资料/ 日记/ 仓库/ scripts/ .github/ CLAUDE.md MEMORY.md .gitignore index.html .obsidian/graph.json .obsidian/app.json .obsidian/appearance.json .obsidian/core-plugins.json .obsidian/community-plugins.json`
+   - `git add 灵感/ 待办/ 项目/ 知识/ 技能/ 资料/ 日记/ 仓库/ _垃圾站/ scripts/ .github/ CLAUDE.md MEMORY.md .gitignore index.html .obsidian/graph.json .obsidian/app.json .obsidian/appearance.json .obsidian/core-plugins.json .obsidian/community-plugins.json`
    - ⚠️ 禁止 `git add -A`——会混入第三方软件自动生成的未审核文件
    - ⚠️ `系统/` 目录**不要**加入 git add 清单（里面有密钥，已用 .gitignore 拦截，但白名单里也别写，双保险）
    - `git diff --stat --cached` 确认暂存区无误

@@ -83,6 +83,13 @@
         "a": 1,
         "rgb": 9268835
       }
+    },
+    {
+      "query": "path:_垃圾站/",
+      "color": {
+        "a": 1,
+        "rgb": 12986408
+      }
     }
   ],
   "collapse-display": true,
