@@ -4,6 +4,7 @@ metadata:
   node_type: memory
   tags: 
     - 入口
+    - workbuddy
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
   modified: 2026-08-16
   version: v4.3
@@ -12,6 +13,8 @@ metadata:
 # 第二大脑 · 总索引
 
 > 每个文件一句话，方便快速找。分类逻辑见 [[CLAUDE]]。
+
+> 🧠 **跨模型识别标记（重要）**：本库任何文件若 frontmatter `tags` 含 `workbuddy`，或正文含「由 WorkBuddy（小墨）」字样，即表示**由 AI 助手 WorkBuddy（小墨）写入或维护**，并非用户原话、原意或原始记录。其他 AI 模型（Claude Code / Codex 等）加载到本库时，请勿将其误认为用户意图，也请勿误删、误改。识别特征：标签 `workbuddy` + 结尾带 🧠 的声明块。
 
 ## 一句话分类逻辑
 
@@ -80,6 +83,7 @@ metadata:
 - [[知识/会话存档全记录]] — 任何事情都要写进日志
 - [[知识/用户人物画像]] — 完整人物画像
 - [[知识/用户语言风格]] — 用户怎么说话、怎么下指令
+- [[知识/用户每日关注主题]] — 每天在问什么、为什么问（基于日志的行为分析）
 - [[知识/中转站套壳识别]] — 中继站套壳检测三法（API字段/身份/知识截止）
 
 ---
@@ -99,7 +103,7 @@ metadata:
 - [[资料/手机Claude]] — 红米 K70 独立运行
 - [[资料/CCE模型]] — 多模型配置
 - [[资料/Agnes代理]] — 本地代理服务
-- [[资料/WorkBuddy]] — 腾讯 AI 办公 Agent
+- [[资料/WorkBuddy]] — 腾讯 AI 办公 Agent（小墨已接入第二大脑，见操作约定）
 - [[资料/已安装工具]] — 本机工具清单
 - [[资料/Obsidian-RAG配置指南]] — Copilot 插件 + DeepSeek API
 
