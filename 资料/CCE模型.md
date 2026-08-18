@@ -55,3 +55,13 @@ metadata:
 - [ ] 用户重启后验证子 Agent 实际跑 deepseek-v4-flash（看 subagent 日志 message.model，不能只看配置）
 - [ ] 教用户触发 video-use skill
 - 补充详细信息
+
+## Claude Code 官方 DeepSeek API（2026-08-18）
+
+- Claude Code 配置文件：`C:\Users\Administrator\.claude\settings.json`
+- Anthropic 兼容地址：`https://api.deepseek.com/anthropic`
+- 当前默认模型：`deepseek-v4-flash`
+- 主模型、Haiku、Opus、Sonnet、子 Agent 和后台快速模型均已统一为 `deepseek-v4-flash`
+- 修改前备份：`C:\Users\Administrator\.claude\settings.json.backup-2026-08-18-deepseek`
+- 修改后必须完全退出并重新打开 Claude Code；可用 `/model deepseek-v4-flash` 验证
+- API Key 不写入知识库；本次使用的 Key 已因在聊天中暴露而建议撤销并重新生成
