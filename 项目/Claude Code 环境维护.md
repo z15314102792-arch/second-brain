@@ -5,8 +5,8 @@ metadata:
   node_type: memory
   type: project
   status: 稳定
-  version: v1.8
-  modified: 2026-08-16
+  version: v1.9
+  modified: 2026-08-18
 ---
 
 # Claude Code 环境维护
@@ -139,9 +139,9 @@ token-guard.py 的 check_edit_spiral 按「同一文件 Edit 次数」计数（�
 
 ### 待办
 
-- [ ] 用户在浏览器登录 B站/抖音后，测真实视频链接
-- [ ] 确认智谱 GLM-ASR 免费额度
-- [ ] （可选）read_link.py 的下载时长上限、并发切片优化
+- [x] 用户在浏览器登录 B站/抖音后，测真实视频链接（已免登录解决，无需此待办）
+- [x] 确认智谱 GLM-ASR 免费额度（已弃用，改本地 FunASR，免费无限量）
+- [x] （可选）read_link.py 的下载时长上限、并发切片优化（已用 60s 切片方案）
 
 ---
 
@@ -234,6 +234,28 @@ token-guard.py 的 check_edit_spiral 按「同一文件 Edit 次数」计数（�
 ### 版本
 
 - 记忆库新增 `stuck-stop-loss.md`（feedback）+ MEMORY.md 索引 +1 行
+
+---
+
+## v1.9 — 记忆持续化方案：全局 CLAUDE.md 启动必读 + 跨项目记忆拷贝（2026-08-18）
+
+### 问题
+Session 中断续接时发现记忆丢失。用户认为「换 API 导致失忆」，追查后确认：
+- **根因不是换 API**，是**启动目录变了**：`C:\Users\Administrator\` → `C:\`
+- Claude Code 按启动目录定项目身份（`C--Users-Administrator` → `C--`），记忆是 per-project 的
+- 旧项目 `memory/` 有 5 个文件，新项目 `memory/` 空的
+
+### 方案
+- **方案 A**：旧项目记忆复制到当前项目 `C:\Users\Administrator\.claude\projects\C--\memory\`（5 个文件）
+- **方案 B**：全局 CLAUDE.md 加「启动必读」章节 → v2.1，每次会话先读第二大脑，不再依赖项目级记忆目录
+- 用户否决了额外钩子方案（已有 CLAUDE.md 指令，加钩子会每次消息都强制读，浪费）
+
+### 涉及文件
+- `C:\Users\Administrator\.claude\CLAUDE.md` → v2.1（新增「启动必读」小节）
+- `C:\Users\Administrator\.claude\projects\C--\memory\` — 5 个记忆文件已就位
+
+### 待办
+- [ ] 后续新会话验证：CLAUDE.md 指令是否自动触发第二大脑读取
 
 ---
 
