@@ -30,6 +30,12 @@ jobs:
             TITLE=$(echo "$ITEM" | python3 -c "import sys,json; d=json.load(sys.stdin) or {}; print(d.get('title',''))" 2>/dev/null || true)
             URL=$(echo "$ITEM" | python3 -c "import sys,json; d=json.load(sys.stdin) or {}; print(d.get('url',''))" 2>/dev/null || true)
             HN_URL="https://news.ycombinator.com/item?id=${ID}"
+            # 只保留 YESTERDAY 当天及之后发布的新闻（用户要求：不要之前的旧闻）
+            ITEM_TIME=$(echo "$ITEM" | python3 -c "import sys,json; d=json.load(sys.stdin) or {}; print(d.get('time',''))" 2>/dev/null || true)
+            ITEM_DATE=$(TZ=Asia/Shanghai date -d "@${ITEM_TIME}" +%Y-%m-%d 2>/dev/null || echo "")
+            if [ -n "$ITEM_DATE" ] && [[ "$ITEM_DATE" < "$YESTERDAY" ]]; then
+              continue
+            fi
             if echo "$TITLE" | grep -qiE 'ai |llm|gpt|claude|chatgpt|openai|model|machine.learning|deep.learning|neural|transformer|agent|anthropic|gemini|qwen|deepseek|copilot|coding|programming'; then
               echo "TITLE: ${TITLE}" >> /tmp/news_raw.txt
               [ -n "$URL" ] && [ "$URL" != "null" ] && echo "LINK: ${URL}" >> /tmp/news_raw.txt
@@ -52,10 +58,19 @@ jobs:
           echo "GL<<EOF" >> $GITHUB_ENV
           echo "${GL}" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-          YR=$(cat /tmp/yesterday_report.txt)
-          echo "YR<<EOF" >> $GITHUB_ENV
-          echo "${YR}" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          # ── 昨日总结日志（日记进度 + 会话快照 + 待办清单，日志板块的事实来源）──
+          > /tmp/yesterday_logs.txt
+          for f in "日记/${YESTERDAY}-进度.md" "session-${YESTERDAY}-progress.md" 待办/${YESTERDAY}-*.md; do
+            if [ -f "$f" ]; then
+              echo "===== ${f} =====" >> /tmp/yesterday_logs.txt
+              cat "$f" >> /tmp/yesterday_logs.txt
+              echo "" >> /tmp/yesterday_logs.txt
+            fi
+          done
+          YL=$(cat /tmp/yesterday_logs.txt)
+          echo "YL<<EOF_LOGS" >> $GITHUB_ENV
+          echo "${YL}" >> $GITHUB_ENV
+          echo "EOF_LOGS" >> $GITHUB_ENV
 
       - name: 健康检查
         run: |
@@ -88,7 +103,7 @@ jobs:
           ANIMAL_HTTP: ${{ env.ANIMAL_HTTP }}
           SCREW_HTTP: ${{ env.SCREW_HTTP }}
           TEMPLE_HTTP: ${{ env.TEMPLE_HTTP }}
-          YESTERDAY_REPORT: ${{ env.YR }}
+          YESTERDAY_LOGS: ${{ env.YL }}
           GIT_LOG: ${{ env.GL }}
         run: python3 scripts/daily_analyze.py
 
