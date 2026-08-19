@@ -20,7 +20,7 @@ jobs:
         run: |
           DATE=$(date +%Y-%m-%d)
           YESTERDAY=$(date -d "yesterday" +%Y-%m-%d 2>/dev/null || date -v-1d +%Y-%m-%d)
-          mkdir -p 日报
+          mkdir -p 资料/日志
           TOP_STORIES=$(curl -s --max-time 10 "https://hacker-news.firebaseio.com/v0/topstories.json" 2>/dev/null | head -c 500)
           > /tmp/news_raw.txt
           # 修复：topstories 被 head -c 500 硬截断，末尾常有不完整ID；grep过滤掉非纯数字，防止请求到 null
@@ -85,7 +85,7 @@ jobs:
       - name: 防重复检查
         id: dedup
         run: |
-          if [ -f "日报/${DATE}-AI日报.md" ]; then
+          if [ -f "资料/日志/${DATE}-AI日报.md" ]; then
             echo "今日AI日报已存在，跳过"
             echo "skip=true" >> $GITHUB_OUTPUT
           else
@@ -110,11 +110,11 @@ jobs:
       - name: 保存并提交
         if: steps.dedup.outputs.skip != 'true'
         run: |
-          echo "# AI日报 | ${DATE}" > "日报/${DATE}-AI日报.md"
-          echo "" >> "日报/${DATE}-AI日报.md"
-          cat /tmp/digest.md >> "日报/${DATE}-AI日报.md"
+          echo "# AI日报 | ${DATE}" > "资料/日志/${DATE}-AI日报.md"
+          echo "" >> "资料/日志/${DATE}-AI日报.md"
+          cat /tmp/digest.md >> "资料/日志/${DATE}-AI日报.md"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add 日报/
+          git add 资料/日志/
           git diff --staged --quiet || git commit -m "AI日报 $(date +%Y-%m-%d)"
           git push
