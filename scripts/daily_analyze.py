@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""AI日报 v2.6 — DeepSeek分析 + 微信推送 + 跨仓库git log + 表格恢复"""
+"""AI日报 v3.0 — DeepSeek分析 + 微信推送 + 昨日总结日志 + 新闻按发布时间过滤"""
 import urllib.request
 import urllib.parse
 import json
@@ -8,10 +8,10 @@ import os
 DATE = os.environ.get('DATE', 'unknown')
 DEEPSEEK_KEY = os.environ['DEEPSEEK_KEY']
 SCT_KEY = os.environ['SCT_KEY']
-YESTERDAY_REPORT = os.environ.get('YESTERDAY_REPORT', '')
+YESTERDAY_LOGS = os.environ.get('YESTERDAY_LOGS', '')
 GIT_LOG = os.environ.get('GIT_LOG', '')
 
-# 读取新闻数据
+# 读取新闻数据（采集步骤已按发布时间过滤：只留 YESTERDAY 当天及之后发布）
 news_raw = ''
 try:
     with open('/tmp/news_raw.txt', 'r', encoding='utf-8') as f:
@@ -19,7 +19,7 @@ try:
 except FileNotFoundError:
     pass
 
-# 项目健康状态
+# 项目运行状态（HTTP 并入日志板块作补充素材，不再单独开板块）
 chess_http = os.environ.get('CHESS_HTTP', '?')
 gomoku_http = os.environ.get('GOMOKU_HTTP', '?')
 draw_http = os.environ.get('DRAW_HTTP', '?')
@@ -27,24 +27,28 @@ animal_http = os.environ.get('ANIMAL_HTTP', '?')
 screw_http = os.environ.get('SCREW_HTTP', '?')
 temple_http = os.environ.get('TEMPLE_HTTP', '?')
 
-def desc(code, name, note=''):
+def health_line(name, code):
     if code == '200':
-        return f'{name} [正常] 网页可以打开，运行正常。{note}'
+        return f'{name}正常'
     elif code == '404':
-        return f'{name} [404页面不存在] {note}'
+        return f'{name}404页面缺失'
     elif code == '000':
-        return f'{name} [无法连接] 服务器可能挂了或网络不通'
+        return f'{name}无法连接'
     else:
-        return f'{name} [HTTP {code}] 状态未知'
+        return f'{name}HTTP{code}'
+
+health_status = [health_line('中国象棋', chess_http), health_line('五子棋', gomoku_http),
+                 health_line('你画我猜', draw_http), health_line('动物大战', animal_http),
+                 health_line('螺丝消除', screw_http), health_line('星月神殿', temple_http)]
+http_all_unknown = all(code == '?' for code in [chess_http, gomoku_http, draw_http, animal_http, screw_http, temple_http])
 
 # ══════════════════════════════════════════
 # 构建提示词
 # ══════════════════════════════════════════
 prompt_parts = []
 
-# 角色设定
 prompt_parts.append("你是我的私人AI管家。我是一个喜欢做小游戏的个人开发者，业余项目部署在GitHub Pages上。")
-prompt_parts.append("请根据下方的新闻、git提交记录和昨日日报，生成今天的AI日报。")
+prompt_parts.append("请根据下方的今日新闻、昨日总结日志和git提交记录，生成今天的AI日报。")
 prompt_parts.append("")
 
 # ═══ 格式要求 ═══
@@ -56,7 +60,7 @@ prompt_parts.append("")
 # 板块1：AI动态
 prompt_parts.append("## 1. AI动态")
 prompt_parts.append("")
-prompt_parts.append("选出3-5条最重要的AI相关新闻。")
+prompt_parts.append("下面的新闻列表已经按发布时间过滤过，只保留昨天和今天发布的，没有更早的旧闻。从中选出3-5条最重要的。")
 prompt_parts.append("每条必须用 [中文标题](原文URL) 可点击链接格式。")
 prompt_parts.append("不要加HN讨论链接（HN在国内打不开，加了没用）。")
 prompt_parts.append("")
@@ -67,60 +71,26 @@ prompt_parts.append("- **为什么重要**：行业意义")
 prompt_parts.append("- **跟我有啥关系**：对个人开发者的影响")
 prompt_parts.append("")
 prompt_parts.append("重要性：★★★展开写 ★★中等 ★★简短")
+prompt_parts.append("如果过滤后一条新闻都没有，就写「昨日无AI相关新闻」。")
 prompt_parts.append("")
 
-# 板块2：项目健康
-prompt_parts.append("## 2. 项目健康")
+# 板块2：日志
+prompt_parts.append("## 2. 日志")
 prompt_parts.append("")
-prompt_parts.append("六个项目的HTTP状态 + 昨日实际变动。必须用表格。")
+prompt_parts.append("这是日报的核心板块。基于下面的「昨日总结日志」详细回顾昨天发生的事，这是唯一事实来源，只能写里面有的，绝不能编造。")
 prompt_parts.append("")
-prompt_parts.append("表格格式（严格）：")
-prompt_parts.append("| 项目 | HTTP | 昨日动态 |")
-prompt_parts.append("|------|------|----------|")
-prompt_parts.append(desc(chess_http, '中国象棋', '双人象棋'))
-prompt_parts.append(desc(gomoku_http, '五子棋', '联机五子棋'))
-prompt_parts.append(desc(draw_http, '你画我猜', '你画我猜'))
-prompt_parts.append(desc(animal_http, '动物大战', '动物自动对战'))
-prompt_parts.append(desc(screw_http, '螺丝消除', '抖音解压小游戏'))
-prompt_parts.append(desc(temple_http, '星月神殿', '已退役'))
+prompt_parts.append("按这个思路组织，但不要被格式限制死，可以有自己的发挥：")
+prompt_parts.append("- **昨天做了什么**：按条列出主要事项，每条一个「- 」，泾渭分明、不要堆在一起")
+prompt_parts.append("- **遇到的问题和卡点**：昨天卡在什么地方、遇到了什么障碍")
+prompt_parts.append("- **怎么突破的**：卡点是怎么解决的，用了什么方法或思路")
+prompt_parts.append("- **遗留待办**：昨天列出的还没做完的事，原样保留")
+prompt_parts.append("- **可以改进的地方**：你基于日志给出的建议——哪些流程可以优化、哪些坑值得记住")
 prompt_parts.append("")
-prompt_parts.append("「昨日动态」列规则：")
-prompt_parts.append("- 逐条扫描 git log，按时间正序（v3.4→v3.5→v4.0，禁止倒序）")
-prompt_parts.append("- 有多条时用顿号分隔，格式：v1.0 初版、v1.1 适配、v1.2 升级")
-prompt_parts.append("- 没有 commit 写「无变动」")
-prompt_parts.append("- 星月神殿永远标注「已退役」")
-prompt_parts.append("- 禁止写「代码提交记录中未出现」这种废话")
-prompt_parts.append("")
-
-# 板块3：昨日日志（事实记录）
-prompt_parts.append("## 3. 昨日日志")
-prompt_parts.append("")
-prompt_parts.append("日志是操作轨迹的事实记录，不评价好坏。")
-prompt_parts.append("")
-prompt_parts.append("格式（用 Markdown 列表，每条一个 -，保证每条换行）：")
-prompt_parts.append("")
-prompt_parts.append("- 动物大战 v3.4 (96a1b32)：修复致命bug——补回useSkill()和rangedAttack()方法")
-prompt_parts.append("- 动物大战 v3.5 (eab93e7)：版本号更新，新增冒烟测试19项全通过")
-prompt_parts.append("- 动物大战 v3.6 (1a563a3)：防御性错误处理——loop加try-catch防崩溃")
-prompt_parts.append("- 动物大战 v4.0 (01c704f)：新增青蛙+臭鼬+沼泽地图+卡片选择UI+引导页")
-prompt_parts.append("- 日报系统 v2.5 (daa3ef1)：项目健康改用列表格式")
-prompt_parts.append("")
-prompt_parts.append("规则：")
-prompt_parts.append("- 每条 commit 独占一个「- 」列表项，不要堆在一起")
-prompt_parts.append("- 按时间正序排列")
-prompt_parts.append("- 格式：项目名 版本号 (commit前7位)：改动内容")
-prompt_parts.append("- 没 commit 写「昨日无代码提交」")
-prompt_parts.append("- 其他补充：操作原因（一句话）、部署状态")
-prompt_parts.append("")
-
-# 板块4：今日小结（评价和建议）
-prompt_parts.append("## 4. 今日小结")
-prompt_parts.append("")
-prompt_parts.append("小结是你的评价和建议，不是重复日志内容。这是日报最重要的板块，必须认真写，不能敷衍。")
-prompt_parts.append("")
-prompt_parts.append("**新闻评价**：今天哪条新闻最值得关注？有什么趋势或风险？")
-prompt_parts.append("")
-prompt_parts.append("**项目评价**：根据昨天的改动，做得好的地方提一下，有隐患的指出来，可以改进的建议说一下。")
+if not http_all_unknown:
+    prompt_parts.append("项目运行状态（HTTP）放在「昨天做了什么」里顺带提一句即可，不用单独开板块：")
+    prompt_parts.append('、'.join(health_status))
+    prompt_parts.append("")
+prompt_parts.append("如果昨日没有任何日志，就写「昨日没有留下日志记录」。")
 prompt_parts.append("")
 
 # ═══ 原始数据 ═══
@@ -129,20 +99,16 @@ prompt_parts.append("原始数据")
 prompt_parts.append("=" * 40)
 prompt_parts.append("")
 
-prompt_parts.append("--- 今日新闻 ---")
+prompt_parts.append("--- 今日新闻（已按发布时间过滤） ---")
 prompt_parts.append(news_raw if news_raw.strip() else "（今日暂无AI相关新闻）")
 prompt_parts.append("")
 
-prompt_parts.append("--- git log（昨天所有代码改动，逐条读！每条都要反映到「昨日动态」和「昨日日志」里） ---")
-prompt_parts.append(GIT_LOG if GIT_LOG.strip() else "（无 git 记录）")
+prompt_parts.append("--- 昨日总结日志（日记进度+会话快照+待办，逐条读，这是日志板块的事实来源） ---")
+prompt_parts.append(YESTERDAY_LOGS[:8000] if YESTERDAY_LOGS.strip() else "（昨日无日志记录）")
 prompt_parts.append("")
 
-if YESTERDAY_REPORT.strip():
-    prompt_parts.append("--- 昨日AI日报（辅助参考） ---")
-    prompt_parts.append(YESTERDAY_REPORT[:2000])
-else:
-    prompt_parts.append("--- 昨日AI日报 ---")
-    prompt_parts.append("（无昨日记录）")
+prompt_parts.append("--- git log（昨天代码改动，日志的补充素材） ---")
+prompt_parts.append(GIT_LOG if GIT_LOG.strip() else "（无 git 记录）")
 
 prompt = "\n".join(prompt_parts)
 
@@ -153,7 +119,7 @@ body = json.dumps({
     'model': 'deepseek-chat',
     'messages': [{'role': 'user', 'content': prompt}],
     'temperature': 0.7,
-    'max_tokens': 6000
+    'max_tokens': 8000
 }, ensure_ascii=False).encode('utf-8')
 
 req = urllib.request.Request(
@@ -177,7 +143,7 @@ with open('/tmp/digest.md', 'w', encoding='utf-8') as f:
 # 微信推送
 # ══════════════════════════════════════════
 # Server酱支持 [文字](URL) Markdown链接
-preview = digest[:5000]  # 确保小结能完整推送
+preview = digest[:8000]  # 日志板块内容较长，放宽到8000字符（Server酱上限32KB）
 data = urllib.parse.urlencode({
     'title': f'AI日报 | {DATE}',
     'desp': preview

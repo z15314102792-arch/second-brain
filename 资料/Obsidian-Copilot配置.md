@@ -3,10 +3,10 @@ name: obsidian-copilot
 description: Obsidian Copilot v4.0.0 + Ollama 本地模型集成全记录，含排错和换机自动化脚本
 metadata: 
   node_type: memory
-  type: project
+  type: reference
   status: 待定
   version: v1.5
-  modified: 2026-08-13T12:12:32.684Z
+  modified: 2026-08-19
   originSessionId: 97234303-2b96-4c4c-8a01-e4743f297fee
 ---
 

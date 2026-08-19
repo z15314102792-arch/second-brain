@@ -21,13 +21,6 @@ jobs:
           DATE=$(date +%Y-%m-%d)
           YESTERDAY=$(date -d "yesterday" +%Y-%m-%d 2>/dev/null || date -v-1d +%Y-%m-%d)
           mkdir -p 日报
-          if [ -f "日报/${YESTERDAY}-AI日报.md" ]; then
-            cat "日报/${YESTERDAY}-AI日报.md" > /tmp/yesterday_report.txt
-          elif [ -f "日报/${YESTERDAY}-综合早报.md" ]; then
-            cat "日报/${YESTERDAY}-综合早报.md" > /tmp/yesterday_report.txt
-          else
-            echo "" > /tmp/yesterday_report.txt
-          fi
           TOP_STORIES=$(curl -s --max-time 10 "https://hacker-news.firebaseio.com/v0/topstories.json" 2>/dev/null | head -c 500)
           > /tmp/news_raw.txt
           # 修复：topstories 被 head -c 500 硬截断，末尾常有不完整ID；grep过滤掉非纯数字，防止请求到 null
