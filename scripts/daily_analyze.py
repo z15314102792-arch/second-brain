@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""AI日报 v3.0 — DeepSeek分析 + 微信推送 + 昨日总结日志 + 新闻按发布时间过滤"""
+"""AI日报 v3.1 — DeepSeek分析 + 微信推送 + 昨日总结日志 + 新闻按时间过滤 + AI自主选新闻"""
 import urllib.request
 import urllib.parse
 import json
@@ -60,18 +60,18 @@ prompt_parts.append("")
 # 板块1：AI动态
 prompt_parts.append("## 1. AI动态")
 prompt_parts.append("")
-prompt_parts.append("下面的新闻列表已经按发布时间过滤过，只保留昨天和今天发布的，没有更早的旧闻。从中选出3-5条最重要的。")
-prompt_parts.append("每条必须用 [中文标题](原文URL) 可点击链接格式。")
-prompt_parts.append("不要加HN讨论链接（HN在国内打不开，加了没用）。")
+prompt_parts.append("下面的新闻列表已经按发布时间过滤过（只留昨天和今天发布的），但**没有按主题过滤**，里面混了很多与 AI 无关的新闻（游戏、生活、历史等）。")
+prompt_parts.append("你的任务：从中**挑出 3-5 条最重要、最值得关注的 AI 相关新闻**（判断标准：AI 技术/大模型/芯片/机器人/AI 应用/AI 公司动态等），无关的忽略，宁缺毋滥。")
+prompt_parts.append("每条必须用 [中文标题](原文URL) 可点击链接格式，不要加HN讨论链接（HN在国内打不开）。")
 prompt_parts.append("")
-prompt_parts.append("格式：")
+prompt_parts.append("格式（每条都要写详细，★★★ 的展开写，★ 的可以简短）：")
 prompt_parts.append("### ★★★ [中文标题](原文URL)")
-prompt_parts.append("- **发生了什么**：2-3句话讲清核心")
-prompt_parts.append("- **为什么重要**：行业意义")
-prompt_parts.append("- **跟我有啥关系**：对个人开发者的影响")
+prompt_parts.append("- **发生了什么**：3-5句话讲清来龙去脉。不要只复述标题，要结合你对这家公司/这项技术的了解补充背景和进展，让没看过新闻的人也能看懂。不确定的细节不要编造具体数字或引语。")
+prompt_parts.append("- **为什么重要**：对行业意味着什么、有什么趋势和影响")
+prompt_parts.append("- **跟我有啥关系**：对我这个个人开发者/小游戏开发者具体有什么用")
+prompt_parts.append("- **分析**：你的独立判断——这件事的亮点、潜在风险、值得跟进的点，不要写空话")
 prompt_parts.append("")
-prompt_parts.append("重要性：★★★展开写 ★★中等 ★★简短")
-prompt_parts.append("如果过滤后一条新闻都没有，就写「昨日无AI相关新闻」。")
+prompt_parts.append("如果当天确实没有 AI 相关新闻，就写「昨日无AI相关新闻」。")
 prompt_parts.append("")
 
 # 板块2：日志
@@ -99,7 +99,7 @@ prompt_parts.append("原始数据")
 prompt_parts.append("=" * 40)
 prompt_parts.append("")
 
-prompt_parts.append("--- 今日新闻（已按发布时间过滤） ---")
+prompt_parts.append("--- 新闻列表（已按发布时间过滤，未按主题过滤，请自行判断哪些是重要的AI新闻） ---")
 prompt_parts.append(news_raw if news_raw.strip() else "（今日暂无AI相关新闻）")
 prompt_parts.append("")
 
@@ -143,7 +143,7 @@ with open('/tmp/digest.md', 'w', encoding='utf-8') as f:
 # 微信推送
 # ══════════════════════════════════════════
 # Server酱支持 [文字](URL) Markdown链接
-preview = digest[:8000]  # 日志板块内容较长，放宽到8000字符（Server酱上限32KB）
+preview = digest[:12000]  # 新闻详细+日志板块内容较长，放宽到12000字符（Server酱上限32KB）
 data = urllib.parse.urlencode({
     'title': f'AI日报 | {DATE}',
     'desp': preview
