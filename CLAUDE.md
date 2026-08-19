@@ -6,12 +6,12 @@ metadata:
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
   modified: 2026-08-19
-  version: v4.5
+  version: v4.6
 ---
 
 # 第二大脑 · AI 操作手册
 
-> 版本 v4.5 | 2026-08-19
+> 版本 v4.6 | 2026-08-19
 
 ## 这是什么
 
@@ -38,7 +38,7 @@ E:\第二大脑\
 │   └── Claude Code 历史/  ← 历史会话存档
 ├── 🔐 系统/           ← 密钥等敏感文件（已 gitignore，不能外传）
 ├── 🗑️ _垃圾站/        ← 不要的内容，先丢这（下划线开头，自动排最下面）
-├── scripts/           ← 脚本目录（simplify_md.py 等，备份用）
+├── scripts/           ← 脚本目录（daily_analyze.py 日报、phone-setup.sh 手机配置）
 ├── index.html         ← 知识库入口网页
 │
 └── .obsidian/         ← Obsidian 配置（不要改）
@@ -150,20 +150,13 @@ metadata:
    - `git diff --stat --cached` 确认暂存区无误
    - **同步顺序（2026-08-15 起）**：先 `git pull origin master`（拉云端最新，避免覆盖其他设备改动）→ 再 `git commit -m "..."`（提交本地改动）→ 最后 `git push origin master`（推送）
    - 若 pull 时遇到冲突，停下来向用户说明再处理，不要硬来
-   - origin → GitHub（G 盘本机未连接，已取消 hdd 推送）
-4. **硬盘备份（Git版）**：将全部文件拷贝到 `G:\claude 记忆\Git版\{日期}-{次数}\`
-   - 日期格式 `YYYY-MM-DD`，次数为当天第几次保存（01 起）
-   - 硬盘未连接时跳过此步
-5. **硬盘备份（大白话版）**：覆盖更新 `G:\claude 记忆\大白话版\`
-   - 先拷贝全部 .md 文件，再用 `scripts/simplify_md.py` 去掉 frontmatter 和 wikilink
-   - 只保留最新一份，每次覆盖
-
+   - origin → GitHub
 ### 每周一次（建议周日晚上）
-6. 运行 `/记忆体检` — 检查知识库健康度
-7. 运行 `/记忆周报` — 生成本周总结
+4. 运行 `/记忆体检` — 检查知识库健康度
+5. 运行 `/记忆周报` — 生成本周总结
 
 ### 用户说"保存进度"时
-8. 立即执行上述 1-5 步，不要等会话结束
+6. 立即执行上述 1-5 步，不要等会话结束
 
 ## 判断属于哪个项目
 
