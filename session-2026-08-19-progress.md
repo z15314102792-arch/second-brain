@@ -8,7 +8,7 @@ metadata:
 
 # 会话快照 · 2026-08-19（微信推送）
 
-> 完整进度见 [[日记/2026-08-19-进度]]，此文件为本会话（微信推送待办落地）的补记。
+> 完整进度见 [[日志/2026-08-19-进度]]，此文件为本会话（微信推送待办落地）的补记。
 
 ## 完成了哪些事项
 
@@ -19,7 +19,7 @@ metadata:
 
 ### 2. 推送内容重分类 v3.0
 用户三点要求：①AI动态保留格式但只留前一天新闻 ②删除游戏/项目板块移到日志 ③日志板块读总结日志详记昨天的事
-- **workflow**：新闻按 `time` 字段过滤（北京时间 YESTERDAY 当天及之后）；新增读昨日总结日志（`日记/${YESTERDAY}-进度.md` + `session-${YESTERDAY}-progress.md` + `待办/${YESTERDAY}-*.md`）
+- **workflow**：新闻按 `time` 字段过滤（北京时间 YESTERDAY 当天及之后）；新增读昨日总结日志（`日志/${YESTERDAY}-进度.md` + `session-${YESTERDAY}-progress.md` + `待办/${YESTERDAY}-*.md`）
 - **daily_analyze.py v2.6→v3.0**：删项目健康板块（HTTP 状态并入日志素材），新增日志板块（做了什么/问题卡点/突破/待办/改进）
 
 ### 3. 内容详细化 v3.1
@@ -29,13 +29,13 @@ metadata:
 - **验证**：11:47 触发 run **success**，AI 动态 5 条详细新闻+分析，日志板块完整还原 8/18 工作
 
 ## 关键决策/发现
-- **并行会话在同步改第二大脑**：Obsidian图谱全量整理（59e64ed）、保存进度命令修复（e4f2dca）、日报保存路径 `日报/`→`资料/日志/`（d379b0d 前后）。工作区同目录操作，偶发但无冲突
+- **并行会话在同步改第二大脑**：Obsidian图谱全量整理（59e64ed）、保存进度命令修复（e4f2dca）、日报保存路径 `日报/`→`日志/AI日报记录/`（d379b0d 前后）。工作区同目录操作，偶发但无冲突
 - **本地 python3 是 Windows Store 占位程序**（任何输入都退出码 49），实际用 `python` 命令
 - **GitHub Actions 无法本地自动触发**：无 gh 认证、无 `on: push` 触发器（只有 schedule + workflow_dispatch），只能网页手动 Run
 - GitHub Actions 环境（ubuntu）的 python3 正常，本地 python3 坏不影响线上
 
 ## 修改/创建的文件
-- `E:\第二大脑\.github\workflows\daily-brief.yml`（采样 top80 + 时间过滤 + 日志读取 + 去关键词过滤 + 保存到 资料/日志/）
+- `E:\第二大脑\.github\workflows\daily-brief.yml`（采样 top80 + 时间过滤 + 日志读取 + 去关键词过滤 + 保存到 日志/AI日报记录/）
 - `E:\第二大脑\scripts\daily_analyze.py`（v2.6→v3.0→v3.1）
 - `E:\第二大脑\待办\2026-08-18-未完成.md`（微信推送落地 ✅）
 - `E:\第二大脑\日记\2026-08-19-进度.md`（追加本会话）

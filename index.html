@@ -142,14 +142,14 @@ async function loadToday() {
 
     let md;
     try {
-      md = await fetchFile(`日报/${dateStr}-AI日报.md`);
+      md = await fetchFile(`日志/AI日报记录/${dateStr}-AI日报.md`);
     } catch {
       try {
         // 兼容旧格式
-        md = await fetchFile(`日报/${dateStr}-综合早报.md`);
+        md = await fetchFile(`日志/AI日报记录/${dateStr}-综合早报.md`);
       } catch {
         // 加载最新的
-        const files = await listDir('日报');
+        const files = await listDir('日志/AI日报记录');
         const digests = files
           .filter(f => f.name.includes('AI日报') || f.name.includes('综合早报'))
           .sort((a, b) => b.name.localeCompare(a.name));
@@ -168,7 +168,7 @@ async function loadToday() {
 async function loadArchive() {
   const el = document.getElementById('tab-archive');
   try {
-    const files = await listDir('日报');
+    const files = await listDir('日志/AI日报记录');
     const digests = files
       .filter(f => f.name.includes('AI日报') || f.name.includes('综合早报'))
       .sort((a, b) => b.name.localeCompare(a.name));
