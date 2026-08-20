@@ -1,17 +1,49 @@
 ---
 name: claude-code-env-maintenance
-description: Claude Code 环境维护——hook 修复 + API 成本优化 + 读链接/识图能力扩展（mcp-vision 识图 + 读链接 Skill）+ 火山 Agent Plan 接入
+description: Claude Code 环境维护——hook 修复 + API 成本优化 + 读链接/识图能力扩展（mcp-vision 识图 + 读链接 Skill）+ 火山 Agent Plan 接入 + Codex 接入调研
 metadata: 
   node_type: memory
   type: project
   status: 稳定
-  version: v2.0
+  version: v2.1
   modified: 2026-08-20
 ---
 
 # Claude Code 环境维护
 
 > 版本 v2.0 · 2026-08-20
+
+## v2.1 — Codex 接入调研：DeepSeek-V4-Flash 适配度（2026-08-20）
+
+用户问"火山普通 API 接 Codex 能发挥多少效果、是不是满血"。重新调研，用数据说话，纠正之前"将近满血"的无据说法。
+
+### 结论（数据化）
+
+- **脑力接近满血**：DeepSeek-V4-Flash 正式版原生支持 Responses API，Terminal-Bench 2.1 得分 **82.7**，反超 V4-Pro 预览版（72.1），接近 GLM-5.2（81.0）和 Opus 4.8（85.0）。
+- **但手脚四折**：
+  1. 无视觉（纯文本，读不了图/截图，Codex 识图/Computer Use 用不了）
+  2. 多 Agent 子代理任务被丢弃（已知未修复 bug，子代理只回 "Ready to help"，需本地代理改写 `agent_message`）
+  3. 工具调用可能静默降级（协议不完整时退回"读整个文件→重写"低效模式，Token 翻倍、易覆盖他人代码）——这是"接上后感觉变笨"的根源，不是模型笨
+  4. 复杂多步推理偏弱（官方自述，硬骨头不如 Pro）
+
+### 端点纠正（重要，之前答错）
+
+- 之前说"火山普通按量 `/api/v3` 直连 Codex 能用"是**错的**。
+- **正解**：火山接 Codex = Coding Plan 端点 `/api/coding/v3`（原生支持 Responses），明确警告"不要误用按量端点"。
+- 或走 DeepSeek 官方直连：`base_url = "https://api.deepseek.com/"`，`wire_api = "responses"`，官方明确"目前只有 Flash 支持接 Codex，Pro 暂不能直连"。
+
+### 关键事实
+
+- Codex 只认 OpenAI Responses API（`wire_api = "responses"`，chat 已废弃，2026-02 移除）；Claude Code 只认 Anthropic。协议分水岭是理解这一切的钥匙。
+- 定价：Flash 输入 ¥1/M token、输出 ¥2/M token，约 Pro 的 1/10。
+
+### 参考来源
+
+- CC Switch v3.19.1 发布说明（火山 Coding Plan /api/coding/v3 原生 Responses）
+- 阿里云开发者《给 Codex 和 Claude Code 接入 DeepSeek-V4-Flash》
+- 腾讯云《Codex 接入 DeepSeek V4 后为什么感觉变笨了？原来是 Tools 能力失效了》
+
+---
 
 ## v2.0 — 火山引擎 Agent Plan 接入（deepseek-v4-flash 正式版）（2026-08-20）
 
