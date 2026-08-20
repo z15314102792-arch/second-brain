@@ -1,17 +1,55 @@
 ---
 name: claude-code-env-maintenance
-description: Claude Code 环境维护——hook 修复 + API 成本优化 + 读链接/识图能力扩展（mcp-vision 识图 + 读链接 Skill）
+description: Claude Code 环境维护——hook 修复 + API 成本优化 + 读链接/识图能力扩展（mcp-vision 识图 + 读链接 Skill）+ 火山 Agent Plan 接入
 metadata: 
   node_type: memory
   type: project
   status: 稳定
-  version: v1.9
-  modified: 2026-08-18
+  version: v2.0
+  modified: 2026-08-20
 ---
 
 # Claude Code 环境维护
 
-> 版本 v1.5 · 2026-08-16
+> 版本 v2.0 · 2026-08-20
+
+## v2.0 — 火山引擎 Agent Plan 接入（deepseek-v4-flash 正式版）（2026-08-20）
+
+### 目标
+
+把 Claude Code 后端从 DeepSeek 官方切换到火山方舟 Agent Plan 的 deepseek-v4-flash 正式版（GA），实测速率和效果。用户是小白，全程要能一键回滚。
+
+### 最终配置（已实测通过，写在 switch-api.js v2.0）
+
+- **Base URL（Anthropic 兼容）**：`https://ark.cn-beijing.volces.com/api/plan`
+- **鉴权**：`ANTHROPIC_AUTH_TOKEN`（Agent Plan 专属 key，非普通 API key）
+- **模型**：全部档位统一 `ark-code-latest`（内部路由到 `deepseek-v4-flash-ga-260731` 正式版）
+- **切换脚本**：`C:\Users\Administrator\.claude\switch-api.js`（v2.0，命令：`node switch-api.js volcengine` / `restore` / `backup` / `status` / `list`）
+- **一键回滚**：桌面「后悔药.lnk」→ `node switch-api.js restore`
+- **备份目录**：`C:\Users\Administrator\.claude\api-backups\`
+
+### 踩坑记录（按时间顺序）
+
+1. **普通 API Key ≠ Agent Plan 专属 Key**：在方舟通用「API Key 管理」里创建的 key（`ark-100dde7d...`、`ark-d40cc10f...`）调 `/api/plan` 全部返回 401 `AuthenticationError`。Agent Plan 专属 key 必须去 Agent Plan 订阅管理页的「配置专属 API Key」步骤拿（`https://console.volcengine.com/ark/region:cn-beijing/subscription/agent-plan`）。
+2. **Coding Plan ≠ Agent Plan，端点是 `/api/plan` 不是 `/api/coding`**：Coding Plan 走 `/api/coding`，Agent Plan 走 `/api/plan`。混用不消耗套餐额度。且两者都不能用通用 `/api/v3`（会额外按量计费）。
+3. **模型 ID 不能直接填 `deepseek-v4-flash` 或 `deepseek-v4-flash-ga-260731`**：直接填会返回 500 `InternalServiceError`。必须填路由名 `ark-code-latest`，它自动路由到正式版 `deepseek-v4-flash-ga-260731`。
+4. **`ANTHROPIC_API_KEY` 与 `ANTHROPIC_AUTH_TOKEN` 互斥**：切到火山（用 AUTH_TOKEN）时若不清掉旧 API_KEY，旧 key 会冲突导致"一换就坏"。已在 switch-api.js 加互斥清理逻辑（切谁就删谁）。
+5. **火山官方明确警告**：使用 `/api/v3` 接入会产生额外费用且不消耗套餐额度，可能被判定违规。
+6. **模型列表里同时有 `DeepSeek-V4-Flash正式版` 和 `DeepSeek-V4-flash`**：两个长得像、不是一回事，要勾「正式版」那个。
+
+### 关键决策
+
+- **用户否决沙盒测试方案**，选择正式使用亲自确认速率——所以必须先建自动备份+恢复机制（switch-api.js backup/restore + 桌面后悔药）兜底。
+- **超额后付费不开**：燃料值 20,000/月，超额单价未公开查到，为避免扣完自动扣余额，建议扣完等刷新或手动续订。
+- **Harness 全部跳过**：专业数据集/豆包搜索/Agent记忆/AI Native底座等全部不开启，每一个都是燃料值黑洞，Claude Code 用不上。
+
+### 待办
+
+- [ ] 用户执行切换命令并完全重启，`/status` 确认 Base URL 指向 `/api/plan`
+- [ ] 实测速率后决定保留或切回 DeepSeek
+- [ ] 火山专属 key 更新到 `E:\第二大脑\系统\API密钥.md`（本地，gitignore）
+
+---
 
 ## v1.1 — 修复中文乱码
 
