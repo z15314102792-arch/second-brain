@@ -1,12 +1,9 @@
 ---
 name: AI知识库7层
 description: 姜胡说「从零搭建AI知识库」7层阶梯（对话/Agent/从做到造/PARA/索引/语义搜索/自动赚钱）+ 元认知心法——判断自己搭到哪层、下一步做什么时调用
+tags: [学习方法, AI使用, 知识管理]
 metadata:
   node_type: memory
-  tags:
-    - 学习方法
-    - AI使用
-    - 知识管理
   type: reference
   version: v1.0
   modified: 2026-08-19

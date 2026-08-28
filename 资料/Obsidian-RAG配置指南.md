@@ -1,19 +1,17 @@
 ---
 name: obsidian-rag-setup
 description: Obsidian Copilot RAG 本地知识库 AI 问答配置步骤
+tags: [Obsidian, RAG, AI, 知识库]
 metadata: 
   node_type: memory
-  tags: 
-    - Obsidian
-    - RAG
-    - AI
-    - 知识库
   type: reference
-  modified: 2026-08-12T03:12:02.705Z
+  modified: 2026-08-28
   originSessionId: 97234303-2b96-4c4c-8a01-e4743f297fee
 ---
 
 # Obsidian RAG 配置指南
+
+> 当前定位：旧版操作指南，保守留档。实际排错、最终配置和是否继续使用 Copilot 检索，以 [[资料/Obsidian-Copilot配置]] 为主。
 
 > 目标：让你能用自然语言搜索自己的笔记，比如"我之前调研螺丝消除时得出什么结论？"
 

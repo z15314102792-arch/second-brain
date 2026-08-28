@@ -1,12 +1,9 @@
 ---
 name: PARA知识库方法
 description: PARA（项目/领域/资源/归档）+ CODE（捕捉/组织/提炼/表达）知识管理法，及姜胡说6目录模板——搭知识库时调用
+tags: [知识管理, 学习方法, PARA]
 metadata:
   node_type: memory
-  tags:
-    - 知识管理
-    - 学习方法
-    - PARA
   type: reference
   version: v1.0
   modified: 2026-08-16

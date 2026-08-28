@@ -1,12 +1,9 @@
 ---
 name: AI知识库四步闭环
 description: 姜胡说「零基础搭AI知识库」四步闭环——工具/建档案/喂内容/复盘，及"先用起来"心法；来源抖音视频
+tags: [学习方法, AI使用, 知识管理]
 metadata:
   node_type: memory
-  tags:
-    - 学习方法
-    - AI使用
-    - 知识管理
   type: reference
   version: v1.1
   modified: 2026-08-16

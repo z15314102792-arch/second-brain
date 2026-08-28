@@ -1,13 +1,9 @@
 ---
 name: ai-short-drama-video
 description: AI短剧+解说视频，文案→AI生成动态画面→自动成片，工具VideoClaw
+tags: [视频制作, AI, 解说视频, AI短剧]
 metadata: 
   node_type: memory
-  tags: 
-    - 视频制作
-    - AI
-    - 解说视频
-    - AI短剧
   type: project
   status: 活跃
   version: v1.0

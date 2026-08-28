@@ -47,12 +47,12 @@ metadata:
 
 ## 本项目的死锁教训
 
-2026-08-12 死锁根因：/goal 循环的 Stop 反馈不触发 UserPromptSubmit，token-guard 的 volume 计数永不重置 → 死锁。已通过 token-guard 只读逃生通道解决（见 [[ClaudeCode改hook需重启]]）。
+2026-08-12 死锁根因：/goal 循环的 Stop 反馈不触发 UserPromptSubmit，token-guard 的 volume 计数永不重置 → 死锁。已通过 token-guard 只读逃生通道解决（见 [[知识/ClaudeCode改hook需重启]]）。
 
 ## 相关
 
-- [[ClaudeCode改hook需重启]] — hook 改动需重启才生效
-- [[CLAUDE-md规则强制执行]] — hooks 强制手段调研
+- [[知识/ClaudeCode改hook需重启]] — hook 改动需重启才生效
+- [[知识/CLAUDE-md规则强制执行]] — hooks 强制手段调研
 
 ## 参考来源
 

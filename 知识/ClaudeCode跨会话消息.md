@@ -1,11 +1,9 @@
 ---
 name: claude-code-cross-session-messaging
 description: Claude Code 跨会话消息传递功能——是什么、怎么用、我的环境能不能用
+tags: [claude-code, 跨会话]
 metadata: 
   node_type: memory
-  tags: 
-    - claude-code
-    - 跨会话
   type: reference
   modified: 2026-08-10T12:01:06.891Z
   originSessionId: cff3a954-f401-4560-a650-cd5e2cbf9583

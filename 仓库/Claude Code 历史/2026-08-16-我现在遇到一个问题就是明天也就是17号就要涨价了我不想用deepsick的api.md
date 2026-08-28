@@ -1,4 +1,6 @@
 ---
+name: 2026-08-16-我现在遇到一个问题就是明天也就是17号就要涨价了我不想用deepsick的api
+description: Claude Code 历史会话存档：2026-08-16-我现在遇到一个问题就是明天也就是17号就要涨价了我不想用deepsick的api
 tags: [Claude历史]
 metadata:
   type: reference

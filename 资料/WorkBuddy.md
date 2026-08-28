@@ -1,14 +1,9 @@
 ---
 name: workbuddy
 description: 腾讯AI办公Agent，已安装CLI+桌面端，用于非编程任务
+tags: [AI, Agent, 办公, 腾讯, workbuddy]
 metadata: 
   node_type: memory
-  tags: 
-    - AI
-    - Agent
-    - 办公
-    - 腾讯
-    - workbuddy
   type: tool
   status: 运行中
   version: v5.3.11

@@ -1,10 +1,9 @@
 ---
 name: github-china-access
 description: GitHub 国内访问——HTTPS全被墙，remote统一用 git@github.com（SSH config自动走443），禁止直接用 git@ssh.github.com
+tags: [踩坑]
 metadata: 
   node_type: memory
-  tags: 
-    - 踩坑
   type: reference
   modified: 2026-08-13T02:55:22.897Z
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a

@@ -1,16 +1,12 @@
 ---
 name: aigc-game-art-plan
 description: 五个游戏项目的 AIGC 美术素材生成方案
+tags: [游戏, AI, AIGC, 美术]
 metadata: 
   node_type: memory
-  tags: 
-    - 游戏
-    - AI
-    - AIGC
-    - 美术
   type: reference
-  modified: 2026-08-12T03:10:01.263Z
-  status: 方案阶段
+  modified: 2026-08-28
+  status: 待启动
   originSessionId: 97234303-2b96-4c4c-8a01-e4743f297fee
 ---
 

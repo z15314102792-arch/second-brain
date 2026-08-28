@@ -1,13 +1,9 @@
 ---
 name: claude-md-rule-enforcement
 description: CLAUDE.md 规则强制执行问题的社区方案调研，含 rulehook、claude-core-values、misfire 等方案对比
+tags: [规则强制执行, hooks, CLAUDE.md, 调研]
 metadata: 
   node_type: memory
-  tags: 
-    - 规则强制执行
-    - hooks
-    - CLAUDE.md
-    - 调研
   type: reference
   modified: 2026-08-12T12:26:11.265Z
   originSessionId: d4628283-c00a-44d4-84b8-e47c02346778

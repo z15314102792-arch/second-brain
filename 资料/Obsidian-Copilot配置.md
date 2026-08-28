@@ -1,18 +1,23 @@
 ---
 name: obsidian-copilot
-description: Obsidian Copilot v4.0.0 + Ollama 本地模型集成全记录，含排错和换机自动化脚本
+description: Obsidian Copilot v4.0.0 + Ollama 本地模型集成全记录，含旧版 RAG 指南、排错和换机自动化脚本
+tags: [Obsidian, Copilot, RAG, Ollama]
 metadata: 
   node_type: memory
   type: reference
-  status: 待定
-  version: v1.5
-  modified: 2026-08-19
+  status: 稳定留档
+  version: v1.6
+  modified: 2026-08-28
   originSessionId: 97234303-2b96-4c4c-8a01-e4743f297fee
 ---
 
 # Obsidian Copilot + Ollama 配置
 
-> v1.5 | 2026-08-13
+> v1.6 | 2026-08-28
+
+## 当前定位
+
+这是 Obsidian Copilot 相关资料的主文件。旧版从零配置步骤见 [[资料/Obsidian-RAG配置指南]]；本文件记录最终架构、踩坑、止损结论和恢复时优先看的配置。
 
 ## 最终架构
 
