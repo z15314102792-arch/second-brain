@@ -5,8 +5,8 @@ tags: [Codex, Gemini, 多模型, 额度优化, 工作流]
 metadata:
   node_type: memory
   type: project
-  status: 规划中
-  version: v0.1
+  status: 首版已落地
+  version: v0.2
   modified: 2026-08-28
 ---
 
@@ -122,13 +122,32 @@ Codex 转交 Gemini 时必须包含：目标、工作目录、允许访问的路
 
 ## 当前状态
 
-2026-08-28：第一版规划完成。用户确认取消 DeepSeek，下级任务统一交给 Gemini；下一步是先检查本机 Gemini CLI 是否已安装和可用，再决定桥接器的具体实现方式。
+2026-08-28：首版已落地。旧版 Gemini CLI 已确认不再支持个人 Code Assist；改用官方 Antigravity CLI `agy` 作为 Gemini 执行端。Codex 已通过本地 MCP 桥接器直接调用，不需要用户手动复制粘贴。
+
+已完成的本机组件：
+
+- `C:\Users\Administrator\Documents\Codex\gemini-bridge\server.mjs`：MCP 桥接器，版本 v0.2.0。
+- `C:\Users\Administrator\Documents\Codex\gemini-bridge\package.json`：桥接器依赖与版本信息。
+- `C:\Users\Administrator\.codex\config.toml`：已注册 `gemini_bridge` MCP 服务。
+- `C:\Users\Administrator\.gemini\antigravity-cli\settings.json`：最小权限白名单。
+
+真实验收结果：
+
+- Antigravity CLI `agy` v1.1.22 已安装并完成登录，支持 `agy -p` 非交互调用。
+- MCP `initialize` 和 `tools/call` 均通过。
+- `research`：成功读取桥接器 `package.json` 并返回 `name`、`version`。
+- `edit`：只授权桥接目录后，成功把临时文件内容从 `before` 改为 `after`；测试文件已清理。
+- 越界目录：`E:\第二大脑\系统` 被桥接器直接拒绝。
+- 空 stdout：桥接器现在会把 Antigravity stderr 的软拒绝原因作为错误返回，不再误报成功。
+
+安全边界：默认只读；Gemini 不允许访问密钥、凭据、系统目录，不允许删除文件、安装依赖或 `git push`。普通工作区写入只通过 `edit` 模式和明确目录白名单开启。
 
 ## 待办
 
-- [ ] 检查 Gemini CLI 安装状态和版本
-- [ ] 检查 Gemini 登录状态
-- [ ] 执行一次只读任务验证 Gemini CLI
-- [ ] 设计并实现 Codex -> Gemini 的本地 MCP 桥接器
-- [ ] 验证 research / draft / edit / verify 四种权限模式
+- [x] 检查 Gemini/Antigravity CLI 安装状态和版本
+- [x] 检查登录状态
+- [x] 执行一次只读任务验证 CLI
+- [x] 设计并实现 Codex -> Gemini 的本地 MCP 桥接器
+- [x] 验证 research / edit 权限模式和越界拒绝
+- [ ] 补充 draft / verify 的真实项目验收
 - [ ] 用真实项目跑一周并记录额度节省和返工次数
