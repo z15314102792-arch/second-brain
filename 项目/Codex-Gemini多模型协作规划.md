@@ -6,7 +6,7 @@ metadata:
   node_type: memory
   type: project
   status: 首版已落地
-  version: v0.2
+  version: v0.3
   modified: 2026-08-28
 ---
 
@@ -141,6 +141,18 @@ Codex 转交 Gemini 时必须包含：目标、工作目录、允许访问的路
 - 空 stdout：桥接器现在会把 Antigravity stderr 的软拒绝原因作为错误返回，不再误报成功。
 
 安全边界：默认只读；Gemini 不允许访问密钥、凭据、系统目录，不允许删除文件、安装依赖或 `git push`。普通工作区写入只通过 `edit` 模式和明确目录白名单开启。
+
+## 动态协作规则
+
+任务等级不是一次性分类。Gemini 执行过程中可以继续处理低风险步骤；一旦遇到需求歧义、不可逆操作、跨模块影响、多个方案取舍、权限不足或低置信度判断，必须停止并返回 `ESCALATE` 升级包，由 Codex 作为指挥官决定后续动作。Codex 做出决定后，再把明确的下一步交回 Gemini。
+
+## 当前模型策略
+
+- `research` / `draft` 默认使用 `gemini-3.5-flash-low`。
+- `edit` / `verify` 默认使用 `gemini-3.5-flash-medium`。
+- 只有需要更复杂推理且低档模型明确升级时，才临时使用 `gemini-3.6-flash` 或 `gemini-3.1-pro`；不把高档模型作为默认执行器。
+- 当前账号实时可见模型包括 Gemini 3.7/3.6/3.5 Flash、Gemini 3.1 Pro，以及 Claude/GPT-OSS 模型；本方案仍只使用 Gemini。
+- 2026-08-28 实时查询结果：Gemini 五小时配额剩余 98%，周配额剩余 99%，AI Credits 为 0。具体 Google AI 套餐名称尚未从 CLI 输出确认，不能仅凭这些数字断言是 Pro、Plus 还是免费层。
 
 ## 待办
 
