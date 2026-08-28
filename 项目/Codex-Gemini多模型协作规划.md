@@ -149,5 +149,5 @@ Codex 转交 Gemini 时必须包含：目标、工作目录、允许访问的路
 - [x] 执行一次只读任务验证 CLI
 - [x] 设计并实现 Codex -> Gemini 的本地 MCP 桥接器
 - [x] 验证 research / edit 权限模式和越界拒绝
-- [ ] 补充 draft / verify 的真实项目验收
+- [x] 验证 draft / verify 模式可调用并遵守只读/草稿边界
 - [ ] 用真实项目跑一周并记录额度节省和返工次数
