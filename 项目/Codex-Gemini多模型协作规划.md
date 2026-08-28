@@ -6,7 +6,7 @@ metadata:
   node_type: memory
   type: project
   status: 首版已落地
-  version: v0.3
+  version: v0.4
   modified: 2026-08-28
 ---
 
@@ -148,11 +148,13 @@ Codex 转交 Gemini 时必须包含：目标、工作目录、允许访问的路
 
 ## 当前模型策略
 
-- `research` / `draft` 默认使用 `gemini-3.5-flash-low`。
-- `edit` / `verify` 默认使用 `gemini-3.5-flash-medium`。
-- 只有需要更复杂推理且低档模型明确升级时，才临时使用 `gemini-3.6-flash` 或 `gemini-3.1-pro`；不把高档模型作为默认执行器。
+- `research` / `draft` 默认使用 `gemini-3.5-flash-low`，最多自动升级到 Medium，再升级到 `gemini-3.1-pro-low`。
+- `edit` / `verify` 默认使用 `gemini-3.5-flash-medium`，需要时升级到 `gemini-3.6-flash-medium`，再升级到 `gemini-3.1-pro-low`。
+- 每个任务最多自动升级两次；达到上限仍需重大决策时，直接返回 Codex，不继续在 Gemini 内部循环。
+- 不把高档模型作为默认执行器；升级模型会收到前一档的升级包，不重复从头分析。
 - 当前账号实时可见模型包括 Gemini 3.7/3.6/3.5 Flash、Gemini 3.1 Pro，以及 Claude/GPT-OSS 模型；本方案仍只使用 Gemini。
 - 2026-08-28 实时查询结果：Gemini 五小时配额剩余 98%，周配额剩余 99%，AI Credits 为 0。具体 Google AI 套餐名称尚未从 CLI 输出确认，不能仅凭这些数字断言是 Pro、Plus 还是免费层。
+- 试运行结果：`research` 简单任务使用 `gemini-3.5-flash-low`，自动升级次数为 0，桥接器 v0.4.0 连通正常。
 
 ## 待办
 
