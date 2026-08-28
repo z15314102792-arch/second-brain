@@ -5,8 +5,8 @@ tags: [Codex, Gemini, 多模型, 额度优化, 工作流, workbuddy]
 metadata:
   node_type: memory
   type: project
-  status: 首版已落地，路由机制待修正
-  version: v0.5
+  status: 首版已落地，路由规则已修正
+  version: v0.6
   modified: 2026-08-28
 ---
 
@@ -164,10 +164,31 @@ Codex 转交 Gemini 时必须包含：目标、工作目录、允许访问的路
 - [x] 设计并实现 Codex -> Gemini 的本地 MCP 桥接器
 - [x] 验证 research / edit 权限模式和越界拒绝
 - [x] 验证 draft / verify 模式可调用并遵守只读/草稿边界
-- [ ] 修正 AGENTS.md 中「能并行的独立任务派子 Agent」这句自相矛盾的指令（它会引导 Codex 开原生子智能体烧额度）
+- [x] 修正 AGENTS.md 中「能并行的独立任务派子 Agent」这句自相矛盾的指令（它会引导 Codex 开原生子智能体烧额度）
 - [ ] 把「优先交给 Gemini」的软指令改为显式命令触发（用户主动说"交给 Gemini"或建快捷话术）
-- [ ] 修正分级规则：大范围重活才下放，小任务 Codex 直接干
+- [x] 修正分级规则：大范围重活才下放，小任务 Codex 直接干
 - [ ] 用 PulseMeter 记录修正前后各一周额度数据
+
+## Codex 复核修正（2026-08-28）
+
+### 已确认正确
+
+- `C:\Users\Administrator\.codex\AGENTS.md` 中原有「能并行的独立任务派子 Agent」与省额度目标冲突，已替换为禁止为了省额度调用 Codex 原生子 Agent。
+- `C:\Users\Administrator\.codex\config.toml` 中 `model_verbosity = "high"` 会增加日常输出长度，已调整为 `medium`。
+- 分级规则已改为“大范围调研下放，小查询和本地机械任务由当前 Codex 直接做”。
+- 保存进度仍固定由当前 Codex 执行，不交给 Gemini/低成本模型。
+
+### 需要降级表述
+
+- “AGENTS.md 是建议，hooks 才是强制”应理解为：AGENTS.md 可以引导模型行为，但高风险边界不能只靠软指令；需要显式命令、工具层限制或 hooks 辅助。
+- “社区已证伪”应理解为：仅靠 AGENTS.md 软指令做自动分派不可靠；成熟方案通常用宿主程序、路由层、hooks 或显式命令减少模型自由裁量。
+
+### 当前固定规则
+
+- 大范围 GitHub 初筛、README 摘要、长网页/大量资料整理：优先用 `delegate_to_gemini`。
+- 单点查询、本地下载/解压/校验/启动、明确配置修正：当前 Codex 直接做。
+- 保存进度：当前 Codex 直接写完整日志并复核 git 暂存。
+- 禁止为了省额度调用 Codex 原生子 Agent。
 
 ## 社区调研结论：分级协作可行吗（2026-08-28）
 
