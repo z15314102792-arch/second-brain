@@ -80,7 +80,7 @@ metadata:
 - 严格遵循 `CLAUDE.md` 的分类逻辑（项目/知识/技能/资料/日记…），新增前先查重，不重复造文件。
 
 ### Git（2026-08-17 更新：已授权推送）
-- 推送已授权。会话结束 / 用户说"保存进度" / "推git" 时执行：**`pull origin master → commit → push origin master && push hdd master`**（hdd/G盘未连则跳过该远端，不影响 origin）。
+- 推送已授权。会话结束 / 用户说"保存进度" / "推git" 时执行：**`pull origin master → commit → push origin master`**。2026-08-28 起取消 G 盘 / hdd 备份要求，不检查 `hdd` 远端，不执行 `git push hdd master`。
 - **提交信息统一前缀 `[WorkBuddy]`**（例：`[WorkBuddy] 接入第二大脑 + 每日主题分析`），便于 git 历史一眼识别小墨的提交。
 - 仍遵守 `CLAUDE.md` 白名单：`git add` 只加指定目录/文件，**禁止 `git add -A`**；`系统/` 不碰。
 - 冲突时停下向用户说明，不硬来。
