@@ -1,12 +1,12 @@
 ---
 name: codex-gemini-multi-model-plan
 description: Codex 作为总管、Gemini 作为下级执行模型、本地脚本处理机械任务的额度优化规划
-tags: [Codex, Gemini, 多模型, 额度优化, 工作流]
+tags: [Codex, Gemini, 多模型, 额度优化, 工作流, workbuddy]
 metadata:
   node_type: memory
   type: project
-  status: 首版已落地
-  version: v0.4
+  status: 首版已落地，路由机制待修正
+  version: v0.5
   modified: 2026-08-28
 ---
 
@@ -164,4 +164,56 @@ Codex 转交 Gemini 时必须包含：目标、工作目录、允许访问的路
 - [x] 设计并实现 Codex -> Gemini 的本地 MCP 桥接器
 - [x] 验证 research / edit 权限模式和越界拒绝
 - [x] 验证 draft / verify 模式可调用并遵守只读/草稿边界
-- [ ] 用真实项目跑一周并记录额度节省和返工次数
+- [ ] 修正 AGENTS.md 中「能并行的独立任务派子 Agent」这句自相矛盾的指令（它会引导 Codex 开原生子智能体烧额度）
+- [ ] 把「优先交给 Gemini」的软指令改为显式命令触发（用户主动说"交给 Gemini"或建快捷话术）
+- [ ] 修正分级规则：大范围重活才下放，小任务 Codex 直接干
+- [ ] 用 PulseMeter 记录修正前后各一周额度数据
+
+## 社区调研结论：分级协作可行吗（2026-08-28）
+
+### 总判定
+
+**方向成立，机制有错。**"强模型决策 + 弱模型执行"在社区有硬数据支撑的成熟先例，但所有成熟案例的共同点是：**路由由程序机械执行，不靠主模型自觉**。目前方案里"写进 AGENTS.md 指望 Codex 主动分派"是已被社区证伪的做法。
+
+### 成熟案例（按成熟度排序）
+
+1. **Aider architect/editor 模式（最成熟，硬数据）**：架构师模型（强）只出方案，编辑器模型（便宜）只改代码，拆分由 Aider 程序代码强制完成。官方基准：DeepSeek R1 架构师 + Sonnet 编辑器成本 $13.29，对比 o1 单干 $186.50（14 倍），分数反而更高（64.0% vs 61.7%）。结论：分级本身省钱且提质，但拆分动作发生在宿主程序里，不是模型自己的选择。
+2. **claude-code-router（musistudio，36.9k star）**：本地代理层路由，按请求类型把不同档位调用机械转发给不同模型（Gemini/DeepSeek/本地模型），完全不依赖模型服从。注意：只适用于 Claude Code 协议；**Codex 订阅鉴权走 OpenAI 官方，无法这样代理换后端**。用户 Claude Code 已用环境变量全套指向 DeepSeek，等效于这个方案。
+3. **Gemini 当编排者、Codex 当执行者（Isopolito/mcp）**：层级反转结构——便宜/免费的 Gemini CLI 当日常主力界面，Codex/Claude 只在被委派时消耗额度。与本方案相反，但更符合"贵模型按需出场"的经济学。
+4. **Codex→Gemini 委派（psychofanPLAYS/gemini4codex-mcp）**：与本项目几乎同构（Codex 指挥 Antigravity Gemini 做下级，git worktree 隔离，delegate_to_agent 工具），但**只有 1 star、2026-08-10 才创建，属于个人实验，不算成熟案例**。它同样依赖 BOOTSTRAP.md 软指令哄 Codex 分派。自研桥接器（v0.4.0）水平不低于它。
+5. **codex-mcp-bridge（npm 包）**：作者自己承认——有 shell 的终端 Agent 直接调 CLI"更快、更便宜、零开销"，MCP 桥只在无 shell 客户端或需要结构化输出时才划算。印证：委派有固有开销，不是免费午餐。
+
+### Codex 额度机制的关键事实
+
+- **原生子智能体烧额度是官方仓库已确认的已知问题**：openai/codex#13179（开启 subagents 后 PRO 每小时烧掉约 20% 周配额）、#9748（6 个并发子 Agent 瞬间清空 5 小时配额——子 Agent 启动时按推理时间预留配额，不是按实际用量）、superpowers#1152（Plus 用户单次 subagent 驱动开发直接耗尽 5 小时预算）。**"提醒后开一堆智能体把额度烧光"不是个人操作问题，是这类功能的已知行为。**
+- Codex/ChatGPT/相关工具共享同一额度池；消耗与模型档位、推理强度、Fast Mode（约 2.5 倍速烧）相关。
+- **AGENTS.md 是建议，hooks 是强制**（社区共识）：模型的指令服从有可测的失败率（论文级结论：指令层级可被绕过，Codex 官方也承认需要 hooks/沙箱等模型外层兜底）。Codex hooks 需 `[features] codex_hooks = true` 显式开启，本机 hooks 机制已验证可运行（SessionEnd 在用）。
+
+### 本方案设定里的具体错误（按严重度）
+
+1. **AGENTS.md「能并行的独立任务派子 Agent」在教 Codex 烧额度**：Codex 原生子 Agent 全部用 GPT 模型、吃 Plus 额度，且与"优先交给 Gemini"自相矛盾——模型看到两条冲突指令，被提醒分派时选择了开子 Agent 这条路。这是"一提醒反而烧光"的直接原因。
+2. **指望模型自觉委派，机制上就不成立**：从模型视角，委派比直接干更贵（写任务包传上下文 + 等待 + 读结果 + 复核，全是主模型 token）。小任务它"理性地"不分派。成熟方案全部用程序强制（Aider 宿主代码 / 代理路由 / hooks / 显式命令）。
+3. **下放对象选反了**："简单任务给下级"是最不划算的委派。真正省额度的是**重活下放**：要读大量内容的初筛、大批量机械改动、长文摘要——这些活 Codex 自己干时上下文 token 全记 GPT 账上。规则应改为"大范围调研下放，小查询直接干"。
+4. **配置层加速烧额度**：`model_verbosity = "high"` + `model_reasoning_effort = "medium"` 全局生效，日常任务也在高输出档。建议建 profiles 分档（日常 low/medium，攻坚才 high）。
+
+### 修正方案（按性价比排序）
+
+1. **改 AGENTS.md 那句话（5 分钟，零成本）**：删除「能并行的独立任务派子 Agent」，替换为「能并行的独立调研/批量任务用 delegate_to_gemini 交给 Gemini；禁止 spawn Codex 原生子 Agent 并行跑任务（会成倍烧 Plus 额度）」。
+2. **显式命令替代自动分派（立刻见效）**：不指望它自觉，由用户在需要时说「交给 Gemini 做：xxx」；或仿 Claude Code 建快捷指令。控制权在人，不赌模型。
+3. **改分级规则措辞**：CLAUDE.md 与 AGENTS.md 同步——「1级：大范围调研（需读大量文件/网页的初筛）交 Gemini；单点小查询 Codex 直接干」。
+4. **建 model profiles**：config.toml 加 profiles，日常任务用低推理+中输出，攻坚手动切高档。
+5. **进阶可选 A（hooks 强制）**：UserPromptSubmit hook 注入路由提醒，或 PreToolUse hook 拦截子 Agent 生成类工具调用并提示改走 delegate_to_gemini。机械强制，但需要开发和调试。
+6. **进阶可选 B（层级反转，最大节省）**：日常界面换成 Antigravity/Gemini CLI（当前五小时配额只用 2%），Codex 只在明确需要时被点名出场。GPT 额度从"默认每轮消耗"变"按需消耗"，比哄 Codex 下放省得多——因为总管自己每轮对话就在烧 GPT。参考 Isopolito/mcp 结构。
+7. **数据验证**：PulseMeter 记录修正前后各一周的额度曲线，用数据决定是否继续投入进阶方案。
+
+### 调研来源
+
+- openai/codex#13179、#9748、#13186（子 Agent 与计量异常）
+- musistudio/claude-code-router（36.9k star 代理路由）
+- Aider architect 模式基准数据（aider.chat / aiwiki）
+- psychofanPLAYS/gemini4codex-mcp（同构项目，1 star）
+- Isopolito/mcp（Gemini 编排 + Codex/Claude 执行）
+- codex-mcp-bridge npm（桥接开销自述）
+- Codex hooks 机制（社区实践：AGENTS.md 建议 vs hooks 强制）
+
+> 🧠 **声明**：以上「社区调研结论」一节由 WorkBuddy（小墨）于 2026-08-28 写入，其余章节为 Codex 会话维护。本块内容为 WorkBuddy 调研结论，非用户原话或原意，供 Claude Code/Codex 等其他模型识别，避免误删误当用户意图。
