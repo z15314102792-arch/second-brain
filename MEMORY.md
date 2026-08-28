@@ -58,6 +58,7 @@ metadata:
 - [[项目/数字人口播]] — 克隆脸 + 声音 → 口播视频，4GB 显卡暂停
 - [[项目/AI短剧解说视频]] — 文案 → AI 动态画面 → 成片
 - [[项目/Claude Code 环境维护]] — hook 乱码 + API 成本 + edit 误拦
+- [[项目/Codex-Gemini多模型协作规划]] — Codex 总管 + Gemini 下级执行，降低 Plus 额度消耗
 - [[项目/DeepSeek-Harness]] — DeepSeek Harness 包装成桌面
 - [[项目/提示词优化清单]] — 基于 1605 条真实消息的优化清单
 - [[项目/副业调研]] — 副业方向调研
