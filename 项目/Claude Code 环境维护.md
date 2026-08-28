@@ -5,13 +5,35 @@ metadata:
   node_type: memory
   type: project
   status: 稳定
-  version: v2.2
+  version: v2.3
   modified: 2026-08-28
 ---
 
 # Claude Code 环境维护
 
-> 版本 v2.2 · 2026-08-28
+> 版本 v2.3 · 2026-08-28
+
+## v2.3 — Codex AGENTS 新任务验证 + SessionEnd 路径修复（2026-08-28）
+
+### 已验证
+
+- 新建 Codex 验证任务：`01a046d7-312e-7962-904f-282f5afd44dd`。
+- 只读检查 `C:\Users\Administrator\.codex\AGENTS.md`，结果通过：
+  - 版本号为 v2.3 · 2026-08-28（Codex 导入后校正版）
+  - 包含 `E:\第二大脑\MEMORY.md`
+  - 包含 `E:\第二大脑\CLAUDE.md`
+  - 包含 `C:\Users\Administrator\.codex\projects\C--\memory\`
+  - 未发现 `E:\第二大脑\AGENTS.md`、`C:\Users\Administrator\.claude\projects\C--\memory\`、`.claude/verify.js` 残留
+
+### 已修复
+
+- `C:\Users\Administrator\.codex\hooks\session-end.js` 的第二大脑目录从 `E:\第二大脑\日记` 改为实际存在的 `E:\第二大脑\日志`。
+- hook 注释版本从 v1.2 更新到 v1.3。
+- 本地执行 `node C:\Users\Administrator\.codex\hooks\session-end.js`，退出码 0，无错误输出。
+
+### 保留判断
+
+- 不恢复 Claude 的 `PreToolUse`、`UserPromptSubmit`、`PostToolUse`、`Stop` 强拦截 hooks。原因：历史记录里 v1.8 已明确「Codex hooks 精简，只留 session-end.js」，且直接恢复可能导致 Codex 工具调用被旧 Claude 规则误拦。
 
 ## v2.2 — Codex 桌面版 Import 第二阶段检查（2026-08-28）
 
