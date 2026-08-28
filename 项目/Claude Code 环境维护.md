@@ -1,17 +1,49 @@
 ---
 name: claude-code-env-maintenance
-description: Claude Code 环境维护——hook 修复 + API 成本优化 + 读链接/识图能力扩展（mcp-vision 识图 + 读链接 Skill）+ 火山 Agent Plan 接入 + Codex 接入调研
+description: Claude Code/Codex 环境维护——hook 修复 + API 成本优化 + 读链接/识图能力扩展（mcp-vision 识图 + 读链接 Skill）+ 火山 Agent Plan 接入 + Codex 接入调研与导入检查
 metadata: 
   node_type: memory
   type: project
   status: 稳定
-  version: v2.1
-  modified: 2026-08-20
+  version: v2.2
+  modified: 2026-08-28
 ---
 
 # Claude Code 环境维护
 
-> 版本 v2.0 · 2026-08-20
+> 版本 v2.2 · 2026-08-28
+
+## v2.2 — Codex 桌面版 Import 第二阶段检查（2026-08-28）
+
+用户按「一库三用」迁移方案执行第二阶段，已到 Codex 桌面版 Settings → Import → Claude Code → 全选导入后的检查步骤。
+
+### 已确认
+
+- Codex 主配置存在：`C:\Users\Administrator\.codex\config.toml`，更新时间 2026-08-28 13:18:56。
+- Codex 全局指令存在并已修正：`C:\Users\Administrator\.codex\AGENTS.md`，从旧 v2.1 更新为 v2.3。
+- 技能已迁移：`C:\Users\Administrator\.claude\skills` 215 个文件；`C:\Users\Administrator\.codex\skills` 238 个文件（多出来的是 Codex 自带 `.system` 技能）。
+- slash command 已迁移：`保存进度.md` 在 Claude/Codex 两边各 1 个。
+- hooks 文件已迁移：Claude/Codex 两边均为 53 个文件。
+- 插件缓存已迁移/安装：Claude 1456 个插件相关文件；Codex 1986 个插件相关文件。
+- Claude 聊天导入记录存在：`C:\Users\Administrator\.codex\external_agent_session_imports.json` 共 132 条记录。
+
+### 已修复
+
+- `C:\Users\Administrator\.codex\AGENTS.md` 原来是 v2.1，落后于 `C:\Users\Administrator\.claude\AGENTS.md` / `CLAUDE.md` 的 v2.2。
+- 新版 `AGENTS.md` 修正为 Codex 路径：
+  - 第二大脑入口：`E:\第二大脑\MEMORY.md` + `E:\第二大脑\CLAUDE.md`
+  - Codex 快捷记忆路径：`C:\Users\Administrator\.codex\projects\C--\memory\`
+  - 验收脚本路径：`.codex/verify.js`
+
+### 保留风险
+
+- `C:\Users\Administrator\.codex\hooks.json` 当前只启用 `SessionEnd`，没有直接启用 Claude `settings.json` 里的 `PreToolUse`、`UserPromptSubmit`、`PostToolUse`、`Stop`。
+- hooks 文件虽然都复制过来了，但 Claude hook 事件名和 Codex hook 兼容性不能假设完全一致。后续如要恢复强制调研/验收拦截，需要单独做 Codex hook 方案。
+
+### 下一步
+
+- [ ] 新开 Codex 任务验证全局 `AGENTS.md` v2.3 是否生效。
+- [ ] 如用户要强制 hooks，再单独设计 Codex hook 兼容版本。
 
 ## v2.1 — Codex 接入调研：DeepSeek-V4-Flash 适配度（2026-08-20）
 
