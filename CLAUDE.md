@@ -6,12 +6,12 @@ metadata:
     - 入口
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
   modified: 2026-08-28
-  version: v5.0
+  version: v4.9
 ---
 
 # 第二大脑 · AI 操作手册
 
-> 版本 v5.0 | 2026-08-28
+> 版本 v4.9 | 2026-08-28
 
 ## 这是什么
 
@@ -165,7 +165,6 @@ metadata:
    - ⚠️ `系统/` 目录**不要**加入 git add 清单（里面有密钥，已用 .gitignore 拦截，但白名单里也别写，双保险）
    - `git diff --stat --cached` 确认暂存区无误
    - **同步顺序（2026-08-15 起）**：先 `git pull origin master`（拉云端最新，避免覆盖其他设备改动）→ 再 `git commit -m "..."`（提交本地改动）→ 最后 `git push origin master`（推送）
-   - **取消 G 盘 / hdd 备份（2026-08-28 起）**：保存进度时只推 `origin master`，不检查 `hdd` 远端，不执行 `git push hdd master`。
    - 若 pull 时遇到冲突，停下来向用户说明再处理，不要硬来
    - origin → GitHub
 ### 每周一次（建议周日晚上）

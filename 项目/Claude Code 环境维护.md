@@ -5,31 +5,13 @@ metadata:
   node_type: memory
   type: project
   status: 稳定
-  version: v2.4
+  version: v2.3
   modified: 2026-08-28
 ---
 
 # Claude Code 环境维护
 
-> 版本 v2.4 · 2026-08-28
-
-## v2.4 — 保存流程取消 G 盘 / hdd（2026-08-28）
-
-用户明确取消保存时的 G 盘备份要求，原因是当前不需要，且每次检查/推送失败会浪费 token。
-
-### 已改
-
-- 删除 `E:\第二大脑` 仓库的 `hdd` remote，当前只保留 `origin`。
-- `C:\Users\Administrator\.codex\commands\保存进度.md`：删除 G 盘备份步骤，保存只推 `origin master`。
-- `C:\Users\Administrator\.claude\commands\保存进度.md`：明确不再检查/推送 `hdd`。
-- `C:\Users\Administrator\.codex\AGENTS.md`：更新到 v2.4，明确不检查 G 盘 / `hdd`。
-- `C:\Users\Administrator\.claude\AGENTS.md`、`C:\Users\Administrator\.claude\CLAUDE.md`：更新到 v2.3，明确不检查 G 盘 / `hdd`。
-- `E:\第二大脑\CLAUDE.md`：更新到 v5.0，保存流程只保留 `git push origin master`。
-- `E:\第二大脑\资料\WorkBuddy.md`：取消旧的 `push hdd master` 授权说明。
-
-### 新规则
-
-保存进度只执行：`git pull origin master` → 精确 `git add` → `git commit` → `git push origin master`。不再检查 G 盘路径，不再执行 `git push hdd master`。
+> 版本 v2.3 · 2026-08-28
 
 ## v2.3 — Codex AGENTS 新任务验证 + SessionEnd 路径修复（2026-08-28）
 
