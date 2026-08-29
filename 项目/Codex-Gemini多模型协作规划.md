@@ -5,8 +5,8 @@ tags: [Codex, Gemini, 多模型, 额度优化, 工作流, workbuddy]
 metadata:
   node_type: memory
   type: project
-  status: Gemini CLI 旧个人登录停用，改用 Antigravity 官方路线
-  version: v0.7
+  status: Gemini/Antigravity 直接使用路线暂停，等待替代方案评估
+  version: v0.8
   modified: 2026-08-29
 ---
 
@@ -80,6 +80,29 @@ To continue using Gemini, please migrate to the Antigravity suite.
 - VS Code 扩展：`C:\Users\Administrator\.vscode\extensions\google.google-antigravity-1.1.0`
 - 已将 `C:\Users\Administrator\AppData\Roaming\npm\gemini.ps1`、`gemini.cmd`、`gemini` 恢复为旧 Gemini CLI 原始包装器。
 - 旧 Gemini CLI 备份命令：`gemini-cli`，版本 `0.57.0`。
+
+### 2026-08-29 收口：直接使用路线全部失败，暂停
+
+用户继续实测后反馈：VS Code 左侧 `Google Antigravity` 扩展和终端 `agy` 方式全部无法稳定启动。
+
+关键证据：
+
+- VS Code 扩展界面报错：
+  - `Unable to start Antigravity`
+  - `Could not connect to the update server.`
+  - `Server failed to start at http://127.0.0.1:49533`
+- VS Code 日志显示：
+  - `Timed out waiting for server at http://127.0.0.1:49533 after 15000ms`
+  - `Timed out waiting for server at http://127.0.0.1:54018 after 15000ms`
+- 终端 `agy` 曾因 PATH 未刷新无法识别，后补 npm 包装器后仍未达到用户要求的稳定可用。
+- 手动 backend 日志出现过 `OAuth: authenticated successfully as anhtritrang1142@gmail.com`，说明问题不是单纯账号未登录，而是新套件启动链路不稳定。
+
+当前固定判断：
+
+- 不再把 Gemini / Antigravity 直接作为用户主力入口推荐。
+- 不再继续包装 `gemini`、`agy` 或 VS Code 扩展入口，避免继续引入路径、缓存、代理和本地服务混乱。
+- 保留“Codex 内部桥接 Gemini”作为后续可评估方向，但前提是能稳定由 Codex 调用，不要求用户手动操作 Antigravity UI/CLI。
+- 若后续仍要使用 Gemini 额度，另起任务调研 API Key 路线和内部桥接路线的成本、额度归属、稳定性和小白操作难度。
 
 用户不手动复制粘贴 Gemini 结果。计划采用本地 MCP 桥接方式：
 
