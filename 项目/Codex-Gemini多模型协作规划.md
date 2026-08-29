@@ -5,8 +5,8 @@ tags: [Codex, Gemini, 多模型, 额度优化, 工作流, workbuddy]
 metadata:
   node_type: memory
   type: project
-  status: Gemini/Antigravity 直接使用路线暂停，等待替代方案评估
-  version: v0.8
+  status: Antigravity CLI 代理入口 gemini-pro 已验证，待完整 Agent 能力验收
+  version: v0.9
   modified: 2026-08-29
 ---
 
@@ -103,6 +103,37 @@ To continue using Gemini, please migrate to the Antigravity suite.
 - 不再继续包装 `gemini`、`agy` 或 VS Code 扩展入口，避免继续引入路径、缓存、代理和本地服务混乱。
 - 保留“Codex 内部桥接 Gemini”作为后续可评估方向，但前提是能稳定由 Codex 调用，不要求用户手动操作 Antigravity UI/CLI。
 - 若后续仍要使用 Gemini 额度，另起任务调研 API Key 路线和内部桥接路线的成本、额度归属、稳定性和小白操作难度。
+
+### 2026-08-29 再修正：Gemini Pro 走 Antigravity，使用 `gemini-pro` 代理入口
+
+用户明确指出已充值 Gemini Pro 套餐，不接受为了 Agent 功能改走 Gemini API Key 额外计费路线。重新判断后修正：
+
+- 旧 `gemini` CLI 个人/Pro 登录路线仍不作为主入口。
+- Gemini Pro 套餐的官方 Agent 使用方式应是 Antigravity / Antigravity CLI，不应默认推荐 API Key 路线。
+- 本机 `C:\Users\Administrator\.gemini\bin\agy.exe --version` 返回 `1.1.22`，`models` 可列出 Gemini 3.7/3.6/3.5 Flash 和 Gemini 3.1 Pro 等模型，说明账号与 Antigravity 模型链路可用。
+- 关键失败原因是 AGY 进程访问 Google OAuth / 头像检查时没有走代理：直连 `oauth2.googleapis.com:443` 超时，走 `127.0.0.1:7897` 代理可连通。
+- 已新建 `gemini-pro` 命令，自动设置代理并启动官方 Antigravity CLI 本体，避免继续使用不稳定的 `agy` 包装入口。
+
+当前用户主入口：
+
+```powershell
+gemini-pro
+```
+
+常用参数：
+
+```powershell
+gemini-pro --model gemini-3.7-flash-medium --effort medium
+gemini-pro --model gemini-3.1-pro-high --effort high
+gemini-pro -p "只回复 OK"
+gemini-pro -i "先阅读项目结构，然后告诉我入口文件在哪里"
+```
+
+安全边界：
+
+- `gemini-pro` 不保存 API Key、账号密码、OAuth token 或授权码。
+- 不要把 OAuth URL、authorization code、token、cookie、头像 URL、邮箱贴进对话。
+- 后续仍需在测试目录完成一次读文件、改文件、运行命令的完整 Agent 能力验收。
 
 用户不手动复制粘贴 Gemini 结果。计划采用本地 MCP 桥接方式：
 
