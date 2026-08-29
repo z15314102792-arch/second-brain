@@ -5,9 +5,9 @@ tags: [Codex, Gemini, 多模型, 额度优化, 工作流, workbuddy]
 metadata:
   node_type: memory
   type: project
-  status: 首版已落地，路由规则已修正
-  version: v0.6
-  modified: 2026-08-28
+  status: Gemini CLI 旧个人登录停用，改用 Antigravity 官方路线
+  version: v0.7
+  modified: 2026-08-29
 ---
 
 # Codex + Gemini 多模型协作规划
@@ -56,6 +56,30 @@ metadata:
 处理安全、权限、密钥、支付、数据迁移、复杂架构、疑难 bug、不可逆操作和最终上线前审查。
 
 ## Gemini 的调用方式
+
+### 2026-08-29 修正：旧 Gemini CLI 不再作为个人账号主入口
+
+已验证旧 `Gemini CLI 0.57.0` 使用个人 Google 登录时会报错：
+
+```text
+This client is no longer supported for Gemini Code Assist for individuals.
+To continue using Gemini, please migrate to the Antigravity suite.
+```
+
+结论：
+
+- 旧 `gemini` / `gemini-cli` 个人账号 OAuth 路线不再作为主力方案。
+- 官方替代路线是 Antigravity 套件，包括 VS Code 的 `Google Antigravity` 扩展和本机 `agy.exe`。
+- 不再推荐把 `gemini` 命令手工包装成 `agy`，Windows + VS Code + PowerShell 环境里容易出现路径、缓存和权限混乱。
+- 当前固定方案：VS Code 左侧 `Google Antigravity` 扩展作为主入口；官方 Antigravity CLI `agy` 作为终端备用入口；旧 `gemini-cli` 仅保留备份或 API Key 备用。
+
+本机状态：
+
+- 官方 Antigravity CLI：`C:\Users\Administrator\AppData\Local\agy\bin\agy.exe`
+- 版本：`1.1.22`
+- VS Code 扩展：`C:\Users\Administrator\.vscode\extensions\google.google-antigravity-1.1.0`
+- 已将 `C:\Users\Administrator\AppData\Roaming\npm\gemini.ps1`、`gemini.cmd`、`gemini` 恢复为旧 Gemini CLI 原始包装器。
+- 旧 Gemini CLI 备份命令：`gemini-cli`，版本 `0.57.0`。
 
 用户不手动复制粘贴 Gemini 结果。计划采用本地 MCP 桥接方式：
 
