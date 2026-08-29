@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
   modified: 2026-08-29
-  version: v4.15
+  version: v4.16
 ---
 
 # 第二大脑 · 总索引
@@ -84,6 +84,7 @@ metadata:
 - [[知识/中转站套壳识别]] — 中继站套壳检测三法（API字段/身份/知识截止）
 - [[知识/低消耗分级执行]] — 保存进度固定由 Codex 执行，大范围调研初筛优先用 Gemini；WorkBuddy 花积分，不作默认免费下级
 - [[知识/Windows悬停滚动]] — 鼠标滚轮在 Win+V、文件管理器等非活动窗口失效时，优先检查 MouseWheelRouting
+- [[知识/Gemini-Pro-Antigravity排障复盘]] — Gemini Pro 走 Antigravity CLI 的正确入口、代理根因、快捷命令和排障禁区
 
 ### 用户画像（互链成簇）
 
