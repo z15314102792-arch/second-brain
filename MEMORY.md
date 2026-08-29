@@ -64,6 +64,7 @@ metadata:
 - [[项目/记忆系统]] — 从单文件流水账重建为结构化记忆体系
 - [[项目/全局指令优化]] — CLAUDE.md 指令优化记录
 - [[项目/AIGC游戏美术方案]] — 五游戏 AIGC 美术素材方案
+- [[项目/AI额度实时监控]] — v1.3，OpenAI Codex Plus 与 Google Antigravity 双模型纯中文实时额度桌面监控看板
 - [[项目/Codex Plus用量可视化]] — PulseMeter 查看 Codex Plus 用量，已放弃中文轻量监视器
 
 ---
