@@ -5,8 +5,8 @@ tags: [学习方法, AI使用, 知识管理]
 metadata:
   node_type: memory
   type: reference
-  version: v1.1
-  modified: 2026-08-16
+  version: v1.2
+  modified: 2026-08-29
 ---
 
 # AI 知识库四步闭环
@@ -16,8 +16,8 @@ metadata:
 
 ## 四步闭环
 
-1. **工具准备**：下载免费 App（WorkBuddy、CodeBuddy），每天送积分，拿来就用；不纠结 Claude Code / Codex。
-   - WorkBuddy = 腾讯 AI 办公 Agent，用户**已装** v5.3.11（见 [[资料/WorkBuddy]]）；免费积分：注册送约 3000、每日签到、社区发文一篇最高 +3000，1 积分 ≈ 3.2 万 tokens，国内直连。
+1. **工具准备**：先用已有可用工具，不纠结 Claude Code / Codex。
+   - WorkBuddy = 腾讯 AI 办公 Agent，用户**已装** v5.3.11（见 [[资料/WorkBuddy]]）；但它会消耗积分，不再视为默认免费下级。省额度任务优先用 Gemini 或明确免费的模型。
    - 视频里「Coder Work」应为 **CodeBuddy**（腾讯编程助手）的语音误读。
 2. **建档案**：告诉 AI 你是谁、干嘛的、优缺点、目标、卡点，让它记住你，以后按你的情况给建议。
 3. **喂内容**：好文章复制给 AI、好视频发链接，说「这好在哪」，让 AI 拆「现在能用 vs 未来能用」——能用的列一二三照做，不能用的存成知识块。

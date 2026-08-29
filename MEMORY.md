@@ -4,8 +4,8 @@ tags: [入口, workbuddy]
 metadata: 
   node_type: memory
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-08-28
-  version: v4.12
+  modified: 2026-08-29
+  version: v4.13
 ---
 
 # 第二大脑 · 总索引
@@ -81,7 +81,7 @@ metadata:
 - [[知识/hook静默失效审计]] — 6 个 hook 审计 5 个静默失效
 - [[知识/会话存档全记录]] — 任何事情都要写进日志
 - [[知识/中转站套壳识别]] — 中继站套壳检测三法（API字段/身份/知识截止）
-- [[知识/低消耗分级执行]] — 保存进度固定由 Codex 执行，大范围调研初筛才用低成本模型
+- [[知识/低消耗分级执行]] — 保存进度固定由 Codex 执行，大范围调研初筛优先用 Gemini；WorkBuddy 花积分，不作默认免费下级
 
 ### 用户画像（互链成簇）
 

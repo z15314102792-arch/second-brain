@@ -7,7 +7,7 @@ metadata:
   type: tool
   status: 运行中
   version: v5.3.11
-  modified: 2026-08-12T10:18:06.714Z
+  modified: 2026-08-29
   originSessionId: 97234303-2b96-4c4c-8a01-e4743f297fee
 ---
 
@@ -41,7 +41,9 @@ metadata:
 ## 费用
 
 - 国际版 $10/月（约 ¥70）
-- 免费版有基础额度，先试用再决定是否付费
+- WorkBuddy 会消耗积分，不再作为默认免费下级模型。
+- 省 Codex/GPT 额度时，优先用 Gemini；只有用户点名、Gemini 不适合，或办公文档场景明显更合适时才用 WorkBuddy。
+- 免费/赠送积分如果存在，只当临时额度，不当长期免费方案。
 
 ## 安装记录
 
