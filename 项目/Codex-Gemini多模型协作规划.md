@@ -5,8 +5,8 @@ tags: [Codex, Gemini, 多模型, 额度优化, 工作流, workbuddy]
 metadata:
   node_type: memory
   type: project
-  status: Antigravity CLI 代理入口 gemini-pro 已验证，待完整 Agent 能力验收
-  version: v0.9
+  status: Antigravity CLI 快捷入口 gpro/gpc/gpr 与 gemini -pro 已验证，待完整 Agent 能力验收
+  version: v1.0
   modified: 2026-08-29
 ---
 
@@ -118,11 +118,20 @@ To continue using Gemini, please migrate to the Antigravity suite.
 
 ```powershell
 gemini-pro
+gpro
+gpc
+gpr
 ```
 
 常用参数：
 
 ```powershell
+gpro
+gpc
+gpr
+gemini -pro
+gemini -pro -c
+gemini -pro -r
 gemini-pro --model gemini-3.7-flash-medium --effort medium
 gemini-pro --model gemini-3.1-pro-high --effort high
 gemini-pro -p "只回复 OK"
@@ -133,6 +142,8 @@ gemini-pro -i "先阅读项目结构，然后告诉我入口文件在哪里"
 
 - `gemini-pro` 不保存 API Key、账号密码、OAuth token 或授权码。
 - 不要把 OAuth URL、authorization code、token、cookie、头像 URL、邮箱贴进对话。
+- 不使用 `gp`，因为它是 PowerShell 只读内置别名 `Get-ItemProperty`。
+- `gemini -pro` 依赖 `C:\Users\Administrator\Documents\PowerShell\profile.ps1` 中的函数；复杂参数优先用 `gpro` 或 `gemini-pro`。
 - 后续仍需在测试目录完成一次读文件、改文件、运行命令的完整 Agent 能力验收。
 
 用户不手动复制粘贴 Gemini 结果。计划采用本地 MCP 桥接方式：
