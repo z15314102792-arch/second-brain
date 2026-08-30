@@ -30,13 +30,28 @@ Windows 弹出“电脑出现了一些问题，将在一分钟后重启”时，
 - 强制重启触发者：`wininit.exe`
 - 重启说明：`lsass.exe` 意外终止，状态码 `-1073741819`
 
-同时发现机器安装了 360 安全卫士，存在多项 360 内核级驱动和文件系统筛选器，且 Microsoft Defender 处于关闭状态。当前最可疑方向是 Windows 25H2 / Build 26200.9168 与 360 底层驱动兼容冲突。
+同时发现机器安装过 360 安全卫士，存在多项 360 内核级驱动、文件系统筛选器和卸载残留，且早期排查时 Microsoft Defender 处于关闭状态。初期最可疑方向是 Windows 25H2 / Build 26200.9168 与 360 底层驱动兼容冲突。
 
 用户已处理：
 
 - 卸载 360 安全卫士。
 - 卸载 360 看图。
 - 开启 Windows 内存完整性。
+
+2026-08-30 17:17 左右再次复发后，判断需要升级：
+
+- 本次 360 内核驱动和文件系统筛选器已不再显示运行，但代码完整性日志仍显示 Chrome 尝试加载 360 残留 `safewrapper.dll`。
+- 已将 `C:\Program Files (x86)\360` 改名隔离为 `C:\Program Files (x86)\360.disabled-20260830`。
+- 新崩溃仍为 `lsass.exe` + `RPCRT4.dll` + `0xc0000005`，崩溃转储为 `C:\Windows\System32\config\systemprofile\AppData\Local\CrashDumps\lsass.exe.1360.protected.dmp`。
+- 代码完整性日志在崩溃前 1 秒连续报告 `C:\Windows\System32\fcon.dll` 缺少逐页哈希；该文件本身为微软签名，版本来自 8 月 16 日安装的 9168 更新。
+- DISM ScanHealth 显示组件存储未损坏，CBS 记录 `Total Detected Corruption: 0`。
+- 本机系统为 Windows 11 Pro Build 26200.9168，2026-08-16 安装 KB5121003 / KB5123304 / KB5120708。微软官方 KB5121003 支持页提到该更新存在应用卡死、访问冲突和设备无预警重启的已知问题背景；本机未发现其点名的 `inpoutx64` 驱动，因此不能只按该单项处理。
+
+当前优先级：
+
+1. 直接原因：`lsass.exe` 崩溃导致 `wininit.exe` 强制重启。
+2. 高疑方向：Build 26200.9168 / KB5121003 兼容问题，叠加代码完整性/内存完整性策略、360 残留和 `fcon.dll` 校验异常。
+3. 待验证方向：显卡驱动偏旧导致黑屏/显示驱动重置，Nahimic 音效组件导致黑框一闪。
 
 ## 排查顺序
 
@@ -70,5 +85,15 @@ Windows 弹出“电脑出现了一些问题，将在一分钟后重启”时，
 - 这些驱动可能需要重启后才完全卸载；重启后若仍存在，说明 360 没卸干净。
 - 已开启计划任务详细日志：`Microsoft-Windows-TaskScheduler/Operational`。
 - 已开启进程创建命令行记录：`ProcessCreationIncludeCmdLine_Enabled = 1`。
+- 17:17 复查时已成功开启进程创建审计；测试确认 Security 4688 能记录新进程、父进程和完整命令行。
+- `NahimicTask32` / `NahimicTask64` 在 2026-08-30 16:49:58-16:50:01 三秒内启动 42 个计划任务进程，强烈吻合“终端黑框一闪很多次”。已停止并禁用 `NahimicService`。
+- WER 中有多条 `LiveKernelEvent 141`，属于显卡/显示驱动卡死恢复类问题；但部分 WATCHDOG 转储是旧文件，需结合后续新时间戳确认。
 
 可能造成黑框一闪的任务包括 WPS 更新、Google 更新、Edge 更新、Windows 热补丁监控、抖音守护、OneDrive 更新。不能只凭任务存在就定罪，要等下次复现后按新日志确认。
+
+若再次复发：
+
+1. 先查 `Security` 日志 4688，按复发前 5 分钟提取新进程、父进程和命令行。
+2. 再查 `Application` 中 `lsass.exe` 崩溃报告，确认是否仍为 `RPCRT4.dll` 偏移 `000000000001ebf2`。
+3. 查看 `CodeIntegrity/Operational` 是否仍在崩溃前出现 `fcon.dll`、360、搜狗或其他第三方模块阻止加载。
+4. 若仍是同一模式，优先分析最新 `lsass.exe.*.protected.dmp`，其次评估卸载/回滚 KB5121003 或就地修复安装。
