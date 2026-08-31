@@ -7,7 +7,7 @@ metadata:
   type: project
   status: 活跃
   version: v10.0
-  modified: 2026-08-31 11:55
+  modified: 2026-08-31 12:02
   originSessionId: d799eeda-c70c-4fad-b5df-f15714448850
 ---
 
@@ -17,14 +17,14 @@ metadata:
 
 ## 1. 基础信息与 Git 仓库地址 (Repository & URLs)
 
-* **项目本地源码绝对路径**：E:\项目\autoclip-web\
-* **第二大脑知识库本地路径**：E:\第二大脑\
+* **项目本地源码绝对路径**：`E:\项目\autoclip-web\`
+* **第二大脑知识库本地路径**：`E:\第二大脑\`
 * **第二大脑知识库远程 GitHub 地址**：
-  * SSH 地址：git@github.com:z15314102792-arch/second-brain.git
-  * HTTPS 网址：https://github.com/z15314102792-arch/second-brain
-  * 知识库主文档位置：https://github.com/z15314102792-arch/second-brain/blob/master/项目/口播AI剪辑流水线.md
-* **本地 Web 交互工作台访问网址**：http://localhost:8999 或 http://127.0.0.1:8999
-* **当前生效稳定基线**：Git **10.0 (fe7c674)**（提交哈希 e7c6749d5bce43b2dbafd1a0f0bb2f7c9000068）
+  * SSH 地址：`git@github.com:z15314102792-arch/second-brain.git`
+  * HTTPS 网址：`https://github.com/z15314102792-arch/second-brain`
+  * 知识库主文档直达：`https://github.com/z15314102792-arch/second-brain/blob/master/项目/口播AI剪辑流水线.md`
+* **本地 Web 交互工作台访问网址**：`http://localhost:8999` 或 `http://127.0.0.1:8999`
+* **当前生效稳定基线**：Git **`v10.0 (fe7c674)`**（提交哈希 `fe7c6749d5bce43b2dbafd1a0f0bb2f7c9000068`）
 
 ---
 
@@ -32,23 +32,23 @@ metadata:
 
 * **操作系统**：Windows 11 Pro 64-bit (Build 26200.9168 / Lenovo 82RC)
 * **Python 运行环境**：
-  * Python 版本：Python 3.11.9
-  * 可执行文件绝对路径：C:\Users\Administrator\AppData\Local\Programs\Python\Python311\python.exe
+  * Python 版本：`Python 3.11.9`
+  * 可执行文件绝对路径：`C:\Users\Administrator\AppData\Local\Programs\Python\Python311\python.exe`
 * **FFmpeg 音视频多媒体处理引擎**：
-  * FFmpeg 版本：fmpeg version 8.1.1-essentials_build-www.gyan.dev
-  * 可执行文件绝对路径：C:\Users\Administrator\AppData\Local\Microsoft\WinGet\Links\ffmpeg.exe
+  * FFmpeg 版本：`ffmpeg version 8.1.1-essentials_build-www.gyan.dev`
+  * 可执行文件绝对路径：`C:\Users\Administrator\AppData\Local\Microsoft\WinGet\Links\ffmpeg.exe`
 * **FunASR / SenseVoice 离线模型与缓存**：
-  * 模型名称：iic/SenseVoiceSmall (FunASR v1.4.2)
-  * 模型本地权重快照目录：C:\Users\Administrator\.cache\modelscope\models\iic--SenseVoiceSmall\snapshots\master\
-  * 权重文件：model.pt（本地离线推理，零外部网络 API 消耗）
+  * 模型名称：`iic/SenseVoiceSmall` (FunASR v1.4.2)
+  * 模型本地权重快照目录：`C:\Users\Administrator\.cache\modelscope\models\iic--SenseVoiceSmall\snapshots\master\`
+  * 权重文件：`model.pt`（本地离线推理，零外部网络 API 消耗）
 * **剪映专业版 (JianyingPro) 路径字典**：
-  * 剪映安装主程序目录：D:\JianyingPro\11.2.0.14339\（兼容 11.2 ~ 11.3+）
-  * 剪映用户数据根目录：C:\Users\Administrator\AppData\Local\JianyingPro\User Data\
-  * **剪映草稿工程部署根目录**：C:\Users\Administrator\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft\
-  * 剪映字体特效缓存目录：C:\Users\Administrator\AppData\Local\JianyingPro\User Data\Cache\effect\
-  * 剪映音效与配乐缓存目录：C:\Users\Administrator\AppData\Local\JianyingPro\User Data\Cache\music\
+  * 剪映安装主程序目录：`D:\JianyingPro\11.2.0.14339\`（兼容 11.2 ~ 11.3+）
+  * 剪映用户数据根目录：`C:\Users\Administrator\AppData\Local\JianyingPro\User Data\`
+  * **剪映草稿工程部署根目录**：`C:\Users\Administrator\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft\`
+  * 剪映字体特效缓存目录：`C:\Users\Administrator\AppData\Local\JianyingPro\User Data\Cache\effect\`
+  * 剪映音效与配乐缓存目录：`C:\Users\Administrator\AppData\Local\JianyingPro\User Data\Cache\music\`
 * **标杆测试素材文件**：
-  * 视频路径：C:\Users\Administrator\Documents\xwechat_files\wxid_ar8lbm6yzxlm22_d209\msg\video\2026-08\266fcfd9ef4b3c2ac7c0813706b4130a.mp4
+  * 视频路径：`C:\Users\Administrator\Documents\xwechat_files\wxid_ar8lbm6yzxlm22_d209\msg\video\2026-08\266fcfd9ef4b3c2ac7c0813706b4130a.mp4`
   * 规格：64.07 秒，720×1280（9:16 竖屏），30.0 fps，H.264 + AAC
 
 ---
@@ -60,10 +60,10 @@ metadata:
 全流程自动化闭环覆盖：
 1. **声学智能粗剪**：-45dB 真实静音识别，自动切除无意义长停顿，保留 0.15s 自然呼吸气口；
 2. **黄金前 3 秒运镜**：0.0s~3.0s 自动推 1.35x 大特写，营造开场视觉冲击力；
-3. **100% 毫秒级绝对无缝单行字幕**：全片 segment[i].end === segment[i+1].start（间隙严格 0.000s），杜绝黑屏闪烁；
-4. **单轨行内关键点改色**：不建多余图层，在单条字幕内将关键数字与排比点精准渲染为**浅黄色 #F9F3C4**；
+3. **100% 毫秒级绝对无缝单行字幕**：全片 `segment[i].end === segment[i+1].start`（间隙严格 0.000s），杜绝黑屏闪烁；
+4. **单轨行内关键点改色**：不建多余图层，在单条字幕内将关键数字与排比点精准渲染为**浅黄色 `#F9F3C4`**；
 5. **标杆声音设计体系**：开口破冰【亮一下】、痛点【眼前一亮】、设问【大明王朝悬疑】、收尾【仙尘音效】，全片铺底 **Peace BGM（音量 0.18）**；
-6. **剪映 11.3 原生母版草稿交付**：直接生成合法的 draft_content.json 与 draft_meta_info.json 并自动部署到剪映目录，开箱即用。
+6. **剪映 11.3 原生母版草稿交付**：直接生成合法的 `draft_content.json` 与 `draft_meta_info.json` 并自动部署到剪映目录，开箱即用。
 
 ---
 
@@ -102,11 +102,11 @@ metadata:
   > *“第一首先你的字号不对，第二你的位置不对，第三你的字体不对，你能不能认真一点完全按照我的参数形式去？连字幕这个最固定的参数你都没做好……还有你刚刚加在第一行的放大的效果，两个同样的字幕一个有特效一个没特效，特效还死人一样有什么用……”*
 * **根因深度诊断**：
   1. 字号使用了默认 16pt，而标杆工程实际使用的是 **12.0pt**；
-  2. 字体使用了常规黑体，而标杆工程使用的是官方 **俪金黑（ID: 6740499317733200388）**；
-  3. 字幕位置使用了相对居中，而标杆工程实际坐标是 **y = -0.35705215419501135**；
+  2. 字体使用了常规黑体，而标杆工程使用的是官方 **`俪金黑`（ID: `6740499317733200388`）**；
+  3. 字幕位置使用了相对居中，而标杆工程实际坐标是 **`y = -0.35705215419501135`**；
   4. 之前为了实现局部放大，在外部新建了重叠图层，导致两个图层互相打架、视觉死板。
 * **改进与解决方案**：
-  1. 通过 extracted_open_project.json 全盘提取标杆工程参数：俪金黑、12.0pt、坐标 y=-0.357052、阴影 lpha: 0.4835, dist: 9.945；
+  1. 通过 `extracted_open_project.json` 全盘提取标杆工程参数：俪金黑、12.0pt、坐标 `y=-0.357052`、阴影 `alpha: 0.4835, dist: 9.945`；
   2. 废除外部重复图层，改用单轨行内样式。
 
 ---
@@ -115,9 +115,9 @@ metadata:
 * **用户发问与反馈**：
   > *“你不要按你的参数，你按剪映里的参数，它剪映里参数怎么样你就怎么样……一切以剪映为准，因为你最后要导出到剪映里去……”*
 * **根因深度诊断**：
-  * 第三方库 pyJianYingDraft 内部做了坐标系二次转换与封装，导致传给它的参数导出后在剪映中发生偏移，且容易导致草稿损坏。
+  * 第三方库 `pyJianYingDraft` 内部做了坐标系二次转换与封装，导致传给它的参数导出后在剪映中发生偏移，且容易导致草稿损坏。
 * **改进与解决方案 (v6.0)**：
-  * **彻底废除 pyJianYingDraft**，直接基于 Python 原生字典构建剪映底层 JSON 结构（draft_content.json 与 draft_meta_info.json），实现 1:1 纯净克隆。
+  * **彻底废除 `pyJianYingDraft`**，直接基于 Python 原生字典构建剪映底层 JSON 结构（`draft_content.json` 与 `draft_meta_info.json`），实现 1:1 纯净克隆。
 
 ---
 
@@ -129,12 +129,12 @@ metadata:
   2. 音效生成逻辑死板地在识别到“第一”、“第二”时机械插入 Ding 音效，没有情绪起伏；
   3. 前 3 秒缺乏破冰开场设计。
 * **改进与解决方案 (v7.0 ~ v8.0)**：
-  1. **研发 0.000s 绝对无缝相连算法**：全片 segment[i].end 严格等于 segment[i+1].start，彻底消灭所有黑屏空隙；
+  1. **研发 0.000s 绝对无缝相连算法**：全片 `segment[i].end` 严格等于 `segment[i+1].start`，彻底消灭所有黑屏空隙；
   2. **废除机械打点，精准对齐 4 处真实音效**：
-     *  .00s 触发【亮一下】
-     * 1.02s 触发【眼前一亮】
-     * 2.80s 触发【大明王朝悬疑】
-     * 46.32s 触发【仙尘音效】
+     * `0.00s` 触发【亮一下】
+     * `1.02s` 触发【眼前一亮】
+     * `2.80s` 触发【大明王朝悬疑】
+     * `46.32s` 触发【仙尘音效】
      * 全片铺底 **Peace BGM（音量 0.18，约 -20dB）**。
 
 ---
@@ -151,9 +151,9 @@ metadata:
 * **用户发问与反馈**：
   > *“你现在和我刚刚说那版还没区别啊，还是前三秒不知道哪找来的……还把原来的字幕往后挤了导致字幕对不上，你到底修改到哪儿了？”*
 * **根因排查与定位**：
-  * 检查代码发现致命 bug：代码中残留了 	_st_aligned = max(3.0, t_st)，导致系统将原本  .42s 开口说的话强制推迟到了 3.0s 才出字幕，全片声画严重错位 3 秒！
+  * 检查代码发现致命 bug：代码中残留了 `t_st_aligned = max(3.0, t_st)`，导致系统将原本 `0.42s` 开口说的话强制推迟到了 `3.0s` 才出字幕，全片声画严重错位 3 秒！
 * **改进与解决方案 (v10.0)**：
-  1. **彻底移除所有人工时移代码**：说话者在  .42s 开口，第一条字幕就在  .42s 毫秒级弹出；
+  1. **彻底移除所有人工时移代码**：说话者在 `0.42s` 开口，第一条字幕就在 `0.42s` 毫秒级弹出；
   2. 每一句字幕的出现时刻与说话者音节 100% 毫秒级对齐。
 
 ---
@@ -163,60 +163,60 @@ metadata:
   > *“第一特效字不对，你去看我给你的参考，除了主轨其他的几乎全是特效字……第二字幕不要改这么多颜色，改浅黄色，不是你改的这种粉色，改完之后放大一点几个字让更加显著……第三断句还是有问题，跟语气连不上……”*
 * **根因深度诊断**：
   1. 标杆工程中除主字幕轨外，实际包含 4 类特效字：顶部大标题（字语咏楷体）、中部提醒大字（方正风雅宋，1.37x 浅黄）、结尾升华大字（俪金黑，1.49x）；
-  2. 高亮颜色误用了粉色，而标杆工程实际使用的是 **浅黄色 [0.976, 0.953, 0.769]（HEX #F9F3C4）**；
-  3. SenseVoice 在输出 token 时将词拆分为单字，导致 w.startswith("所以") 无法匹配单字“所”，进而导致“老命啊所以”粘连。
+  2. 高亮颜色误用了粉色，而标杆工程实际使用的是 **浅黄色 `[0.976, 0.953, 0.769]`（HEX `#F9F3C4`）**；
+  3. SenseVoice 在输出 token 时将词拆分为单字，导致 `w.startswith("所以")` 无法匹配单字“所”，进而导致“老命啊所以”粘连。
 * **改进与解决方案**：
   1. 全盘还原 4 类真实特效字轨；
-  2. 主字幕行内改色统一锁定为浅黄色 #F9F3C4，彻底废除粉色；
+  2. 主字幕行内改色统一锁定为浅黄色 `#F9F3C4`，彻底废除粉色；
   3. 构建全文字符级偏移扫描索引，确保连词（所以/如果/但是/因为/虽然/请赶紧）强制在新行开头独立成句，单行字数保持在 5~9 字自然语流。
 
 ---
 
 ## 6. 标杆工程全要素参数字典 (1:1 真实数据)
 
-系统所有参数均 100% 取自从剪映内存提取的真实工程 extracted_open_project.json：
+系统所有参数均 100% 取自从剪映内存提取的真实工程 `extracted_open_project.json`：
 
 ### 6.1 字体库配置（本地绝对路径与 Resource ID）
 | 字体名称 | 剪映 Resource ID | 本地物理文件路径 | 职能分工 |
 | :--- | :--- | :--- | :--- |
-| **俪金黑** | 6740499317733200388 | C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/effect/6740499317733200388/4ef7d2eb7cdfcff226f086008045131a/俪金黑.TTF | 主字幕轨、开场设问大字、片尾升华大字 |
-| **字语咏楷体** | 7312719210373714459 | C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/effect/7312719210373714459/06ab9abe9d2e6f4d10152bafe691738c/字语咏楷体.ttf | 顶部常驻大标题轨 |
-| **方正风雅宋** | 7208056673317950011 | C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/effect/7208056673317950011/c4624c3d535a1801e0992ccb25de6ac4/FZFengYSJW-B.TTF | 中部重点提醒大字轨 |
+| **俪金黑** | `6740499317733200388` | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/effect/6740499317733200388/4ef7d2eb7cdfcff226f086008045131a/俪金黑.TTF` | 主字幕轨、开场设问大字、片尾升华大字 |
+| **字语咏楷体** | `7312719210373714459` | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/effect/7312719210373714459/06ab9abe9d2e6f4d10152bafe691738c/字语咏楷体.ttf` | 顶部常驻大标题轨 |
+| **方正风雅宋** | `7208056673317950011` | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/effect/7208056673317950011/c4624c3d535a1801e0992ccb25de6ac4/FZFengYSJW-B.TTF` | 中部重点提醒大字轨 |
 
 ### 6.2 视觉与多轨参数规范
 * **主视频轨（Track 0）**：
-  *  .0s ~ 3.0s：开场大特写 scale = 1.35x，	ransform = {"x": 0.09, "y": -0.05}；
-  * 3.0s 之后：画面切回 scale = 1.15x，	ransform = {"x": 0.0, "y": -0.04535}。
+  * `0.0s ~ 3.0s`：开场大特写 `scale = 1.35x`，`transform = {"x": 0.09, "y": -0.05}`；
+  * `3.0s 之后`：画面切回 `scale = 1.15x`，`transform = {"x": 0.0, "y": -0.04535}`。
 * **顶部常驻大标题轨（Track 1）**：
-  * 字体：字语咏楷体，字号 15.0，纯白 [1.0, 1.0, 1.0]；
-  * 坐标：x = 0.00, y = -0.3333，缩放 1.0x，全片常驻。
+  * 字体：`字语咏楷体`，字号 `15.0`，纯白 `[1.0, 1.0, 1.0]`；
+  * 坐标：`x = 0.00, y = -0.3333`，缩放 `1.0x`，全片常驻。
 * **中部重点提醒大字轨（Track 2）**：
-  * 字体：方正风雅宋，字号 15.0，**浅黄色 [0.976, 0.953, 0.769]（#F9F3C4）**；
-  * 坐标：x = -0.17, y = -0.21，**放大 1.37x**。
+  * 字体：`方正风雅宋`，字号 `15.0`，**浅黄色 `[0.976, 0.953, 0.769]`（#F9F3C4）**；
+  * 坐标：`x = -0.17, y = -0.21`，**放大 `1.37x`**。
 * **片尾升华大字轨（Track 3）**：
-  * 字体：俪金黑，字号 12.0，浅黄色；
-  * 坐标：x = 0.45, y = -0.24，**放大 1.49x**。
+  * 字体：`俪金黑`，字号 `12.0`，浅黄色；
+  * 坐标：`x = 0.45, y = -0.24`，**放大 `1.49x`**。
 * **常规主字幕轨（Track 4）**：
-  * 字体：俪金黑，字号 12.0，纯白正文；
-  * 坐标：x = 0.0, y = -0.35705215419501135，单行 5~9 字；
-  * 间隙：**严格 0.000s 绝对无缝咬合**（segment[i].end === segment[i+1].start）；
-  * 微黑阴影：lpha: 0.483516, angle: -33.626°, diffuse: 0.06163, distance: 9.94505；
-  * 行内高亮：对关键数字（如“四种”、“110到130”）在单条字幕内改为 **浅黄色 #F9F3C4**。
+  * 字体：`俪金黑`，字号 `12.0`，纯白正文；
+  * 坐标：`x = 0.0, y = -0.35705215419501135`，单行 5~9 字；
+  * 间隙：**严格 0.000s 绝对无缝咬合**（`segment[i].end === segment[i+1].start`）；
+  * 微黑阴影：`alpha: 0.483516, angle: -33.626°, diffuse: 0.06163, distance: 9.94505`；
+  * 行内高亮：对关键数字（如“四种”、“110到130”）在单条字幕内改为 **浅黄色 `#F9F3C4`**。
 
 ### 6.3 音频与音效参数规范
 | 音效名称 | 本地物理文件路径 | 触发时序与规则 | 音量设置 |
 | :--- | :--- | :--- | :--- |
-| **亮一下** | C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/1e326c7249f5380cbb8777931f6d7202.mp3 |  .00s 说话者开口第一声破冰 |  .85 |
-| **眼前一亮** | C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/c4af9bf85dd251b81bba5a520de49247.mp3 | 出现核心痛点短语处 |  .85 |
-| **大明王朝悬疑** | C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/3b3c79a52205f06e18f1d3a7d97144d0.mp3 | 出现核心设问句/重大转折处 |  .75 |
-| **仙尘音效** | C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/3b06bd9e49ba9786418e3e54d0a61795.mp3 | 片尾最后 1.2 秒收尾升华 |  .70 |
-| **Peace (BGM)** | C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/23d0d4806c4a19fec014be0c331f38d0.mp3 |  .00s ~ end 全片铺底烘托 | ** .18 (约 -20dB)** |
+| **亮一下** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/1e326c7249f5380cbb8777931f6d7202.mp3` | `0.00s` 说话者开口第一声破冰 | `0.85` |
+| **眼前一亮** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/c4af9bf85dd251b81bba5a520de49247.mp3` | 出现核心痛点短语处 | `0.85` |
+| **大明王朝悬疑** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/3b3c79a52205f06e18f1d3a7d97144d0.mp3` | 出现核心设问句/重大转折处 | `0.75` |
+| **仙尘音效** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/3b06bd9e49ba9786418e3e54d0a61795.mp3` | 片尾最后 1.2 秒收尾升华 | `0.70` |
+| **Peace (BGM)** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/23d0d4806c4a19fec014be0c331f38d0.mp3` | `0.00s ~ end` 全片铺底烘托 | **`0.18` (约 -20dB)** |
 
 ---
 
 ## 7. 系统技术架构与核心模块清单 (System Architecture & Modules)
 
-`
+```
 E:\项目\autoclip-web\
 ├── server.py                   # 后端 Web API 服务（支持 FastAPI / Tornado，端口 8999）
 │                               # 接口：POST /api/analyze (分析转录) | POST /api/export (导出草稿) | GET / (前端页面)
@@ -230,72 +230,122 @@ E:\项目\autoclip-web\
 │   └── jianying_exporter.py    # 剪映 11.3 原生底层 JSON 纯净克隆导出引擎（生成 draft_content.json 与 meta）
 ├── test_full_workflow.py       # 本地端到端全流程测试与草稿生成脚本
 ├── extracted_open_project.json # 内存 Dump 出的 100% 真实标杆工程明文全轨道参数字典（16 轨道数据）
-├── HANDOVER_DOCUMENTATION.md   # 本地项目交接与参数手册
+├── HANDOVER_DOCUMENTATION.md   # 本地项目交接与参数手册（单源唯一维护）
 └── CHANGELOG.md                # 完整版本迭代日志 (v5.0 ~ v10.0)
-`
+```
 
 ---
 
 ## 8. 核心 API 接口与调用协议 (API Reference)
 
 ### 8.1 视频分析与切片生成接口
-* **Endpoint**：POST http://localhost:8999/api/analyze
+* **Endpoint**：`POST http://localhost:8999/api/analyze`
 * **请求体 (JSON)**：
-  `json
+  ```json
   {
     "video_path": "C:\\Users\\Administrator\\Documents\\...\\266fcfd9ef4b3c2ac7c0813706b4130a.mp4",
     "breath": 0.15,
     "noise_db": -45
   }
-  `
+  ```
 * **响应数据 (JSON)**：
-  * sentences: 分句列表（包含 id, start, end, 	ext, words, scale, highlight_words）；
-  * aw_cuts: 静音切除候选区间；
-  * ideo_info: 时长、分辨率、帧率。
+  * `sentences`: 分句列表（包含 `id`, `start`, `end`, `text`, `words`, `scale`, `highlight_words`）；
+  * `raw_cuts`: 静音切除候选区间；
+  * `video_info`: 时长、分辨率、帧率。
 
 ### 8.2 剪映草稿一键导出与部署接口
-* **Endpoint**：POST http://localhost:8999/api/export
+* **Endpoint**：`POST http://localhost:8999/api/export`
 * **请求体 (JSON)**：
-  `json
+  ```json
   {
     "video_path": "...",
     "sentences": [...],
     "raw_cuts": [...],
     "draft_name": "0831-1155"
   }
-  `
-* **执行逻辑**：计算 keep_ranges ➔ 生成 draft_content.json ➔ 写入 draft_meta_info.json ➔ 复制至 com.lveditor.draft\0831-1155\。
+  ```
+* **执行逻辑**：计算 `keep_ranges` ➔ 生成 `draft_content.json` ➔ 写入 `draft_meta_info.json` ➔ 复制至 `com.lveditor.draft\0831-1155\`。
 
 ---
 
 ## 9. 开发者快速上手与调试手册 (Quickstart Guide)
 
 ### 9.1 启动 Web 本地开发服务
-`powershell
+```powershell
 cd E:\项目\autoclip-web
 python server.py 8999
 # 打开浏览器访问: http://localhost:8999
-`
+```
 
 ### 9.2 执行端到端全流程命令行测试
-`powershell
+```powershell
 cd E:\项目\autoclip-web
 python test_full_workflow.py
-`
+```
 
 ### 9.3 验证剪映草稿生成与字幕咬合
-`powershell
+```powershell
 cd E:\项目\autoclip-web
 python verify_0831_1138.py
-`
+```
 
 ---
 
-## 10. 当前稳定基线状态与后续攻坚任务
+## 10. 新执行者接手实施指南与工作 SOP (Handover Execution Guide)
 
-* **当前生效代码基线**：Git **10.0 (fe7c674)**
-  * 具备：绝对零时移声画咬合、0.000s 绝对无缝单行字幕、浅黄色 #F9F3C4 行内高亮、4 处标杆音效、Peace BGM 铺底。
-* **后续攻坚任务清单**：
-  1. **自适应语义特效字生成**：研发文案主旨自动提取算法，针对不同输入视频自动生成对应的顶部咏楷体大标题与中部 1.37x 风雅宋黄色提醒大字；
-  2. **字符级连词前置断句固化**：在 segment_analyzer.py 中稳定应用字符级全文字符偏移扫描映射，杜绝跨字连词断句失效；
-  3. **音效打点毫秒级动态绑定**：将音效触发时刻与说话者说出关键词的真实毫秒时间戳严格联动。
+> 💡 **本节为新接手执行者（工程师 / AI 协同 Agent）的标准化工作 SOP，接手人必须严格对照自检。**
+
+### 10.1 研发任务分阶段路线图 (Task Roadmap)
+新执行者后续的核心攻坚任务划分为以下 3 个 Milestone：
+```
+┌─────────────────────────────────────────────────────────────┐
+│ 🎯 Milestone 1：字符级连词前置断句算法固化 (Priority: P0)     │
+│ • 目标：彻底解决 SenseVoice 单字 Token 导致的跨字连词断句     │
+│   失效问题（杜绝"老命啊所以"粘连）。                        │
+│ • 方案：在 core/segment_analyzer.py 中应用全文字符偏移映射    │
+│   （参考 test_token_flow.py），确保遇到连词（所以/如果/但是/  │
+│   因为/虽然/请赶紧）时强制在新行开头断开，单行稳定在 5~9 字。 │
+├─────────────────────────────────────────────────────────────┤
+│ 🎯 Milestone 2：自适应多轨真实特效字生成 (Priority: P1)      │
+│ • 目标：针对不同输入视频，自动提炼文案并生成对应花字。       │
+│ • 方案：基于台词语义智能提炼：                              │
+│   1. 顶部大标题：提取视频核心主题（如"-四种食物不能二次加热-"）│
+│   2. 中部 1.37x 提醒大字：提取核心警示短句（如"不能二次加热"）│
+│   3. 结尾 1.49x 升华大字：提取号召语（如"您都记住了吗"）。    │
+├─────────────────────────────────────────────────────────────┤
+│ 🎯 Milestone 3：音效打点毫秒级动态绑定 (Priority: P1)        │
+│ • 目标：音效出现时刻严格贴合说话者重音音节，杜绝死板固定时间。│
+│ • 方案：搜索转录 Token 列表中关键词的真实 start 毫秒，将音效 │
+│   时间戳动态绑定至目标词首音节。                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 10.2 三层质量验收闭环 SOP
+每次完成代码修改后，执行者必须按以下标准闭环自检：
+1. **第一层：命令行端到端测试**：
+   `cd E:\项目\autoclip-web && python test_full_workflow.py` ➔ 确认生成合法的 `MMDD-HHMM` 草稿；
+2. **第二层：时序与无缝咬合硬指标自检**：
+   运行 `python verify_0831_1138.py`，必须满足：
+   * **零时移**：首句字幕 `start` 严格等于说话者第一声开口时间（`0.42s`）；
+   * **0.000s 间隙**：全篇字幕相邻 `gap` 必须为 `+0.000s` 绝对无缝相连；
+   * **浅黄色改色**：高亮颜色值必须为 `[0.976, 0.953, 0.769]`（HEX `#F9F3C4`），严禁使用粉色。
+3. **第三层：剪映实机声画审查**：
+   打开剪映专业版 ➔ 双击最新草稿 ➔ 播放核对嘴形咬合与音乐平衡。
+
+### 10.3 双库提交与进度归档 SOP
+1. **项目本地代码仓库提交**：
+   ```powershell
+   cd E:\项目\autoclip-web
+   git add .
+   git commit -m "feat/fix: 明确说明本次修改点与解决的问题"
+   ```
+2. **第二大脑知识库云端推送**：
+   ```powershell
+   # 在 E:\第二大脑\日志\当天日期-进度.md 追加今日进展流水账
+   # 在 E:\第二大脑\项目\口播AI剪辑流水线.md 更新技术说明
+   cd E:\第二大脑
+   git pull origin master
+   git add 日志/ 项目/ MEMORY.md
+   git commit -m "docs: 记录口播AI剪辑流水线最新研发进展与日志"
+   git push origin master
+   ```
