@@ -4,7 +4,7 @@ description: Windows 弹出一分钟后重启时，优先按 lsass.exe 崩溃与
 tags: [Windows, 故障排查, 系统]
 metadata:
   type: reference
-  modified: 2026-08-30 15:10
+  modified: 2026-08-31 16:45
 ---
 
 # Windows 强制重启排查
@@ -97,3 +97,41 @@ Windows 弹出“电脑出现了一些问题，将在一分钟后重启”时，
 2. 再查 `Application` 中 `lsass.exe` 崩溃报告，确认是否仍为 `RPCRT4.dll` 偏移 `000000000001ebf2`。
 3. 查看 `CodeIntegrity/Operational` 是否仍在崩溃前出现 `fcon.dll`、360、搜狗或其他第三方模块阻止加载。
 4. 若仍是同一模式，优先分析最新 `lsass.exe.*.protected.dmp`，其次评估卸载/回滚 KB5121003 或就地修复安装。
+
+## 2026-08-31 复发补充
+
+2026-08-31 16:10:39 左右再次非正常关闭，16:29:45 启动后系统日志记录 `6008`：上一次关闭是意外的。
+
+关键证据：
+
+- 16:27:53 应用程序错误：`lsass.exe` 崩溃，故障模块仍是 `C:\WINDOWS\SYSTEM32\RPCRT4.dll`，异常代码 `0xc0000005`，本次偏移变为 `00000000000d6362`。
+- 16:28:10 Wininit `1015`：关键系统进程 `C:\WINDOWS\system32\lsass.exe` 失败，状态代码 `c0000005`，系统必须重启。
+- 最新转储：`C:\Windows\System32\config\systemprofile\AppData\Local\CrashDumps\lsass.exe.1488.protected.dmp`。
+- WER 报告路径：`C:\ProgramData\Microsoft\Windows\WER\ReportArchive\AppCrash_lsass.exe_5c93b6128aaae85d5535a4f68d3b4fbd8354f42a_9b3655d9_6c95c739-0125-4d05-a19f-fcf546716628`。
+- 崩溃前 1 秒仍连续出现 `C:\Windows\System32\fcon.dll` 代码完整性 `3002`：缺少逐页映像哈希；但 `fcon.dll` 与 `RPCRT4.dll` 的 Authenticode 签名均为 Microsoft 且状态 `Valid`。
+- `DISM /Online /Cleanup-Image /ScanHealth` 显示未检测到组件存储损坏；`sfc /verifyonly` 的 CBS 记录只显示 `[SR] Verify complete`，未发现明确不可修复项。
+- 当前 Defender 已开启：实时保护、行为监控、IOAV 均为 `True`。
+- 未找到 `inpoutx64.sys`；因此不要按 KB5121003 已知的单一 `inpoutx64` 路线处理。
+- 当前仍存在 `360huabao.exe` 文件：`C:\Users\Administrator\AppData\Roaming\360huabao\360huabao.exe`，但当前 Run 注册表未再显示 360 画报自启动项。
+- 当前仍有 Nahimic 内核驱动运行：`Nahimic_Mirroring.sys`、`NahimicBTLink.sys`；`NahimicService` 已禁用并停止。
+- 代码完整性日志频繁阻止搜狗输入法组件加载：`SogouCloud.exe`、`PinyinUp.exe`、`SogouComMgr.exe`、`isgpet.exe` 未满足 Microsoft signing level requirements。
+
+当前判断：
+
+1. 直接原因仍是 `lsass.exe` 崩溃触发系统保护性重启，不是普通电源断电，也不是用户主动重启。
+2. 最高疑方向仍是 Windows 11 Build 26200.9168 / 8 月更新与代码完整性、内存完整性、第三方输入法/旧安全软件残留/音效驱动之间的兼容冲突。
+3. `fcon.dll` 与 `RPCRT4.dll` 本身签名有效，系统文件被明显篡改的可能性下降；更像更新版本与运行时策略/驱动交互问题。
+
+黑框一闪新线索：
+
+- Security 4688 已能记录进程创建；今天 16:23-16:27 大量黑框类进程来自 `cmd.exe` / `conhost.exe`。
+- 一部分是当前 Codex/Gemini 工具链触发的命令窗口：父进程为 `pythonw.exe` 或 `codex.exe`，命令行为 `gemini-pro.cmd -p /usage`、`/model`、`/credits` 等。
+- WPS 在 16:23:18、16:23:30、16:27:38 多次启动 `wpsupdate.exe`、`updateself.exe`、`ksolaunch.exe`、`wpscloudsvr.exe`，还调用 `regsvr32.exe` 注册 WPS 插件，是普通使用时黑框闪现的高疑来源之一。
+- Windows 热补丁监控任务 `\Microsoft\Windows\Hotpatch\Monitoring` 会直接调用 `%systemroot%\system32\cmd.exe`，在 10:39:55 和 12:20:42 有记录，也是正常系统任务可能造成黑框闪现的来源。
+- `WorkBuddy.exe` 在 16:27:19 调用了 `cmd.exe /d /s /c "ipconfig"`，也可能造成一次短暂黑框。
+
+下次复发优先动作：
+
+1. 先按复发时间前后 5 分钟查 Security 4688，找 `cmd.exe`、`conhost.exe` 的父进程和完整命令行。
+2. 如果继续是 WPS 更新链路，优先禁用 `WpsUpdateTask_Administrator`、`WpsUpdateLogonTask_Administrator`、`WpsWakeWnsLogonTask` 验证。
+3. 如果继续是 `lsass.exe + RPCRT4.dll + c0000005`，下一步应安装/调用 WinDbg 分析最新 `lsass.exe.1488.protected.dmp`，或优先做 Windows 更新回滚/就地修复安装二选一。
