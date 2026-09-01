@@ -6,8 +6,8 @@ metadata:
   node_type: memory
   type: project
   status: 活跃
-  version: v10.3
-  modified: 2026-08-31 16:19
+  version: v10.4
+  modified: 2026-09-01 10:26
   originSessionId: d799eeda-c70c-4fad-b5df-f15714448850
 ---
 
@@ -24,7 +24,7 @@ metadata:
   * HTTPS 网址：`https://github.com/z15314102792-arch/second-brain`
   * 知识库主文档直达：`https://github.com/z15314102792-arch/second-brain/blob/master/项目/口播AI剪辑流水线.md`
 * **本地 Web 交互工作台访问网址**：`http://localhost:8999` 或 `http://127.0.0.1:8999`
-* **当前生效稳定基线**：Git **`v10.3 (ba942a7)`**（剪映原生 music/sound 音频素材结构 + v10.2 语义候选打分断句；`v10.0 fe7c674` 仍作为无损回退点保留）
+* **当前生效稳定基线**：Git **`v10.4`**（强调事件统一驱动特效字与音效 + BGM/音效 dB 音量规则 + 剪映原生 music/sound 音频素材结构；`v10.0 fe7c674` 仍作为无损回退点保留）
 
 ---
 
@@ -62,7 +62,7 @@ metadata:
 2. **黄金前 3 秒运镜**：0.0s~3.0s 自动推 1.35x 大特写，营造开场视觉冲击力；
 3. **100% 毫秒级绝对无缝单行字幕**：全片 `segment[i].end === segment[i+1].start`（间隙严格 0.000s），杜绝黑屏闪烁；
 4. **单轨行内关键点改色**：不建多余图层，在单条字幕内将关键数字与排比点精准渲染为**浅黄色 `#F9F3C4`**；
-5. **标杆声音设计体系**：开口破冰【亮一下】、痛点【眼前一亮】、设问【大明王朝悬疑】、收尾【仙尘音效】，全片铺底 **Peace BGM（音量 0.18）**；
+5. **标杆声音设计体系**：由“强调事件”统一驱动【特效字 + 音效】同起点出现；全片铺底 **Peace BGM（默认 -15dB）**，音效限制在 **-3dB ~ -10dB**；
 6. **剪映 11.3 原生母版草稿交付**：直接生成合法的 `draft_content.json` 与 `draft_meta_info.json` 并自动部署到剪映目录，开箱即用。
 
 ---
@@ -172,6 +172,23 @@ metadata:
 
 ---
 
+### 📌 第 8 轮迭代：v10.4 强调事件绑定与 dB 音量体系
+* **用户发问与反馈**：
+  > *“BGM声音大小，要在-10—-25之间，一般是-15左右，以不压住原生为主……特效字，音效必须要和特效字一起……”*
+* **根因诊断**：
+  1. v10.3 的 BGM `0.18` 约等于 `-14.9dB`，基本符合用户目标；
+  2. v10.3 的音效 `0.70~0.85` 约等于 `-3.1dB~-1.4dB`，明显偏响，容易压住原声；
+  3. 音效与特效字此前是独立逻辑生成，无法保证“一条重点 = 同步特效字 + 同步音效”。
+* **改进与解决方案 (v10.4)**：
+  1. 新增 `build_accent_events`：先生成强调事件，再由同一事件同时生成强调字轨和音效轨；
+  2. BGM 使用 dB 转线性音量，默认 `-15dB`，限制在 `-10dB ~ -25dB`；
+  3. 音效使用 dB 分级：快促尖锐类 `-7dB`，清单答案类 `-8dB`，悬疑氛围类 `-5dB`，收尾仙尘 `-6dB`；
+  4. `verify_current_draft.py` 新增音量区间和强调字/音效同起点绑定验收；
+  5. 生成草稿 `0901-1026`，验收结果：BGM `[-15.0]`，音效 `[-7.0, -5.0, -8.0, -8.0, -7.0, -8.0, -8.0, -6.0]`，强调字段数 `8`，未绑定音效强调字段数 `0`；
+  6. 清单答案强调字已正确提取为“蘑菇、海鲜、芹菜、凉菜”，避免把“第二种就是”里的“就是”误当重点字。
+
+---
+
 ## 6. 标杆工程全要素参数字典 (1:1 真实数据)
 
 系统所有参数均 100% 取自从剪映内存提取的真实工程 `extracted_open_project.json`：
@@ -206,11 +223,17 @@ metadata:
 ### 6.3 音频与音效参数规范
 | 音效名称 | 本地物理文件路径 | 触发时序与规则 | 音量设置 |
 | :--- | :--- | :--- | :--- |
-| **亮一下** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/1e326c7249f5380cbb8777931f6d7202.mp3` | `0.00s` 说话者开口第一声破冰 | `0.85` |
-| **眼前一亮** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/c4af9bf85dd251b81bba5a520de49247.mp3` | 出现核心痛点短语处 | `0.85` |
-| **大明王朝悬疑** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/3b3c79a52205f06e18f1d3a7d97144d0.mp3` | 出现核心设问句/重大转折处 | `0.75` |
-| **仙尘音效** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/3b06bd9e49ba9786418e3e54d0a61795.mp3` | 片尾最后 1.2 秒收尾升华 | `0.70` |
-| **Peace (BGM)** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/23d0d4806c4a19fec014be0c331f38d0.mp3` | `0.00s ~ end` 全片铺底烘托 | **`0.18` (约 -20dB)** |
+| **亮一下** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/1e326c7249f5380cbb8777931f6d7202.mp3` | 开场强调事件，和开场强调字同起点 | **`-7dB` (`0.446684`)** |
+| **眼前一亮** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/c4af9bf85dd251b81bba5a520de49247.mp3` | 痛点/清单答案强调事件，和对应强调字同起点 | **`-7dB~-8dB` (`0.446684~0.398107`)** |
+| **大明王朝悬疑** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/3b3c79a52205f06e18f1d3a7d97144d0.mp3` | 风险/悬疑/严重后果强调事件，和对应强调字同起点 | **`-5dB` (`0.562341`)** |
+| **仙尘音效** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/3b06bd9e49ba9786418e3e54d0a61795.mp3` | 片尾收尾强调事件，和片尾强调字同起点 | **`-6dB` (`0.501187`)** |
+| **Peace (BGM)** | `C:/Users/Administrator/AppData/Local/JianyingPro/User Data/Cache/music/23d0d4806c4a19fec014be0c331f38d0.mp3` | `0.00s ~ end` 全片铺底烘托 | **`-15dB` (`0.177828`)** |
+
+### 6.4 参考草稿提取状态
+* 用户确认 `8月13日`、`8月26日`、`8.12素材` 中绝大多数 `Timelines` 都是单独成片，具备学习价值；极少数素材原因未完成的时间线不作为参考。
+* `Timelines/<UUID>/draft_content.json` 当前多为剪映封装格式，无法直接按普通 JSON 解析。
+* `deep_dump_all_projects.py` 已改为自动扫描全部 `JianyingPro` 进程；本轮实测扫描 9 个进程，结果为 `0` 个可解析明文工程。
+* 下一步若要精准学习 25 条时间线，需要继续研究剪映封装格式，或找到能让剪映把单条时间线明文加载到内存的方法，再批量统计音量、特效字、字幕、轨道参数。
 
 ---
 
@@ -354,9 +377,9 @@ python verify_current_draft.py
 
 ## 11. 🛑 当前遗留核心卡点诊断与新接手者破局指南 (Bottlenecks & Action Plan)
 
-> 💡 **本节由执行者于 2026-08-31 15:12 深度复盘总结，新接手者请直接从本节切入攻坚！**
+> 💡 **本节由上一任执行者于 2026-08-31 15:12 深度复盘总结，新接手者请直接从本节切入攻坚！**
 
-### 11.1 当前已解决与固化的能力 (Current Baseline - v10.3)
+### 11.1 当前已解决与固化的能力 (Current Baseline - v10.4)
 - ✅ **绝对零时移声画毫秒对齐**：说话者开口第一声（`0.42s`）字幕毫秒级弹出；
 - ✅ **全篇绝对无缝咬合**：30 段字幕全篇间隙严格为 **`0 微秒`**，杜绝黑屏闪烁；
 - ✅ **标杆浅黄色高亮**：行内改色统一为 **`#F9F3C4`（`[0.976, 0.953, 0.769]`）**，粉色完全绝迹；
@@ -364,7 +387,7 @@ python verify_current_draft.py
 - ✅ **连词前置**：“所以看到这一条视频”、“第一种呢是蘑菇”、“第四种就是凉菜”等排比句已能成功置于句首。
 - ✅ **语义候选打分断句**：新增候选切法打分、坏行尾/坏行首惩罚和完整短语合并，已解决 `0831-1405` 暴露的“是/的/我/直接/觉得”机械断裂。
 - ✅ **当前验收脚本**：新增 `verify_current_draft.py`，可自动验证最新草稿或指定草稿，不再依赖旧的 `0830-*` 写死路径。
-- ✅ **剪映原生音频素材结构**：音效素材改为剪映真实工程同类 `type=sound`，Peace BGM 改为 `type=music`，补齐 `resource_id/effect_id/music_id/category_id/request_id` 等字段，避免简化 `type=audio` 导致剪映轨道空显。
+- ✅ **剪映原生音频素材结构 (v10.3)**：音效素材改为剪映真实工程同类 `type=sound`，Peace BGM 改为 `type=music`，补齐 `resource_id/effect_id/music_id/category_id/request_id` 等字段，避免简化 `type=audio` 导致剪映轨道空显。
 
 ---
 
