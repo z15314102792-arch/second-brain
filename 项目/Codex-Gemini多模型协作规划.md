@@ -5,9 +5,9 @@ tags: [Codex, Gemini, 多模型, 额度优化, 工作流, workbuddy]
 metadata:
   node_type: memory
   type: project
-  status: Antigravity CLI 快捷入口 gpro/gpc/gpr 与 gemini -pro 已验证，待完整 Agent 能力验收
-  version: v1.0
-  modified: 2026-08-29
+  status: 基础设施与真实委派已通过，进入 5~10 个真实任务观察期；新会话工具发现仍需 tool_search
+  version: v1.3
+  modified: 2026-09-01
 ---
 
 # Codex + Gemini 多模型协作规划
@@ -237,8 +237,8 @@ Codex 转交 Gemini 时必须包含：目标、工作目录、允许访问的路
 
 ## 当前模型策略
 
-- `research` / `draft` 默认使用 `gemini-3.5-flash-low`，最多自动升级到 Medium，再升级到 `gemini-3.1-pro-low`。
-- `edit` / `verify` 默认使用 `gemini-3.5-flash-medium`，需要时升级到 `gemini-3.6-flash-medium`，再升级到 `gemini-3.1-pro-low`。
+- `research` / `draft` 默认使用 `Gemini 3.7 Flash (Low)`，最多自动升级到 `Gemini 3.7 Flash (Medium)`，再升级到 `Gemini 3.1 Pro (Low)`。
+- `edit` / `verify` 默认使用 `Gemini 3.7 Flash (Medium)`，需要时升级到 `Gemini 3.6 Flash (Medium)`，再升级到 `Gemini 3.1 Pro (Low)`。
 - 每个任务最多自动升级两次；达到上限仍需重大决策时，直接返回 Codex，不继续在 Gemini 内部循环。
 - 不把高档模型作为默认执行器；升级模型会收到前一档的升级包，不重复从头分析。
 - 当前账号实时可见模型包括 Gemini 3.7/3.6/3.5 Flash、Gemini 3.1 Pro，以及 Claude/GPT-OSS 模型；本方案仍只使用 Gemini。
@@ -334,3 +334,69 @@ Codex 转交 Gemini 时必须包含：目标、工作目录、允许访问的路
 - Codex hooks 机制（社区实践：AGENTS.md 建议 vs hooks 强制）
 
 > 🧠 **声明**：以上「社区调研结论」一节由 WorkBuddy（小墨）于 2026-08-28 写入，其余章节为 Codex 会话维护。本块内容为 WorkBuddy 调研结论，非用户原话或原意，供 Claude Code/Codex 等其他模型识别，避免误删误当用户意图。
+## 2026-08-31 复核：真实派发能力与自动路由状态
+
+### 已确认事实
+
+- Codex 具备通过本地 MCP `gemini_bridge` 调用 Gemini/Antigravity 的能力，桥接器工具名为 `delegate_to_gemini`。
+- 历史验收并非只验证“配置存在”：`research`、`draft`、`verify`、`edit` 均有真实轻量调用记录，说明至少做过一次或多次真正的“Codex 派发 → Gemini 执行 → 返回结果”。
+- 因此当前“额度没有明显下降”的问题，不能简单归因于“Gemini 根本无法被 Codex 调用”。
+
+### 仍未证明的部分
+
+目前第二大脑没有足够证据证明：在**近期真实项目任务**中，Codex 会稳定、持续、自动地把符合 1/2 级条件的子任务交给 `delegate_to_gemini`。
+
+这意味着需要把两件事分开：
+
+1. **能力层**：MCP 链路能不能调用 Gemini —— 已验证能。
+2. **路由层**：Codex 在真实任务里会不会稳定主动调用 —— 尚未证明。
+
+### 下一步审计目标
+
+在继续修改 AGENTS/CLAUDE/Skill 路由规则前，优先检查近期 Codex 会话、MCP 工具调用或 bridge 日志，统计：
+
+- `delegate_to_gemini` 实际调用次数；
+- 调用发生在哪类任务；
+- 本该下放但未下放的任务；
+- Gemini 返回后 Codex 是否重复重做；
+- 调用失败/超时/权限拒绝后是否由 Codex接管。
+
+根据结果再判断主要矛盾是：软规则触发率低、任务分类不合理、复核重复、还是桥接稳定性不足。
+
+## 2026-09-01 修复：真实项目委派、审计日志和工具发现
+
+### 已修复
+
+- `C:\Users\Administrator\Documents\Codex\gemini-bridge\server.mjs` 升级到 v0.5.0，新增独立 JSONL 审计日志：`C:\Users\Administrator\Documents\Codex\gemini-bridge\logs\delegate-audit.jsonl`。
+- 审计日志记录时间、模式、工作目录、模型、状态、失败原因、耗时、是否升级、升级次数；不记录任务正文、返回正文、密钥、token、cookie。
+- `C:\Users\Administrator\.codex\config.toml` 的 `GEMINI_BRIDGE_ALLOWED_ROOTS` 已加入 `E:\项目`，保留 `C:\Users\Administrator\Documents\Codex` 和 `E:\第二大脑`，没有放宽到整个 E 盘。
+- `C:\Users\Administrator\.codex\AGENTS.md` 更新到 v2.3，明确大范围 GitHub 初筛、多 README、长网页、大量资料整理、批量低风险任务优先调用 `delegate_to_gemini`，禁止为了省额度使用 Codex 原生子 Agent。
+- 旧模型名 `gemini-3.5-flash-low` 已被当前 Gemini CLI 拒绝，桥接器默认模型已更新为当前可用的 `Gemini 3.7 Flash (Low)` 等显示名称。
+
+### 真实验证
+
+- 用新的桥接器实例对 `E:\项目\autoclip-web` 执行只读 `research` 委派成功。
+- 成功记录：模型 `Gemini 3.7 Flash (Low)`，状态 `success`，耗时 `14092ms`，自动升级次数 `0`，失败原因 `null`。
+- 当前旧会话中已加载的 MCP 进程仍使用旧白名单，说明桥接器配置不会热更新；需要新会话或重启相关 MCP 进程后生效。
+
+### 仍有限制
+
+- 新开的 Codex 任务初始工具列表仍看不到 `delegate_to_gemini`。
+- 执行工具发现/搜索后才出现 `mcp__gemini_bridge.delegate_to_gemini`。
+- 暂未发现可靠的配置级 MCP 工具预加载能力，因此当前不要硬造 router；按 `AGENTS.md` 规则先工具发现，再委派。
+
+
+## 2026-09-01 验收：基础设施通过，进入真实任务观察期
+
+### 状态判断
+
+- **基础设施：通过。** `gemini_bridge`、项目白名单、当前可用模型名与独立审计日志均已修复并完成真实验证。
+- **真实 Gemini 执行：通过。** `E:\项目\autoclip-web` 的只读 `research` 委派已成功返回。
+- **安全边界：通过。** 只新增 `E:\项目`，未放宽到整个 E 盘；审计日志不保存敏感正文与凭据。
+- **审计能力：通过。** 后续以 `logs/delegate-audit.jsonl` 作为真实委派效果的主要证据源。
+- **自动路由：部分通过。** `AGENTS.md` 已明确委派与工具发现步骤，但新会话初始仍看不到 `delegate_to_gemini`，需要先做工具发现/搜索。
+- **新会话自动发现 Gemini：未解决。** 暂未找到可靠配置级预加载方案。
+
+### 决策
+
+当前不直接开发复杂 router。先运行 5~10 个真实适合下放的任务，以审计日志观察：委派触发率、成功率、失败原因、耗时和是否出现 Codex 接管。若触发率仍偏低，再优先评估轻量 hook 做前置提醒/工具发现；只有 hook 仍不足时再考虑程序级强制路由。
