@@ -6,8 +6,8 @@ metadata:
   node_type: memory
   type: project
   status: 活跃
-  version: v10.5
-  modified: 2026-09-01 12:05
+  version: v10.6
+  modified: 2026-09-01 13:05
   originSessionId: d799eeda-c70c-4fad-b5df-f15714448850
 ---
 
@@ -24,7 +24,7 @@ metadata:
   * HTTPS 网址：`https://github.com/z15314102792-arch/second-brain`
   * 知识库主文档直达：`https://github.com/z15314102792-arch/second-brain/blob/master/项目/口播AI剪辑流水线.md`
 * **本地 Web 交互工作台访问网址**：`http://localhost:8999` 或 `http://127.0.0.1:8999`
-* **当前生效稳定基线**：Git **`v10.5`**（参考草稿明文样式资料库 + 强调事件统一驱动特效字与音效 + BGM/音效 dB 音量规则 + 剪映原生 music/sound 音频素材结构；`v10.0 fe7c674` 仍作为无损回退点保留）
+* **当前生效稳定基线**：Git **`v10.6`**（剪映 11.3 主时间线只读解密 + 完整参考草稿轨道资料库 + 强调事件统一驱动特效字与音效 + BGM/音效 dB 音量规则；`v10.0 fe7c674` 仍作为无损回退点保留）
 
 ---
 
@@ -42,7 +42,7 @@ metadata:
   * 模型本地权重快照目录：`C:\Users\Administrator\.cache\modelscope\models\iic--SenseVoiceSmall\snapshots\master\`
   * 权重文件：`model.pt`（本地离线推理，零外部网络 API 消耗）
 * **剪映专业版 (JianyingPro) 路径字典**：
-  * 剪映安装主程序目录：`D:\JianyingPro\11.2.0.14339\`（兼容 11.2 ~ 11.3+）
+  * 剪映安装主程序目录：`D:\JianyingPro\11.3.0.14362\`（当前实测主时间线解密版本）
   * 剪映用户数据根目录：`C:\Users\Administrator\AppData\Local\JianyingPro\User Data\`
   * **剪映草稿工程部署根目录**：`C:\Users\Administrator\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft\`
   * 剪映字体特效缓存目录：`C:\Users\Administrator\AppData\Local\JianyingPro\User Data\Cache\effect\`
@@ -231,12 +231,13 @@ metadata:
 
 ### 6.4 参考草稿提取状态
 * 用户确认 `8月13日`、`8月26日`、`8.12素材` 中绝大多数 `Timelines` 都是单独成片，具备学习价值；极少数素材原因未完成的时间线不作为参考。
-* `Timelines/<UUID>/draft_content.json` 当前多为剪映加密/封装格式，无法直接按普通 JSON 解析；`.backup/*.bak` 同样多为封装密文。
-* `crypto_key_store.dat` 可通过 `inspect_jianying_crypto.py` 解析出 `cipher_key` 与资源 URI，已确认包含组合音频、预渲染视频、音频算法文件等资源，但尚未形成稳定解密主时间线方案。
-* `subdraft/**/draft_content.json` 与 `Timelines/**/template.tmp` 存在大量明文 JSON，可直接读取字体、颜色、文字内容、轨道位置、缩放、片段时长等样式数据。
-* `key_value.json` 可直接读取素材资源索引，已能看到参考草稿中使用过的 `Peace`、`仙尘音效`、`Ding，可爱提示音`、`亮一下`、`眼前一亮`、`紧迫` 等音频资源，以及箭头、模糊、蔬菜图片等特效资源。
-* `extract_reference_style_data.py` 已生成 `reference_style_data/` 资料库：25 条时间线、1 条疑似未剪完时间线、70 个可解析明文 JSON、47 个明文子草稿、82 条文字样式、189 条轨道片段、1037 条 key_value 素材索引、128 条音频资源、49 条特效资源。
-* 当前可直接学习花字/字幕外观和素材选择偏好；完整成片节奏、BGM/音效轨道真实打点与音量仍需要继续突破主时间线解密或剪映加载后内存明文入口。
+* **v10.6 已突破主时间线读取**：`D:\JianyingPro\11.3.0.14362\videoeditor.dll` 中确认存在 `lvve::EncryptUtils::decrypt` 导出符号，并已成功解密 `Timelines/<UUID>/draft_content.json`。
+* 新增 `jianying_draft_crypto.py`：通过隔离 Python 子进程调用本机剪映 DLL，只读处理临时副本，不改原草稿、不改剪映安装目录。
+* 新增 `extract_reference_full_timelines.py`：批量读取 `8月13日`、`8月26日`、`8.12素材` 主时间线，自动跳过 `8月26日 / 时间线06（未剪完）`。
+* `reference_full_timeline_data/` 已生成完整主时间线资料库：25 条时间线中成功解密 24 条、跳过 1 条、失败 0 条；抽取轨道片段 `3167` 条、文字素材 `1879` 条、音频素材 `122` 条。
+* 已能读取真实 `tracks`、`materials`、`texts`、`audios`，包括 BGM/音效素材名、时间线起点、持续时长、片段音量 dB、字幕/花字字体颜色和轨道位置。
+* 原始解密 JSON 保存在 `reference_full_timeline_data/raw_decrypted/`，该目录已加入 `.gitignore`；Git 只提交结构化摘要和中文报告。
+* 后续优化特效字、字幕、BGM、音效时，应优先使用 `reference_full_timeline_data/full_timeline_report.md` 与结构化 JSON，而不是再依赖旧的部分 `subdraft` 数据。
 
 ---
 
@@ -255,9 +256,12 @@ E:\项目\autoclip-web\
 │   ├── semantic_editor.py      # 情绪识别、关键词提取与运镜变焦分配器
 │   └── jianying_exporter.py    # 剪映 11.3 原生底层 JSON 纯净克隆导出引擎（生成 draft_content.json 与 meta）
 ├── test_full_workflow.py       # 本地端到端全流程测试与草稿生成脚本
+├── jianying_draft_crypto.py    # 剪映 11.3 主时间线只读解密模块（隔离子进程调用本机 videoeditor.dll）
+├── extract_reference_full_timelines.py # 批量解密并抽取参考草稿完整 tracks/materials/texts/audios
+├── reference_full_timeline_data/ # 24 条有效参考主时间线的结构化摘要与报告（raw_decrypted/ 本地保留不进 Git）
 ├── extracted_open_project.json # 内存 Dump 出的 100% 真实标杆工程明文全轨道参数字典（16 轨道数据）
 ├── HANDOVER_DOCUMENTATION.md   # 本地项目交接与参数手册（单源唯一维护）
-└── CHANGELOG.md                # 完整版本迭代日志 (v5.0 ~ v10.0)
+└── CHANGELOG.md                # 完整版本迭代日志 (v5.0 ~ v10.6)
 ```
 
 ---
