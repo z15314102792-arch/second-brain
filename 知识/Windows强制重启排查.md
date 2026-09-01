@@ -4,7 +4,7 @@ description: Windows 弹出一分钟后重启时，优先按 lsass.exe 崩溃与
 tags: [Windows, 故障排查, 系统]
 metadata:
   type: reference
-  modified: 2026-08-31 16:45
+  modified: 2026-09-01 02:50
 ---
 
 # Windows 强制重启排查
@@ -135,3 +135,30 @@ Windows 弹出“电脑出现了一些问题，将在一分钟后重启”时，
 1. 先按复发时间前后 5 分钟查 Security 4688，找 `cmd.exe`、`conhost.exe` 的父进程和完整命令行。
 2. 如果继续是 WPS 更新链路，优先禁用 `WpsUpdateTask_Administrator`、`WpsUpdateLogonTask_Administrator`、`WpsWakeWnsLogonTask` 验证。
 3. 如果继续是 `lsass.exe + RPCRT4.dll + c0000005`，下一步应安装/调用 WinDbg 分析最新 `lsass.exe.1488.protected.dmp`，或优先做 Windows 更新回滚/就地修复安装二选一。
+
+## 2026-09-01 修复动作
+
+2026-08-31 18:30:43 再次复发，System 日志 `1074` 仍记录 `wininit.exe` 因 `lsass.exe` 意外终止触发重启；Application 日志显示仍为 `lsass.exe + RPCRT4.dll + 0xc0000005`，偏移回到 `000000000001ebf2`。说明仅隔离 WPS 更新任务、360 用户目录、搜狗外围组件和 Nahimic 服务/驱动不足以阻止复发。
+
+已执行修复：
+
+- 恢复因隔离导致弹窗缺失的搜狗文件：`D:\搜狗输入法\SogouInput\Components\IChat\1.0.2.3232\SOGOUSmartAssistant.exe`。
+- 为避免继续弹“找不到文件”，恢复此前隔离的搜狗外围程序：`SogouCloud.exe`、`PinyinUp.exe`、`SogouComMgr.exe`、`isgpet.exe`、`SOGOUSmartAssistant.exe`。结论：搜狗问题不应靠直接改名 exe 处理，应改为完整卸载/重装。
+- 使用 DISM 卸载高疑 Windows 更新包：`Package_for_RollupFix~31bf3856ad364e35~amd64~~26100.9168.1.19`。输出显示 `The operation completed successfully`。
+- 卸载后 `Get-HotFix` 中 `KB5121003` 已消失，出现 `KB5079473`；DISM 显示 `Package_for_RollupFix~31bf3856ad364e35~amd64~~26100.8037.1.19` 处于安装挂起状态。
+- 当前系统存在 `Component Based Servicing\RebootPending` 和 `PendingFileRenameOperations`，说明必须正常重启一次，更新回滚才会真正完成。
+- 为避免 Windows 立即重新安装问题更新，已临时设置自动更新策略：`HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU\NoAutoUpdate = 1`。
+- 修复备份目录：`C:\Users\Administrator\Documents\Codex\2026-08-31\new-chat-2\work\windows-fix-20260831-165650`。
+
+当前判断：
+
+1. 弹窗属于人为隔离搜狗 exe 后残留调用导致，已恢复文件修复。
+2. 自动重启仍是同一 `lsass.exe` 崩溃链路，已经升级到回滚 `26100.9168` 累积更新。
+3. 重启后若系统版本仍为 `26200.9168` 或 `KB5121003` 回来，说明回滚未完成或被自动更新重新安装，需要进入恢复环境卸载质量更新，或做 Windows 就地修复安装。
+
+重启后检查：
+
+1. 查 `winver` / 系统版本是否不再是问题构建。
+2. 查 `Get-HotFix` 是否仍无 `KB5121003`。
+3. 查 Application 日志是否继续出现 `lsass.exe + RPCRT4.dll + c0000005`。
+4. 若继续复发，优先走“就地修复安装 Windows，保留个人文件和应用”，不再继续小范围禁用软件。
