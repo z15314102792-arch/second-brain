@@ -6,8 +6,8 @@ metadata:
   node_type: memory
   type: project
   status: 活跃
-  version: v10.4
-  modified: 2026-09-01 10:26
+  version: v10.5
+  modified: 2026-09-01 12:05
   originSessionId: d799eeda-c70c-4fad-b5df-f15714448850
 ---
 
@@ -24,7 +24,7 @@ metadata:
   * HTTPS 网址：`https://github.com/z15314102792-arch/second-brain`
   * 知识库主文档直达：`https://github.com/z15314102792-arch/second-brain/blob/master/项目/口播AI剪辑流水线.md`
 * **本地 Web 交互工作台访问网址**：`http://localhost:8999` 或 `http://127.0.0.1:8999`
-* **当前生效稳定基线**：Git **`v10.4`**（强调事件统一驱动特效字与音效 + BGM/音效 dB 音量规则 + 剪映原生 music/sound 音频素材结构；`v10.0 fe7c674` 仍作为无损回退点保留）
+* **当前生效稳定基线**：Git **`v10.5`**（参考草稿明文样式资料库 + 强调事件统一驱动特效字与音效 + BGM/音效 dB 音量规则 + 剪映原生 music/sound 音频素材结构；`v10.0 fe7c674` 仍作为无损回退点保留）
 
 ---
 
@@ -231,9 +231,12 @@ metadata:
 
 ### 6.4 参考草稿提取状态
 * 用户确认 `8月13日`、`8月26日`、`8.12素材` 中绝大多数 `Timelines` 都是单独成片，具备学习价值；极少数素材原因未完成的时间线不作为参考。
-* `Timelines/<UUID>/draft_content.json` 当前多为剪映封装格式，无法直接按普通 JSON 解析。
-* `deep_dump_all_projects.py` 已改为自动扫描全部 `JianyingPro` 进程；本轮实测扫描 9 个进程，结果为 `0` 个可解析明文工程。
-* 下一步若要精准学习 25 条时间线，需要继续研究剪映封装格式，或找到能让剪映把单条时间线明文加载到内存的方法，再批量统计音量、特效字、字幕、轨道参数。
+* `Timelines/<UUID>/draft_content.json` 当前多为剪映加密/封装格式，无法直接按普通 JSON 解析；`.backup/*.bak` 同样多为封装密文。
+* `crypto_key_store.dat` 可通过 `inspect_jianying_crypto.py` 解析出 `cipher_key` 与资源 URI，已确认包含组合音频、预渲染视频、音频算法文件等资源，但尚未形成稳定解密主时间线方案。
+* `subdraft/**/draft_content.json` 与 `Timelines/**/template.tmp` 存在大量明文 JSON，可直接读取字体、颜色、文字内容、轨道位置、缩放、片段时长等样式数据。
+* `key_value.json` 可直接读取素材资源索引，已能看到参考草稿中使用过的 `Peace`、`仙尘音效`、`Ding，可爱提示音`、`亮一下`、`眼前一亮`、`紧迫` 等音频资源，以及箭头、模糊、蔬菜图片等特效资源。
+* `extract_reference_style_data.py` 已生成 `reference_style_data/` 资料库：25 条时间线、1 条疑似未剪完时间线、70 个可解析明文 JSON、47 个明文子草稿、82 条文字样式、189 条轨道片段、1037 条 key_value 素材索引、128 条音频资源、49 条特效资源。
+* 当前可直接学习花字/字幕外观和素材选择偏好；完整成片节奏、BGM/音效轨道真实打点与音量仍需要继续突破主时间线解密或剪映加载后内存明文入口。
 
 ---
 
