@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
   modified: 2026-09-02
-  version: v4.22
+  version: v4.23
 ---
 
 # 第二大脑 · 总索引
@@ -48,7 +48,7 @@ metadata:
 
 ### 其他
 
-- [[项目/口播AI剪辑流水线]] — v10.9，全自动口播短视频AI剪辑流水线（参考模板花字字段写入、答案花字跟随答案起点、多音效候选池轮换防重复、断句碎片修复）
+- [[项目/口播AI剪辑流水线]] — v11.0-checkpoint，大改前保存点（85229ae；剪映 Reader/AST/IR/Edit Plan/Writer 边界；回退标签 v11.0-before-big-change-20260902-1129）
 - [[项目/进云老师剪辑]] — 教育 IP 口播剪辑，20 分钟读稿 → 1 分 21 秒竖屏成片
 - [[项目/提示词学习]] — 零基础提示词工程学习路径
 - [[项目/AI工作流学习]] — 零基础学 AI 工作流搭建，Coze 平台，先搭链接→多平台内容

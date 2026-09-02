@@ -6,7 +6,7 @@ metadata:
   node_type: memory
   type: project
   status: 活跃
-  version: v10.9
+  version: v11.0-checkpoint
   modified: 2026-09-02 00:00
   originSessionId: d799eeda-c70c-4fad-b5df-f15714448850
 ---
@@ -24,7 +24,7 @@ metadata:
   * HTTPS 网址：`https://github.com/z15314102792-arch/second-brain`
   * 知识库主文档直达：`https://github.com/z15314102792-arch/second-brain/blob/master/项目/口播AI剪辑流水线.md`
 * **本地 Web 交互工作台访问网址**：`http://localhost:8999` 或 `http://127.0.0.1:8999`
-* **当前生效稳定基线**：Git **`v10.9`**（参考模板花字字段写入 + 花字内容短重点词 + 答案花字跟随答案起点 + 多音效候选池轮换防重复 + v10.8 视觉统计保留；`v10.0 fe7c674` 仍作为无损回退点保留）
+* **当前生效稳定基线**：Git **`v11.0-checkpoint`**（大改前保存点：`85229ae`；已建立剪映 Reader / Draft AST / Normalized IR / Edit Plan / Writer 边界，保留 v10.9 花字与音效修复；回退标签 `v11.0-before-big-change-20260902-1129`，备份分支 `backup/v11.0-before-big-change-20260902-1129`）
 * **最新新会话交接摘要**：`E:\项目\autoclip-web\HANDOVER_2026-09-02_V10.7_SUMMARY.md`
 
 ---
@@ -263,7 +263,7 @@ E:\项目\autoclip-web\
 ├── reference_full_timeline_data/ # 24 条有效参考主时间线的结构化摘要与报告（raw_decrypted/ 本地保留不进 Git）
 ├── extracted_open_project.json # 内存 Dump 出的 100% 真实标杆工程明文全轨道参数字典（16 轨道数据）
 ├── HANDOVER_DOCUMENTATION.md   # 本地项目交接与参数手册（单源唯一维护）
-└── CHANGELOG.md                # 完整版本迭代日志 (v5.0 ~ v10.9)
+└── CHANGELOG.md                # 完整版本迭代日志 (v5.0 ~ v11.0-checkpoint)
 ```
 
 ---
