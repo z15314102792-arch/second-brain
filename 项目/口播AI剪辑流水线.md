@@ -6,8 +6,8 @@ metadata:
   node_type: memory
   type: project
   status: 活跃
-  version: v10.6
-  modified: 2026-09-01 13:05
+  version: v10.7
+  modified: 2026-09-02 00:00
   originSessionId: d799eeda-c70c-4fad-b5df-f15714448850
 ---
 
@@ -24,7 +24,7 @@ metadata:
   * HTTPS 网址：`https://github.com/z15314102792-arch/second-brain`
   * 知识库主文档直达：`https://github.com/z15314102792-arch/second-brain/blob/master/项目/口播AI剪辑流水线.md`
 * **本地 Web 交互工作台访问网址**：`http://localhost:8999` 或 `http://127.0.0.1:8999`
-* **当前生效稳定基线**：Git **`v10.6`**（剪映 11.3 主时间线只读解密 + 完整参考草稿轨道资料库 + 强调事件统一驱动特效字与音效 + BGM/音效 dB 音量规则；`v10.0 fe7c674` 仍作为无损回退点保留）
+* **当前生效稳定基线**：Git **`v10.7`**（参考成片统计音量规则 + 通用口播断句整理 + 清单编号/答案节奏拆分 + 强调事件统一驱动特效字与音效；`v10.0 fe7c674` 仍作为无损回退点保留）
 
 ---
 
@@ -254,6 +254,7 @@ E:\项目\autoclip-web\
 │   ├── transcriber.py          # FunASR SenseVoice 离线精准语音转录（输出毫秒级字符时间戳与标点）
 │   ├── segment_analyzer.py     # 口播语气语义断句分析器（5~9字单行限制、字符级连词前置换行算法）
 │   ├── semantic_editor.py      # 情绪识别、关键词提取与运镜变焦分配器
+│   ├── reference_style_rules.py # 从参考成片摘要读取 BGM/音效音量统计与强调事件密度规则
 │   └── jianying_exporter.py    # 剪映 11.3 原生底层 JSON 纯净克隆导出引擎（生成 draft_content.json 与 meta）
 ├── test_full_workflow.py       # 本地端到端全流程测试与草稿生成脚本
 ├── jianying_draft_crypto.py    # 剪映 11.3 主时间线只读解密模块（隔离子进程调用本机 videoeditor.dll）
@@ -261,7 +262,7 @@ E:\项目\autoclip-web\
 ├── reference_full_timeline_data/ # 24 条有效参考主时间线的结构化摘要与报告（raw_decrypted/ 本地保留不进 Git）
 ├── extracted_open_project.json # 内存 Dump 出的 100% 真实标杆工程明文全轨道参数字典（16 轨道数据）
 ├── HANDOVER_DOCUMENTATION.md   # 本地项目交接与参数手册（单源唯一维护）
-└── CHANGELOG.md                # 完整版本迭代日志 (v5.0 ~ v10.6)
+└── CHANGELOG.md                # 完整版本迭代日志 (v5.0 ~ v10.7)
 ```
 
 ---
