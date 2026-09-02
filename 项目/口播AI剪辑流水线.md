@@ -25,6 +25,7 @@ metadata:
   * 知识库主文档直达：`https://github.com/z15314102792-arch/second-brain/blob/master/项目/口播AI剪辑流水线.md`
 * **本地 Web 交互工作台访问网址**：`http://localhost:8999` 或 `http://127.0.0.1:8999`
 * **当前生效稳定基线**：Git **`v10.7`**（参考成片统计音量规则 + 通用口播断句整理 + 清单编号/答案节奏拆分 + 强调事件统一驱动特效字与音效；`v10.0 fe7c674` 仍作为无损回退点保留）
+* **最新新会话交接摘要**：`E:\项目\autoclip-web\HANDOVER_2026-09-02_V10.7_SUMMARY.md`
 
 ---
 
