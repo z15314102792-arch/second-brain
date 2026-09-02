@@ -4,7 +4,7 @@ description: Windows 弹出一分钟后重启时，优先按 lsass.exe 崩溃与
 tags: [Windows, 故障排查, 系统]
 metadata:
   type: reference
-  modified: 2026-09-01 02:50
+  modified: 2026-09-02 10:58
 ---
 
 # Windows 强制重启排查
@@ -162,3 +162,29 @@ Windows 弹出“电脑出现了一些问题，将在一分钟后重启”时，
 2. 查 `Get-HotFix` 是否仍无 `KB5121003`。
 3. 查 Application 日志是否继续出现 `lsass.exe + RPCRT4.dll + c0000005`。
 4. 若继续复发，优先走“就地修复安装 Windows，保留个人文件和应用”，不再继续小范围禁用软件。
+
+## 2026-09-02 黑框闪烁处理
+
+用户反馈 2026-09-02 10:44/10:45 左右正常使用时仍看到类似终端的黑色窗口一闪而过。基于已开启的 Security 4688 进程创建审计和 TaskScheduler Operational 日志，本次判断黑框来源分为两类：
+
+1. 如果当时正在使用 Codex / WorkBuddy / Gemini，高概率来自这些工具自身反复启动 `cmd.exe`、`conhost.exe`、`git.exe`、`gemini-pro.cmd`、`mcp-vision.exe`。10:40-10:50 期间可见 `gemini-pro.cmd -p /usage`、`/model`、`/credits` 每隔几十秒由 `pythonw.exe` 通过 `cmd.exe` 调用；Codex 也会启动 Git 探测和 app tools MCP。
+2. 如果脱离 Codex / WorkBuddy / Gemini 的普通使用场景仍出现黑框，高疑来源是 WPS 更新/修复/插件注册链路。日志中可见 `WpsUpdateLogonTask_Administrator` 触发 `ksolaunch.exe /wpsupdate`，随后启动 `wpsupdate.exe -repairtask`、`wpscloudsvr.exe`，并可能调用 `regsvr32.exe` 注册 WPS 插件。
+
+已执行低风险修复：
+
+- 备份相关计划任务到 `C:\Users\Administrator\Documents\Codex\2026-08-31\new-chat-2\work\windows-black-window-fix-20260902-105348`。
+- 禁用 `WpsUpdateLogonTask_Administrator`。
+- 禁用 `WpsUpdateTask_Administrator`。
+- `WpsWakeWnsLogonTask` 原本已禁用，保持不变。
+- Google 用户更新任务 `GoogleUpdaterTaskUser152.0.7933.0{5FAED628-4DF1-4A86-9D8F-618BCCFCEC6E}` 原本已禁用，保持不变。
+
+未处理项：
+
+- `\Microsoft\Windows\Hotpatch\Monitoring` 会通过 `%systemroot%\system32\cmd.exe /d /c %systemroot%\system32\hpatchmonTask.cmd` 运行，理论上也可能产生黑框。但脚本用于检查 Windows 热补丁、VBS 和 `hpatchmon` 服务，属于系统更新/安全维护范围，风险不清楚，本次不禁用。
+- Google 系统更新任务仍保持就绪，未确认其与本次黑框直接相关。
+
+后续复发判断：
+
+1. 正在使用 Codex / WorkBuddy / Gemini 时闪烁：优先按 AI 工具链自身命令窗口判断。
+2. 未使用 Codex / WorkBuddy / Gemini 时闪烁：优先重新查复发前后 5 分钟 Security 4688，确认是否仍有 WPS、Google、OneDrive 或 Hotpatch 触发。
+3. WPS 已禁用后仍在普通使用中复发，再考虑进一步评估 Hotpatch 或其他系统任务，不要直接关闭系统任务。
