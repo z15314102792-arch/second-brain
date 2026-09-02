@@ -6,7 +6,7 @@ metadata:
   node_type: memory
   type: project
   status: 活跃
-  version: v11.3-analysis
+  version: v11.4-style-trial
   modified: 2026-09-02 00:00
   originSessionId: d799eeda-c70c-4fad-b5df-f15714448850
 ---
@@ -24,7 +24,7 @@ metadata:
   * HTTPS 网址：`https://github.com/z15314102792-arch/second-brain`
   * 知识库主文档直达：`https://github.com/z15314102792-arch/second-brain/blob/master/项目/口播AI剪辑流水线.md`
 * **本地 Web 交互工作台访问网址**：`http://localhost:8999` 或 `http://127.0.0.1:8999`
-* **当前生效稳定基线**：Git **`v11.3-analysis`**（最新提交：`5a9c7e0`；已修正剪映叠加轨断档分析口径，确认 118 个主字幕正向空隙全部由其它文字轨/特效字覆盖，未覆盖断档为 0；上一读取层保存点 `e9c466a` 仍保留）
+* **当前生效稳定基线**：Git **`v11.4-style-trial`**（最新提交：`0eb0c6f`；已按参考草稿短促特效字样式调整生成器，强调字独立轨挂载真实“缩小”入场动画引用，音效按参考分布允许 0~-0.067s 贴近起点；上一叠加轨分析保存点 `5a9c7e0` 仍保留）
 * **最新新会话交接摘要**：`E:\项目\autoclip-web\HANDOVER_2026-09-02_V10.7_SUMMARY.md`
 
 ---
