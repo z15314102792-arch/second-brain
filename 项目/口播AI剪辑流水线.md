@@ -6,7 +6,7 @@ metadata:
   node_type: memory
   type: project
   status: 活跃
-  version: v11.1-reader
+  version: v11.2-analysis
   modified: 2026-09-02 00:00
   originSessionId: d799eeda-c70c-4fad-b5df-f15714448850
 ---
@@ -24,7 +24,7 @@ metadata:
   * HTTPS 网址：`https://github.com/z15314102792-arch/second-brain`
   * 知识库主文档直达：`https://github.com/z15314102792-arch/second-brain/blob/master/项目/口播AI剪辑流水线.md`
 * **本地 Web 交互工作台访问网址**：`http://localhost:8999` 或 `http://127.0.0.1:8999`
-* **当前生效稳定基线**：Git **`v11.1-reader`**（最新提交：`e9c466a`；已沉淀可复用剪映只读 Reader，打通 `Jianying Reader → Draft AST → Normalized IR → Edit Plan` 最小闭环，保留 v10.9 花字与音效修复；上一大改前回退点 `85229ae` 仍保留）
+* **当前生效稳定基线**：Git **`v11.2-analysis`**（最新提交：`0a97636`；已只读分析 24 条参考主时间线，反推出音效位置、字幕样式、字幕时间和出现方式；上一读取层保存点 `e9c466a` 仍保留）
 * **最新新会话交接摘要**：`E:\项目\autoclip-web\HANDOVER_2026-09-02_V10.7_SUMMARY.md`
 
 ---
