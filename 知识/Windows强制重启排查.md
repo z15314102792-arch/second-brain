@@ -4,7 +4,7 @@ description: Windows 弹出一分钟后重启时，优先按 lsass.exe 崩溃与
 tags: [Windows, 故障排查, 系统]
 metadata:
   type: reference
-  modified: 2026-09-02 10:58
+  modified: 2026-09-02 17:12
 ---
 
 # Windows 强制重启排查
@@ -188,3 +188,26 @@ Windows 弹出“电脑出现了一些问题，将在一分钟后重启”时，
 1. 正在使用 Codex / WorkBuddy / Gemini 时闪烁：优先按 AI 工具链自身命令窗口判断。
 2. 未使用 Codex / WorkBuddy / Gemini 时闪烁：优先重新查复发前后 5 分钟 Security 4688，确认是否仍有 WPS、Google、OneDrive 或 Hotpatch 触发。
 3. WPS 已禁用后仍在普通使用中复发，再考虑进一步评估 Hotpatch 或其他系统任务，不要直接关闭系统任务。
+
+### 17:01 复发确认与修复
+
+用户 2026-09-02 17:01 再次看到黑框，且当时正在使用 Codex。复查 16:58-17:04 的 Security 4688 后确认，本次不是 WPS：WPS 三个相关计划任务仍为已禁用，TaskScheduler 日志未见 WPS 触发。
+
+直接证据：
+
+- 17:01:09：`pythonw.exe -> cmd.exe -> gemini-pro.cmd -> agy.exe -p /usage`。
+- 17:01:15：`pythonw.exe -> cmd.exe -> gemini-pro.cmd -> agy.exe -p /model`。
+- 17:01:20：`pythonw.exe -> cmd.exe -> gemini-pro.cmd -> agy.exe -p /credits`。
+- `pythonw.exe` 的完整命令行为 `C:\Users\Administrator\AppData\Local\Programs\Python\Python311\pythonw.exe C:\Tools\AIUsageMonitor\AI_Quota_Monitor_ZH.pyw`。
+
+结论：17:01 黑框的主要来源是本机 AI 额度监控看板查询 Gemini 状态时调用 `gemini-pro.cmd`，批处理入口会经过 `cmd.exe`，因此产生黑框。Codex 同时也会启动 `conhost.exe` 和 Git 检查，但本次最明确的高频来源是额度监控。
+
+已处理：
+
+- 备份原脚本到 `C:\Tools\AIUsageMonitor\AI_Quota_Monitor_ZH.pyw.bak-20260902-1701-blackwindow`。
+- 修改 `C:\Tools\AIUsageMonitor\AI_Quota_Monitor_ZH.pyw`，版本从 v1.8 升到 v1.9。
+- Gemini 查询优先直接调用 `C:\Users\Administrator\.gemini\bin\agy.exe`，绕开 `gemini-pro.cmd`。
+- 对 Gemini 查询子进程增加 `CREATE_NO_WINDOW`。
+- 重启额度监控看板。
+
+验证结果：修复后日志链路变为 `pythonw.exe -> agy.exe -p /usage|/model|/credits`，未再走 `pythonw.exe -> cmd.exe -> gemini-pro.cmd`。这能规避额度监控造成的黑框；Codex 自身工具服务偶发 `conhost.exe` 仍可能存在。
