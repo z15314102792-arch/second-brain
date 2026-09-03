@@ -4,7 +4,7 @@ description: Windows 弹出一分钟后重启时，优先按 lsass.exe 崩溃与
 tags: [Windows, 故障排查, 系统]
 metadata:
   type: reference
-  modified: 2026-09-03 10:26
+  modified: 2026-09-03 10:40
 ---
 
 # Windows 强制重启排查
@@ -234,3 +234,30 @@ Windows 弹出“电脑出现了一些问题，将在一分钟后重启”时，
 - 未看到额度监控触发 `gemini-pro.cmd`、`cmd.exe` 或 `accounts.google.com` 登录页。
 
 当前结论：额度监控看板保留 Gemini / Antigravity 额度显示，同时不再每 30 秒连续三次拉起 Antigravity CLI。若后续仍有黑框，优先区分是否为 Codex 自身工具服务或 Antigravity CLI 自身 `conhost.exe`，而不是看板高频查询。
+
+### 2026-09-03 10:35 黑框复发定位
+
+用户在 2026-09-03 10:35 反馈几秒前再次出现黑框。复查 10:34:00-10:36:30 的 Security 4688 和 TaskScheduler 日志后，确认这次不是 `gemini-pro.cmd` 或 Google 登录页回来了。
+
+关键证据：
+
+- 10:34:13：Windows Hotpatch 任务启动 `cmd.exe /d /c C:\WINDOWS\system32\hpatchmonTask.cmd`，同时出现 `conhost.exe`。
+- 10:34:52：额度看板 v2.1 启动 `agy.exe -p /usage --print-timeout 1m`，`agy.exe` 自己创建 `conhost.exe`。
+- 10:35:13：`D:\zou\zoujiasu\Zou加速.exe` 启动 `C:\Users\Administrator\.config\com.vortex.helper\com.vortex.helper.exe -d C:\Users\Administrator\.config\com.vortex.helper -ext-ctl 127.0.0.1:39797`，随后 `com.vortex.helper.exe` 创建 `conhost.exe`。
+- 10:35:21：`codex.exe` 创建 `conhost.exe`。
+
+补充信息：
+
+- `com.vortex.helper.exe` 文件签名状态为 `NotSigned`。
+- `C:\Users\Administrator\.config\com.vortex.helper\log` 在 10:35:13 生成/更新日志。
+- 当前最贴近用户反馈时间的是 Zou 加速 / Vortex helper 链路；但 10:34:52 的 Antigravity CLI 也仍可能造成黑框。
+
+已执行追加修复：
+
+- `C:\Tools\AIUsageMonitor\AI_Quota_Monitor_ZH.pyw` 从 v2.1 升到 v2.2。
+- `C:\Tools\AIUsageMonitor\widget_config.json` 设置 `antigravity_live_queries = false`。
+- 看板启动和自动刷新不再主动调用 Antigravity；继续显示上次缓存额度。
+- 手动点刷新时仍可主动查询 Gemini / Antigravity 最新额度。
+- 2026-09-03 10:37:41 重启看板后等待 70 秒，未再看到 `agy.exe`、`gemini-pro.cmd` 或 `accounts.google.com`。
+
+当前结论：看板已彻底停止自动触发 Antigravity 黑框；若后续仍复发，优先看是否继续出现 `Zou加速.exe -> com.vortex.helper.exe -> conhost.exe`。由于 Zou 加速可能影响代理网络，本次不直接关闭，除非用户明确要牺牲加速器稳定性来验证。
