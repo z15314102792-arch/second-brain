@@ -4,7 +4,7 @@ description: Windows 弹出一分钟后重启时，优先按 lsass.exe 崩溃与
 tags: [Windows, 故障排查, 系统]
 metadata:
   type: reference
-  modified: 2026-09-02 17:12
+  modified: 2026-09-03 10:26
 ---
 
 # Windows 强制重启排查
@@ -211,3 +211,26 @@ Windows 弹出“电脑出现了一些问题，将在一分钟后重启”时，
 - 重启额度监控看板。
 
 验证结果：修复后日志链路变为 `pythonw.exe -> agy.exe -p /usage|/model|/credits`，未再走 `pythonw.exe -> cmd.exe -> gemini-pro.cmd`。这能规避额度监控造成的黑框；Codex 自身工具服务偶发 `conhost.exe` 仍可能存在。
+
+### 2026-09-03 AI 额度监控 v2.1 降频修复
+
+用户需要看板继续显示 Gemini / Antigravity 额度，因此 2026-09-03 不再采用关闭查询的方案，而是保留查询并降低触发频率。
+
+已处理：
+
+- `C:\Tools\AIUsageMonitor\AI_Quota_Monitor_ZH.pyw` 从 v2.0 升到 v2.1。
+- `C:\Tools\AIUsageMonitor\widget_config.json` 保持 `antigravity_live_queries = true`。
+- 新增查询间隔：
+  - `antigravity_usage_query_interval_sec = 300`
+  - `antigravity_model_query_interval_sec = 900`
+  - `antigravity_credits_query_interval_sec = 900`
+- 新增刷新锁，避免启动时初始化刷新和 30 秒定时刷新重叠，导致多轮 Antigravity 查询并发。
+
+验证：
+
+- `python -m py_compile C:\Tools\AIUsageMonitor\AI_Quota_Monitor_ZH.pyw` 通过。
+- 2026-09-03 10:24:50 重启看板后，Security 4688 只记录三次初始化查询：10:24:52 `/usage`，10:25:00 `/model`，10:25:05 `/credits`。
+- 等待超过 75 秒后，未再次出现新的 Antigravity 查询。
+- 未看到额度监控触发 `gemini-pro.cmd`、`cmd.exe` 或 `accounts.google.com` 登录页。
+
+当前结论：额度监控看板保留 Gemini / Antigravity 额度显示，同时不再每 30 秒连续三次拉起 Antigravity CLI。若后续仍有黑框，优先区分是否为 Codex 自身工具服务或 Antigravity CLI 自身 `conhost.exe`，而不是看板高频查询。
