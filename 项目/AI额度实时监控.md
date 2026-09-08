@@ -5,14 +5,14 @@ tags: [项目, AI额度, 监控, Codex, Gemini, Antigravity, Python]
 metadata:
   type: project
   status: 活跃
-  version: v1.8
-  modified: 2026-08-30
+  version: v2.3
+  modified: 2026-09-08
 ---
 
 # AI 额度与状态实时监控桌面看板
 
 > 项目路径：`E:\项目\ai-quota-monitor` / `C:\Tools\AIUsageMonitor`
-> 当前稳定版本：`v1.8` · 2026-08-30
+> 当前稳定版本：`v2.3` · 2026-09-08
 
 ---
 
@@ -221,7 +221,8 @@ graph TD
 | **v1.5** | 2026-08-29 | 推出双形态基础架构与贴边收缩试验引擎。 |
 | **v1.6** | 2026-08-29 | 重构第二形态为双模型平衡微卡片，全面支持 8 向自由拉伸与 35px 贴边磁吸。 |
 | **v1.7** | 2026-08-29 | 深度上线 Gemini 每日真实调用量（RPD 配额池）计算引擎，剔除多余噪音。 |
-| **v1.8** | 2026-08-30 | **当前稳定版本**：**三大配额池独立监控**（Codex Plus / Gemini Models / Claude&GPT Models），全局统领 Master Grid 栅格同心对齐与双分割线左右拖拽记忆，纯净周进度条与周刷新倒计时。 |
+| **v1.8** | 2026-08-30 | **三大配额池独立监控**（Codex Plus / Gemini Models / Claude&GPT Models），全局统领 Master Grid 栅格同心对齐与双分割线左右拖拽记忆，纯净周进度条与周刷新倒计时。 |
+| **v2.3** | 2026-09-08 | **当前稳定版本**：子进程加入 `CREATE_NO_WINDOW` 彻底解决终端黑框闪烁，全量恢复三大模型实时额度与模型探测，优化配额耗尽展示与查询调度。 |
 
 ---
 
