@@ -5,14 +5,14 @@ tags: [项目, AI额度, 监控, Codex, Gemini, Antigravity, Python]
 metadata:
   type: project
   status: 活跃
-  version: v2.7
+  version: v3.0
   modified: 2026-09-09
 ---
 
 # AI 额度与状态实时监控桌面看板
 
 > 项目路径：`E:\项目\ai-quota-monitor` / `C:\Tools\AIUsageMonitor`
-> 当前稳定版本：`v2.7` · 2026-09-09
+> 当前稳定版本：`v3.0` · 2026-09-09
 
 ---
 
