@@ -4,8 +4,8 @@ tags: [入口, workbuddy]
 metadata: 
   node_type: memory
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-09-08
-  version: v4.26
+  modified: 2026-09-09
+  version: v4.27
 ---
 
 # 第二大脑 · 总索引
@@ -65,7 +65,7 @@ metadata:
 - [[项目/记忆系统]] — 从单文件流水账重建为结构化记忆体系
 - [[项目/全局指令优化]] — CLAUDE.md 指令优化记录
 - [[项目/AIGC游戏美术方案]] — 五游戏 AIGC 美术素材方案
-- [[项目/AI额度实时监控]] — v2.3，OpenAI Codex Plus / Gemini / Claude 三大模型池实时额度与状态桌面监控看板，彻底杜绝黑框闪烁
+- [[项目/AI额度实时监控]] — v2.4，三大模型实时额度与状态桌面监控看板，5h能量条精准联动与智能重置感知
 - [[项目/Codex Plus用量可视化]] — PulseMeter 查看 Codex Plus 用量，已放弃中文轻量监视器
 
 ---
