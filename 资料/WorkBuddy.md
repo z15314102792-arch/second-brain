@@ -7,7 +7,7 @@ metadata:
   type: tool
   status: 运行中
   version: v5.3.11
-  modified: 2026-08-29
+  modified: 2026-09-11
   originSessionId: 97234303-2b96-4c4c-8a01-e4743f297fee
 ---
 
@@ -74,7 +74,8 @@ metadata:
 - 库总索引 `MEMORY.md` 顶部已写明此识别规则，其他模型读索引即懂。
 
 ### 分类
-- 严格遵循 `CLAUDE.md` 的分类逻辑（项目/知识/技能/资料/日记…），新增前先查重，不重复造文件。
+- 严格遵循**当前** `CLAUDE.md` 与实际存在目录；正式分类为 `项目/知识/技能/资料/日志/仓库/待办/灵感/_垃圾站`（`系统/` 为敏感目录）。新增前先查重，已有文件优先更新。
+- `PARA/Areas/Resources/Archives` 等仅是参考方法，不是本库物理路径；禁止自行创建 `02 Areas`、`日记/` 等别名或旧目录。若目标路径无法确认，先停止写入并核对 `CLAUDE.md` + `MEMORY.md`。
 
 ### Git（2026-08-17 更新：已授权推送）
 - 推送已授权。会话结束 / 用户说"保存进度" / "推git" 时执行：**`pull origin master → commit → push origin master`**。
