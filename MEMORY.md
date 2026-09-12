@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
   modified: 2026-09-12
-  version: v4.38
+  version: v4.39
 ---
 
 # 第二大脑 · 总索引
@@ -112,7 +112,7 @@ metadata:
 - [[技能/手机端CLAUDE模板]] — 手机精简指令
 - [[技能/公开社区深度调研]] — 跨 GitHub/Reddit/HN/Product Hunt/Hugging Face/Kaggle 等公开社区的标准调研协议，含评分、反证、停止条件与 Build/Buy/Fork 决策
 - [[技能/Godot Android APK 打包与阶段发布流程]] — Godot 4.x 项目在 Windows 环境下自动化搭建 Android 构建环境、签名配置、命令行无头导出与覆盖升级操作指南
-- [[技能/Windows安全清理C盘]] — v1.0，默认只预览、按文件年龄和进程状态清理白名单缓存，永久排除系统组件、聊天记录、草稿和项目文件
+- [[技能/Windows安全清理C盘]] — v1.1，首次安全清理释放 19.477 GB；脚本默认只预览、按文件年龄和进程状态清理白名单缓存
 
 ---
 

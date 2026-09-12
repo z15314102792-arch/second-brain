@@ -5,7 +5,7 @@ tags: [Windows, 磁盘清理, PowerShell, 安全]
 metadata:
   type: reference
   modified: 2026-09-12
-  version: v1.0
+  version: v1.1
 ---
 
 # Windows 安全清理 C 盘
@@ -49,10 +49,12 @@ Downloads 旧目录、Hugging Face 的符号链接结构和 Whisper 旧缓存不
 
 微软的“存储感知”支持定期处理临时文件，并对下载目录、回收站设置独立保留期。社区脚本可借鉴默认预览、明确执行开关、进程检测和白名单；不能照搬删除 Installer 包、重置更新缓存、删除预取或事件日志等激进功能。
 
-## 2026-09-12 本机扫描基线
+## 2026-09-12 本机执行结果
 
-- 当前可周期清理约 5.153 GB；Chrome 与 VS Code 因正在运行而被正确跳过。
-- 一次性已验证旧副本约 13.635 GB。
+- 清理前 C 盘剩余 29.334 GB，清理后剩余 48.810 GB，实际增加 19.477 GB。
+- 成功删除 90733 个白名单文件；21 个被占用文件合计约 0.060 GB，二次重试仍占用，因此保留。
+- Chrome、VS Code、资源管理器运行中，对应缓存被正确跳过，没有强制关闭软件。
+- D 盘 Downloads、Ollama、Hugging Face、ModelScope、Whisper、npm、pip、pnpm 数据复检存在。
+- 一次性已验证旧副本清理完毕，复检候选为 0 GB。
 - 回收站约 1.383 GB，默认不清。
 - 休眠文件约 6.29 GB，保留以免影响休眠和快速启动。
-
