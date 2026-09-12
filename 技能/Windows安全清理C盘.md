@@ -5,7 +5,7 @@ tags: [Windows, 磁盘清理, PowerShell, 安全]
 metadata:
   type: reference
   modified: 2026-09-12
-  version: v1.2
+  version: v1.3
 ---
 
 # Windows 安全清理 C 盘
@@ -19,6 +19,7 @@ metadata:
 - 脚本：`E:\第二大脑\scripts\Safe-CDriveCleanup.ps1`
 - 桌面双击入口：`C:\Users\Administrator\Desktop\双击清理C盘.cmd`
 - 桌面后台脚本：`C:\Users\Administrator\Desktop\Safe-CDriveCleanup.ps1`
+- D 盘恢复副本：`D:\Maintenance\Safe-CDriveCleanup.ps1`
 - 默认行为：只扫描预览，不删除。
 - 固定保留期：默认只处理 7 天以前的文件。
 - 实际执行：必须显式传入 `-Execute`，且默认还要输入 `CLEAN`。
@@ -63,4 +64,4 @@ Downloads 旧目录、Hugging Face 的符号链接结构和 Whisper 旧缓存不
 
 ## 桌面使用方式
 
-用户不需要为 `.ps1` 选择打开应用，也不需要记命令。直接双击桌面上的 `双击清理C盘.cmd`，入口会调用经过校验的后台脚本，执行固定白名单清理；正在运行的软件缓存仍会自动跳过。
+用户不需要为 `.ps1` 选择打开应用，也不需要记命令。直接双击桌面上的 `双击清理C盘.cmd`，入口会调用经过校验的后台脚本，执行固定白名单清理；正在运行的软件缓存仍会自动跳过。若桌面后台脚本缺失，入口会先从 `D:\Maintenance\Safe-CDriveCleanup.ps1` 自动恢复，再继续执行。
