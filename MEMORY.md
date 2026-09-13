@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
   modified: 2026-09-13
-  version: v4.46
+  version: v4.47
 ---
 
 # 第二大脑 · 总索引
@@ -64,7 +64,7 @@ metadata:
 - [[项目/今日问题审计]] — 8/12 会话全面审计，8 个根因
 - [[项目/数字人口播]] — 克隆脸 + 声音 → 口播视频，4GB 显卡暂停
 - [[项目/AI短剧解说视频]] — 文案 → AI 动态画面 → 成片
-- [[项目/AI短剧创作学习]] — v1.1，低成本实作与15项审片标准；分开保存Flow预算实验继续位置和《失踪者名单》故事开发阶段
+- [[项目/AI短剧创作学习]] — v1.2，低成本实作与15项审片标准；普通GPT通过Drive成功补记Flow预算策略，两个会话继续位置分开
 - [[项目/AI短剧_失踪者名单/00 项目总控/项目导航]] — AI 短剧《失踪者名单》项目总入口；故事开发中，所有有效设定、人物、悬疑与废案均在该项目目录维护
 - [[项目/Claude Code 环境维护]] — hook 乱码 + API 成本 + edit 误拦
 - [[项目/Codex-Gemini多模型协作规划]] — Codex 总管 + Gemini 下级执行；Antigravity CLI 代理入口 `gemini-pro` 已验证
