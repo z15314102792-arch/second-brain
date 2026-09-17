@@ -1,14 +1,26 @@
 ---
 name: claude-code-hook-restart-required
-description: Claude Code file watcher bug——用 Edit 原子保存 settings.json 会破坏 watcher，改 hook 后必须重启才生效
+description: 历史 hook 热加载异常案例；当前先核实版本、信任与触发，不普遍要求重启
 metadata:
+  version: v1.0
   node_type: memory
   type: reference
-  modified: 2026-08-13T04:18:14.142Z
+  modified: 2026-09-17
   originSessionId: d4628283-c00a-44d4-84b8-e47c02346778
 ---
 
-# 改 hook 后必须重启 Claude Code 才生效
+# Claude Code 历史 hook 热加载异常记录
+
+## 2026-09-17 校正（当前适用）
+
+本文保留历史现场；旧版本症状和当时推断不能直接当作当前全平台规则。当前维护入口为 [[项目/全局指令优化]]，执行与保存路径以当前 CLAUDE.md 为准。
+
+- 文字规则和技能是软约束；程序只能约束实际覆盖、经过测试的条件。文件存在、配置可解析、已获信任、事件真实触发、原问题被检出是不同证据。
+- “5—10轮必失效”“Hooks是唯一有效手段”“零延迟”“改钩子必重启”不能作为普适结论。版本、事件字段、信任状态、依赖、触发范围都要现场核查。
+- 代码不调用模型不等于无耗时或完全无上下文成本；输出注入上下文仍可能消耗令牌。
+- 调研与独立评审辅助判断，不能保证审美或因果正确；重复无新证据的微调应改为复现和对照验证。
+
+
 
 > 踩坑时间：2026-08-12 | 来源：修复 hooks（metacog/research-gate/token-guard 等）时发现
 
