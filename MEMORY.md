@@ -1,11 +1,11 @@
 ---
 name: ""
 tags: [入口, workbuddy]
-metadata: 
+metadata:
   node_type: memory
   originSessionId: 53099e30-6fac-4ddc-b8d1-0dd8bee1197a
-  modified: 2026-09-16
-  version: v4.51
+  modified: 2026-09-17
+  version: v4.52
 ---
 
 # 第二大脑 · 总索引
@@ -77,7 +77,7 @@ metadata:
 - [[项目/副业调研]] — 副业方向调研
 - [[项目/项目管家]] — Skills + Workflows + Cron
 - [[项目/记忆系统]] — 从单文件流水账重建为结构化记忆体系
-- [[项目/全局指令优化]] — CLAUDE.md 指令优化记录
+- [[项目/全局指令优化]] — 当前规则/技能/钩子治理入口，2026-09-17 已校正多平台冲突与无效强制要求
 - [[项目/AIGC游戏美术方案]] — 五游戏 AIGC 美术素材方案
 - [[项目/AI额度实时监控]] — v3.1，三大模型实时额度桌面看板；Antigravity 改用官方 `/usage` 五小时/周双池口径，废弃“1,500次/天”旧 RPD 估算
 - [[项目/Codex Plus用量可视化]] — PulseMeter 查看 Codex Plus 用量，已放弃中文轻量监视器
@@ -92,7 +92,7 @@ metadata:
 - [[知识/ClaudeCode跨会话消息]] — 跨会话消息传递调研
 - [[知识/手机AI与自动化]] — K70 端侧 AI + 自动化方案
 - [[知识/系统根因分析]] — Claude Code 8 大根因 + 社区方案
-- [[知识/CLAUDE-md规则强制执行]] — hooks 是唯一有效强制手段
+- [[知识/CLAUDE-md规则强制执行]] — 历史调研与适用边界，不能视为效果保证
 - [[知识/ClaudeCode改hook需重启]] — 改 hook 必须重启才生效
 - [[知识/hook静默失效审计]] — 6 个 hook 审计 5 个静默失效
 - [[知识/会话存档全记录]] — 任何事情都要写进日志
