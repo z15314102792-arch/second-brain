@@ -208,11 +208,11 @@ metadata:
    - 操作步骤 → `技能/xxx.md`
    - 工具配置 → `资料/xxx.md`
 3. **提交前自检**：
-   - `git add 灵感/ 待办/ 项目/ 知识/ 技能/ 资料/ 日志/ 仓库/ _垃圾站/ scripts/ .github/ CLAUDE.md MEMORY.md .gitignore index.html .obsidian/app.json .obsidian/appearance.json .obsidian/core-plugins.json .obsidian/community-plugins.json`
+   - 只按本次实际修改的文件白名单逐项暂存；不得把整个项目、知识、日志等目录一并暂存，以免夹带其他任务工作。
    - ⚠️ 禁止 `git add -A`——会混入第三方软件自动生成的未审核文件
    - ⚠️ `系统/` 目录**不要**加入 git add 清单（里面有密钥，已用 .gitignore 拦截，但白名单里也别写，双保险）
    - `git diff --stat --cached` 确认暂存区无误
-   - **同步顺序（2026-08-15 起）**：先 `git pull origin master`（拉云端最新，避免覆盖其他设备改动）→ 再 `git commit -m "..."`（提交本地改动）→ 最后 `git push origin master`（推送）
+   - 先检查工作区与分支；工作区干净且不会覆盖已有改动时才拉取。修改后核对本次文件差异、白名单暂存、提交并推送；其他任务的未提交内容保留。
    - 若 pull 时遇到冲突，停下来向用户说明再处理，不要硬来
    - origin → GitHub
 ### 每周一次（建议周日晚上）
